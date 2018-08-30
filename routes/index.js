@@ -40,6 +40,7 @@ router.post('/panel/products/attributes/new' ,ProductController.AddNewAttribute 
 /* Localization */
 
 router.get('/panel/locale/langs-list' , LocaleController.GetLanguagesListAction );
+router.get('/panel/lang/new-lang' , LocaleController.AddNewLanguageAction );
 router.post('/panel/locale/new-lang' , LocaleController.AddNewLanguage );
 
 module.exports = router;

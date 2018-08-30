@@ -214,11 +214,12 @@ const Translations = connection.define( 'translations' , {
 WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID' } );
 Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'langID' } );
 
+// Langs.sync({force: true});
 // WordsConstans.sync({force: true});
-// Translations.sync({force: true});
+//Translations.sync({force: true});
 
 
-//Langs.sync({force: true});
+//
 //
 // Product.sync({force: true});
 // Category.sync({force: true});
