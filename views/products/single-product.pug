@@ -3,7 +3,7 @@ extends ../layout
 block content
     script( defer src="/javascripts/product.js" )
 
-    form.col-md-12
+    form(data-product-id=product.productID).col-md-12
         .form-group
             label(for='productTitle') Название
             input#productTitle.form-control(placeholder='Введите название' value=product.productTitle)
@@ -19,6 +19,10 @@ block content
                 .card-body
                     p.card-text #{product.image.imagePath}
         .form-group
+            select#productCategories( hidden )
+                each productCategory in product.categories
+                        option( value=productCategory.categoryID )
+
             label(for='categoriesSelect') Категории
             select#categoriesSelect.form-control( multiple )
                 each category in categories
@@ -26,6 +30,7 @@ block content
                         value=category.categoryID
                         data-category-id=category.categoryID
                     ) #{category.categoryTitle}
+
         .form-group
             label(for='attributesSelect') Атрибуты
             select#attributesSelect.form-control
@@ -60,11 +65,12 @@ block content
                             td #{attribute.attributeID}
                             td #{attribute.attributeTitle}
                             td #{attribute.pAttributes.attributeValue}
-                            td Удалить
+                            td
+                                .btn.btn-danger(data-attribute-id=attribute.attributeID) Удалить
         .form-group
             label(for='productDescription') Описание
             textarea#productDescription.form-control(placeholder='Введите описание') #{product.productDescription}
         .form-group
             #message.alert.alert-danger(style="display: none")
 
-        #addProductButton.btn.btn-primary Добавить товар
+        #updateProduct.btn.btn-primary Обновить товар

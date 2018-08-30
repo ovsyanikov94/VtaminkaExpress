@@ -1,5 +1,38 @@
 "use strict";
 
+function AddRemoveAttributeListeners( attributes ){
+
+    let buttons = document.querySelectorAll('#productAttributes .btn-danger');
+
+    [].forEach.call( buttons , btn => {
+
+        btn.addEventListener('click' , (  ) => {
+
+            let attributeId =  +btn.dataset.attributeId;
+
+            let attr = attributes.find( att => att.attributeID === attributeId );
+
+            let index = attributes.indexOf( attr );
+
+            if(index !== -1){
+
+                attributes.splice(index , 1);
+
+                let tr = btn.parentElement.parentElement;
+
+                document.querySelector('#productAttributes').removeChild( tr );
+
+            }//if
+
+            console.log('attributes' , attributes );
+
+        } );
+
+    } );
+
+
+}//AddRemoveAttributeListeners
+
 (function (){
 
     let attributesSelect = document.querySelector('#attributesSelect');
@@ -14,7 +47,9 @@
 
         attributesSelect.addEventListener('change' , function (){
 
-            let attributeID = this.value;
+            //debugger;
+
+            let attributeID = +this.value;
             let attributeTitle = this.querySelector(`option[data-attribute-id='${attributeID}']`).textContent;
 
             if(attributeID === -1){
@@ -41,7 +76,7 @@
 
         addAttributeValue.addEventListener('click' , function (){
 
-            let attributeID = attributesSelect.value;
+            let attributeID = +attributesSelect.value;
 
             if( attributeID === -1 ){
                 return;
@@ -62,13 +97,17 @@
             attributes.forEach( ( attr )=>{
 
                 attributesTable.innerHTML += `
+                <tr align="middle">
                     <td>${attr.attributeID}</td>
                     <td>${attr.attributeTitle}</td>
                     <td>${attr.attributeValue}</td>
-                    <td></td>
+                    <td><div class="btn btn-danger" data-attribute-id=${attr.attributeID} >Удалить</div></td>
+                </tr>
                 `;
 
-            } )
+            } );
+
+            AddRemoveAttributeListeners( attributes );
 
         });
 
@@ -124,6 +163,115 @@
             }//catch
 
         });
+
+    }//if
+
+    let productCategories = document.querySelector('#productCategories');
+    let categoriesSelect = document.querySelector('#categoriesSelect');
+
+    if( productCategories ){
+
+        let categories = productCategories.querySelectorAll( 'option' );
+
+        let ids = [].map.call( categories , ( opt )=>{
+            return opt.value;
+        } );
+
+        ids.forEach( id => {
+
+            let option = categoriesSelect.querySelector(`option[data-category-id='${id}']`)
+
+            if( option ){
+                option.selected = true;
+            }//if
+
+        } );
+
+    }//if
+
+    if(attributesTable && attributesTable.children.length !== 0){
+
+        let rows = attributesTable.querySelectorAll('tr');
+
+        [].forEach.call( rows , row => {
+
+            let childRows = row.querySelectorAll('td');
+
+            let attribute = {
+                attributeID: +childRows[0].textContent,
+                attributeTitle: childRows[1].textContent,
+                attributeValue: childRows[2].textContent,
+            };
+
+            attributes.push( attribute );
+
+        } );
+
+        console.log('attributes' , attributes);
+
+    }//if
+
+    AddRemoveAttributeListeners( attributes );
+
+    let updateProductButton = document.querySelector('#updateProduct');
+
+    if( updateProductButton ){
+
+        updateProductButton.addEventListener('click' , async ()=> {
+
+            let productID = +document.querySelector('form').dataset.productId;
+
+            let children = document.querySelector('#categoriesSelect').children;
+
+            let selectedCategoriesOptions = [].filter.call(children , ( opt )=> { return opt.selected === true; });
+
+            if( selectedCategoriesOptions.length === 0 ){
+                alert('Категории не установлены!');
+                return;
+            }//if
+
+            let categoriesIds = [].map.call(  selectedCategoriesOptions , ( opt )=> { return +opt.value; } );
+
+            let productTitle = document.querySelector('#productTitle').value;
+            let productPrice = document.querySelector('#productPrice').value;
+            let productDescription = document.querySelector('#productDescription').value;
+
+            let productImage = document.querySelector('#productImage');
+
+            let data = new FormData();
+
+            if( productImage.files.length !== 0 ){
+                data.append('image', productImage.files[0]);
+            }//if
+
+            data.append('categories', JSON.stringify(categoriesIds));
+            data.append('attributes' , JSON.stringify(attributes));
+            data.append('productTitle' , productTitle);
+            data.append('productDescription' , productDescription);
+            data.append('productPrice' , productPrice);
+
+
+            try{
+
+                let request = await fetch(`${window.ServerAddress}panel/products/${productID}` , {
+                    method: 'PUT',
+                    body: data
+                });
+
+                let response = await request.json();
+
+                console.log(response);
+
+            }//try
+            catch(ex){
+
+                console.log('ex' , ex);
+
+            }//catch
+
+        });
+
+
 
     }//if
 

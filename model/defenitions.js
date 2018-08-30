@@ -138,6 +138,9 @@ const ProductImages = connection.define('pImages', {
             max: 1500
         }
     }
+},{
+    createdAt: false,
+    updatedAt: false
 });
 
 Product.belongsToMany( Category , { through: ProductAndCategories , foreignKey: 'productID' , as: 'categories' });
@@ -148,6 +151,74 @@ ProductAttributes.belongsToMany( Product , { through: ProductAndAttributes , for
 
 ProductImages.belongsTo(Product , { foreignKey: 'productID' });
 
+const Langs = connection.define( 'langs' , {
+
+    languageID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.TINYINT
+    },
+    languageTitle:{
+        unique: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    },
+    languageImage: {
+        allowNull: true,
+        type: Sequelize.DataTypes.STRING(1500)
+    }
+
+},{
+    createdAt: false,
+    updatedAt: false
+});
+
+const WordsConstans = connection.define( 'wordsConstants' , {
+
+    constantID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    constantTitle:{
+        unique: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    }
+
+},{
+    createdAt: false,
+    updatedAt: false
+});
+
+const Translations = connection.define( 'translations' , {
+
+    ID: {
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    translation: {
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    }
+
+},{
+    createdAt: false,
+    updatedAt: false
+});
+
+WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID' } );
+Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'langID' } );
+
+// WordsConstans.sync({force: true});
+// Translations.sync({force: true});
+
+
+//Langs.sync({force: true});
 //
 // Product.sync({force: true});
 // Category.sync({force: true});
@@ -163,5 +234,6 @@ module.exports.ProductAndCategories = ProductAndCategories;
 module.exports.ProductAttributes = ProductAttributes;
 module.exports.ProductAndAttributes = ProductAndAttributes;
 module.exports.ProductImages = ProductImages;
-
-
+module.exports.Langs = Langs;
+module.exports.WordsConstans = WordsConstans;
+module.exports.Translations = Translations;
