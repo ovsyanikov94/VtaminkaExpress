@@ -37,9 +37,17 @@ router.put('/panel/products/:id' ,ProductController.UpdateProduct );
 router.get('/panel/products/attributes/new' ,ProductController.AddNewAttributeAction );
 router.post('/panel/products/attributes/new' ,ProductController.AddNewAttribute );
 
+//router.get('/panel/productJson/' ,ProductController.GetProductJSON );
+router.get('/panel/productJson/:offset' ,ProductController.GetProductJSON );
+
+
 /* Localization */
 
 router.get('/panel/locale/langs-list' , LocaleController.GetLanguagesListAction );
 router.post('/panel/locale/new-lang' , LocaleController.AddNewLanguage );
+
+
+
+
 
 module.exports = router;
