@@ -1,0 +1,52 @@
+extends ../layout
+
+block content
+    script( defer src="/javascripts/promo-codes.js" )
+
+    form.col-md-12
+        .form-group
+            label(for='languageTitle') Промо-код
+            input#languageTitle.form-control(placeholder='Введите промо-код')
+        .form-group
+            #message.alert.alert-danger(style="display: none")
+            #addLanguageButton.btn.btn-primary Добавить промо-код
+
+    if langs.length === 0
+        .alert.alert-info.col-12
+            | Промо-коды не найдены
+    table.table
+        thead
+            tr(align="middle")
+                th(scope='col') #
+                th(scope='col') Промо-код
+                th(scope='col') Доставка
+                th(scope='col') Изменить
+                th(scope='col') Удалить
+        tbody#langsList
+            each promoCode in promoCodes
+                tr(align="middle")
+                    td= promoCode.promoCodeID
+                    td= promoCode.delivery
+                    td
+                        a.alert.alert-primary(href="#" + promoCode.promoCodeID style="display: inline-block;") Изменить
+                    td
+                        button.alert.alert-danger(
+                        style="cursor: pointer"
+                        data-lang-id=promoCode.promoCodeID
+                        ) Удалить
+
+
+    #confirmRemoveLanguageModal.modal(tabindex='-1', role='dialog')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title Удаление промо-кода
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                .modal-body
+                    div
+                        | Вы действительно хотите удалить промо-код
+                        b#langTitle
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Нет
+                    button#confirmRemoveLanguageButton.btn.btn-primary(type='button' data-dismiss='modal') Удалить
