@@ -41,5 +41,7 @@ router.post('/panel/products/attributes/new' ,ProductController.AddNewAttribute 
 
 router.get('/panel/locale/langs-list' , LocaleController.GetLanguagesListAction );
 router.post('/panel/locale/new-lang' , LocaleController.AddNewLanguage );
+router.get('/panel/locale/lang/export/:id' , LocaleController.ExportLanguage );
+router.post('/panel/locale/lang/import/' , LocaleController.ImportLanguage );
 
 module.exports = router;

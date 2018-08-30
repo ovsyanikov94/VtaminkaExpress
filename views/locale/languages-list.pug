@@ -22,6 +22,8 @@ block content
                 th(scope='col') Изображение
                 th(scope='col') Изменить
                 th(scope='col') Удалить
+                th(scope='col') Импорт
+                th(scope='col') Экспорт
         tbody#langsList
             each lang in langs
                 tr(align="middle")
@@ -36,6 +38,16 @@ block content
                             data-lang-title=lang.languageTitle
                             data-lang-id=lang.languageID
                         ) Удалить
+                    td
+                        .alert.alert-success(style="display: inline-block;")
+                            input(type="file" id="sendFile")
+                            button.alert.alert-primary#importButton(
+                            style="cursor: pointer"
+                            data-lang-title=lang.languageTitle
+                            data-lang-id=lang.languageID
+                            ) Импортитовать
+                    td
+                        a.alert.alert-success(download=lang.languageTitle + '.json' href="/panel/locale/lang/export/" + lang.languageID style="display: inline-block;") Экспортировать
 
 
     #confirmRemoveLanguageModal.modal(tabindex='-1', role='dialog')

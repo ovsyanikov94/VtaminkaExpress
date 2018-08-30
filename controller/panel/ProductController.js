@@ -381,7 +381,9 @@ module.exports.GetProductAction = async ( req , res )=>{
 
     }//try
     catch(ex){
+
         res.render('error' , { error: ex });
+
     }//catch
 
 };
