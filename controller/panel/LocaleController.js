@@ -67,9 +67,6 @@ module.exports.ImportLanguage = async ( req , res )=>{
 
             for(let i = 0; i < fileData.length; i++){
 
-                if(fileData[i][1] === "")
-                    continue;
-
                 checkTranstate = await connection.query(`
                     SELECT *
                     FROM \`translations\` AS t
@@ -78,14 +75,30 @@ module.exports.ImportLanguage = async ( req , res )=>{
 
                 if(checkTranstate[0].length > 0){
 
-                    let translate = await Translations.findById(checkTranstate[0][0].ID);
+                    if(fileData[i][1] === ""){
 
-                    translate.update({
-                        translation: fileData[i][1]
-                    })
+                        Translations.destroy({
+                            where: {
+                                ID: checkTranstate[0][0].ID
+                            }
+                        });
+
+                    }//if
+                    else {
+
+                        let translate = await Translations.findById(checkTranstate[0][0].ID);
+
+                        translate.update({
+                            translation: fileData[i][1]
+                        })
+
+                    }//else
 
                 }//if
                 else {
+
+                    if(fileData[i][1] === "")
+                        continue;
 
                     let constant = await WordsConstans.findOne({
 
