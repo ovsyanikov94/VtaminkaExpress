@@ -2,21 +2,8 @@ extends ../layout
 
 block content
     script( defer src="/javascripts/locale.js" )
-
-    form
-        .form-group
-            .row
-                .col.col-md-6
-                    label(for='languageTitle') Название языка
-                    input#languageTitle.form-control(placeholder='Введите название')
-                .col.col-6
-                    a.alert.alert-primary(href="/panel/locale/const-list/RU" style="display: inline-block;") Добавить константы и перевод
-
-        .form-group
-            #message.alert.alert-danger(style="display: none")
-            #addLanguageButton.btn.btn-primary Добавить язык
-
-
+    
+    a.form-group.btn.btn-primary.col-12(href="/panel/lang/new-lang") Добавить язык
     if langs.length === 0
         .alert.alert-info.col-12
             | Языки не найдены
@@ -33,7 +20,10 @@ block content
                 tr(align="middle")
                     td= lang.languageID
                     td= lang.languageTitle
-                    td= lang.languageImage
+                    td
+                        .card(style="width: 5em")
+                            img.card-img-top(src='/' + lang.languageImage, alt='Card image cap')
+
                     td
                         a.alert.alert-primary(href="/panel/locale/lang/" + lang.languageID style="display: inline-block;") Изменить
                     td
