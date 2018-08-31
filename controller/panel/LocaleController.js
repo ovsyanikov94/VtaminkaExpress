@@ -12,9 +12,6 @@ module.exports.AddNewConstLeng=async(req,res)=>{
     try{
         let description = req.body.description;
         let title = req.body.title;
-        let transletion = req.body.transletion;
-        let lengId = req.body.lengId;
-
         let newWordsConstans = await WordsConstans.create({
             'constantTitle':title,
             'description':description,
@@ -22,19 +19,6 @@ module.exports.AddNewConstLeng=async(req,res)=>{
         })
 
 
-        if(newWordsConstans){
-            console.log(lengId);
-            console.log(newWordsConstans.constantID);
-            let newTranslete = await Translations.create({
-                'constantID':newWordsConstans.constantID,
-                'languageID':lengId,
-                'translation':transletion,
-
-
-            });
-
-            console.log('Ответ',newTranslete);
-        }
 
         respone.code=200;
         respone.message="перевод добавлен";
@@ -57,22 +41,11 @@ module.exports.GetConstList = async (req,res)=>{
     let respone = new Response();
 
     try{
-        let lang = req.params.lng;
 
-        let allLangs = await Langs.findAll();
-        let currentLang = await Langs.findOne({
-            where: {
-                languageTitle: lang
-            }
-        });
-
-        if(!currentLang){
-            return res.render('error' , { error: { message: 'Язык не найден!' } });
-        }//if
 
         let constants = await WordsConstans.findAll();
 
-        res.render('locale/constants/constants-list',{langs: allLangs , constants: constants})
+        res.render('locale/constants/constants-list',{ constants: constants})
 
 
     }

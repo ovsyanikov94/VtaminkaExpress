@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/locale/langs-list' , LocaleController.GetLanguagesListAction );
 router.post('/locale/new-lang' , LocaleController.AddNewLanguage );
-router.get('/locale/const-list/:lng', LocaleController.GetConstList);
+router.get('/locale/const-list', LocaleController.GetConstList);
 router.post('/locale/new',LocaleController.AddNewConstLeng);
 
 

@@ -3,25 +3,15 @@
 ;(function () {
 
     let addLengButton = document.querySelector('#addLanguageButton');
-    let selected = document.querySelector('#categoriesSelect');
+    let tableConst = document.querySelector('#tableConst');
 
-    if(selected){
+    let constant =[];
 
-        selected.addEventListener('change',async()=>{
-            let leng = document.querySelector('#categoriesSelect').children;
+    if(tableConst){
 
-            let selectLeng = [].filter.call(leng,(l)=>{
 
-                return l.selected ===true
-            })
 
-            let Leng = [].map.call(selectLeng,(item)=>{
-                return +item.textContent;
-            })
-            let request = await fetch( `${window.ServerAddress}panel/locale/const-list/${Leng}`);
 
-            console.log(request);
-        })
     }
 
     if(addLengButton){
@@ -30,33 +20,35 @@
             try{
             let description = document.querySelector(' #constDescription').value;
             let title = document.querySelector(' #constTitle').value;
-            let transletion = document.querySelector(' #constTranslation').value;
-            let leng = document.querySelector('#categoriesSelect').children;
 
-            let selectLeng = [].filter.call(leng,(l)=>{
 
-                return l.selected ===true
-            })
-
-            let idLeng = [].map.call(selectLeng,(item)=>{
-                return +item.value;
-            })
-            console.log(idLeng);
             let data = new FormData();
 
             data.append('description',description);
             data.append('title',title);
-            data.append('transletion',transletion);
-            data.append('lengId',idLeng)
+
+
 
                 let request = await fetch(`${window.ServerAddress}panel/locale/new` , {
                     method: 'POST',
                     body: data
                 });
 
-                let response = await request;
+                let response = await request.json();
+                constant.push(response.data)
 
-                console.log(response);
+                constant.forEach((con)=>{
+                    tableConst.innerHTML  += `
+                <tr align="middle">
+                    <td>${con.constantID}</td>
+                    <td>${con.constantTitle}</td>
+                    <td>${con.description}</td>
+                    <td><a style="display: inline-block;"class="alert alert-primary"href="/panel/products/" + con.constantID  data-attribute-id=${con.constantID} >Nзменить</a></td>
+                    <td><a style="display: inline-block;"class="alert alert-danger" data-attribute-id=${con.constantID} >Удалить</a></td>
+                </tr>
+                `;
+                })
+
 
             }//try
             catch(ex){
