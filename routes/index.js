@@ -10,6 +10,7 @@ require('../model/test')('test title');
 const CategoryController = require('../controller/panel/CategoryController');
 const ProductController = require('../controller/panel/ProductController');
 const LocaleController = require('../controller/panel/LocaleController');
+const ProductJSONController = require('../controller/API/ProductJSONController');
 
 /* GET home page. */
 router.get('/', HomeController.HomeAction );
@@ -38,7 +39,7 @@ router.get('/panel/products/attributes/new' ,ProductController.AddNewAttributeAc
 router.post('/panel/products/attributes/new' ,ProductController.AddNewAttribute );
 
 //router.get('/panel/productJson/' ,ProductController.GetProductJSON );
-router.get('/panel/productJson/:offset' ,ProductController.GetProductJSON );
+router.get('/api/productJson/:offset' ,ProductJSONController.GetProductJSON );
 
 
 /* Localization */
