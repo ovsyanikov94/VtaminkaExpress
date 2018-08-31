@@ -8,8 +8,14 @@ block content
             label(for='promoCode') Промо-код
             input#promoCode.form-control(placeholder='Введите промо-код')
         .form-group
+            label(for='percentageInput') Процент скидки
+            input#percentageInput.form-control(placeholder='Введите процент скидки')
+        .form-group
+            label(for='deliveryInput') Доставка
+            input#deliveryInput.form-control(placeholder='Введите доставку')
+        .form-group
             #message.alert.alert-danger(style="display: none")
-            #addPromoCodeButton.btn.btn-primary Добавить промо-код
+            #addPromoCodeButton.btn.btn-primary Добавить новый промо-код
 
     if promoCodes.length === 0
         .alert.alert-info.col-12

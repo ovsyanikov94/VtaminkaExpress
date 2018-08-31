@@ -24,13 +24,16 @@ module.exports.GetPromoCodesListAction = async (req, res) => {
 };
 
 //добавление нового промо-кода
-module.exports.AddNewPromoCodeAction = async (req, res) => {
+module.exports.AddNewPromoCode = async (req, res) => {
 
     let response = new Response();
 
     try{
 
         let promoCode = req.body.promoCode;
+        let percentage = req.body.percentageInput;
+        let delivery = req.body.deliveryInput;
+
 
     }//try
     catch(ex){

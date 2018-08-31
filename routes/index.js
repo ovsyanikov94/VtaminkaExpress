@@ -45,6 +45,7 @@ router.post('/panel/locale/new-lang' , LocaleController.AddNewLanguage );
 
 /* PromoCodes */
 router.get('/panel/promo-codes/promo-codes-list', PromoCodes.GetPromoCodesListAction);
+router.post('/panel/promo-codes/new', PromoCodes.AddNewPromoCode);
 
 
 module.exports = router;
