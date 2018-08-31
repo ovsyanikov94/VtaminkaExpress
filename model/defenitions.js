@@ -139,15 +139,15 @@ const ProductImages = connection.define('pImages', {
         }
     }
 },{
-    createdAt: false,
-    updatedAt: false
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 });
 
-//Product.belongsToMany( Category , { through: ProductAndCategories , foreignKey: 'productID' , as: 'categories' });
-//Category.belongsToMany( Product ,  { through: ProductAndCategories , foreignKey: 'categoryID'});
+Product.belongsToMany( Category , { through: ProductAndCategories , foreignKey: 'productID' , as: 'categories' });
+Category.belongsToMany( Product ,  { through: ProductAndCategories , foreignKey: 'categoryID'});
 
-//Product.belongsToMany( ProductAttributes , { through: ProductAndAttributes , foreignKey: 'productID'});
-//ProductAttributes.belongsToMany( Product , { through: ProductAndAttributes , foreignKey:'attributeID'});
+Product.belongsToMany( ProductAttributes , { through: ProductAndAttributes , foreignKey: 'productID'});
+ProductAttributes.belongsToMany( Product , { through: ProductAndAttributes , foreignKey:'attributeID'});
 
 ProductImages.belongsTo(Product , { foreignKey: 'productID' });
 
@@ -216,8 +216,8 @@ const Translations = connection.define( 'translations' , {
     updatedAt: false
 });
 
-//WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
-//Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
+WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
+Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
 
 //WordsConstans.sync({force: true});
 //Translations.sync({force: true});

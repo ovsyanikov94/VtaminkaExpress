@@ -7,7 +7,7 @@ block content
             .form-group
                 label(for='categoriesSelect') Категории
                 select#categoriesSelect.form-control
-                    each leng in lengs
+                    each leng in langs
                         option(
                         value=leng.languageID
                         data-category-id=leng.languageID
@@ -30,7 +30,7 @@ block content
                 #message.alert.alert-danger(style="display: none")
                 #addLanguageButton.btn.btn-primary Добавить перевод
 
-        if constLeng.length === 0
+        if constants.length === 0
             .alert.alert-info.col-12
                 | значений не найдено
         else
@@ -38,25 +38,24 @@ block content
                 thead
                     tr(align="middle")
                         th(scope='col') #
-                        th(scope='col') описание
                         th(scope='col') название константы
-                        th(scope='col') перевод
+                        th(scope='col') описание
                         th(scope='col') изменить
                         th(scope='col') Удалить
 
                 tbody
-                    each constLeng in leng
+                    each constant in constants
                         tr(align="middle")
-                            td= leng.description
-                            td= leng.constantTitle
-                            td= leng.translation||"значение не задано"
+                            td= constant.constantID
+                            td= constant.constantTitle
+                            td= constant.description || "значение не задано"
                             td
-                                a.alert.alert-primary(href="/panel/products/" + leng.constantID style="display: inline-block;") Изменить
+                                a.alert.alert-primary(href="/panel/products/" + constant.constantID style="display: inline-block;") Изменить
                             td
                                 button.alert.alert-danger(
-                                style="cursor: pointer"
-                                data-product-title=leng.description
-                                data-product-id=leng.constantID
+                                    style="cursor: pointer"
+                                    data-product-title=constant.description
+                                    data-product-id=constant.constantID
                                 ) Удалить
 
                 #confirmRemoveProductModal.modal(tabindex='-1', role='dialog')

@@ -50,67 +50,29 @@ module.exports.AddNewConstLeng=async(req,res)=>{
 
     res.send(respone)
 
-}
+};
+
 module.exports.GetConstList = async (req,res)=>{
 
     let respone = new Response();
 
     try{
-        let leng = req.params.lng;
+        let lang = req.params.lng;
 
-        let idLeng = await Langs.findAll();
-        let resId = null;
-
-
-        for(let i = 0;i<idLeng.length;i++){
-
-
-            if(idLeng[i].languageTitle === leng){
-              resId=idLeng[i].languageID;
-
+        let allLangs = await Langs.findAll();
+        let currentLang = await Langs.findOne({
+            where: {
+                languageTitle: lang
             }
-        }
+        });
 
-        if(!resId){
-            let RuLeng = await Langs.create({
-                languageTitle:'RU'
-            });
+        if(!currentLang){
+            return res.render('error' , { error: { message: 'Язык не найден!' } });
+        }//if
 
-            resId=RuLeng.languageID;;
-        }
+        let constants = await WordsConstans.findAll();
 
-        if(resId){
-            let constLeng = await Translations.findAll({
-                where:{
-                    languageID:resId
-                }
-            });
-
-            if(constLeng){
-
-                let resultConstMas = []
-
-                for(let i=0;i<constLeng.length;i++){
-                    let ConstWord = await WordsConstans.faindAll({
-                        where:{
-                            constantID:constLeng.constantID
-                        }
-                    });
-                    let item = {
-                        constantID:ConstWord.constantID,
-                        description:ConstWord.description,
-                        constantTitle:ConstWord.constantTitle,
-                        translation:constLeng.translation
-                    }
-
-                    resultConstMas.push(item);
-                }
-                res.render('locale/constants/constants-list',{lengs:idLeng,constLeng:resultConstMas})
-            }
-            console.log(constLeng);
-
-        }
-
+        res.render('locale/constants/constants-list',{langs: allLangs , constants: constants})
 
 
     }
