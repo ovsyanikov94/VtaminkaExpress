@@ -10,6 +10,7 @@ require('../model/test')('test title');
 const CategoryController = require('../controller/panel/CategoryController');
 const ProductController = require('../controller/panel/ProductController');
 const LocaleController = require('../controller/panel/LocaleController');
+const PromoCodes = require('../controller/panel/PromoCodesController');
 
 /* GET home page. */
 router.get('/', HomeController.HomeAction );
@@ -41,5 +42,9 @@ router.post('/panel/products/attributes/new' ,ProductController.AddNewAttribute 
 
 router.get('/panel/locale/langs-list' , LocaleController.GetLanguagesListAction );
 router.post('/panel/locale/new-lang' , LocaleController.AddNewLanguage );
+
+/* PromoCodes */
+router.get('/panel/promo-codes/promo-codes-list', PromoCodes.GetPromoCodesListAction);
+
 
 module.exports = router;

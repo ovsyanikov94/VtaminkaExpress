@@ -11,7 +11,7 @@ block content
             #message.alert.alert-danger(style="display: none")
             #addLanguageButton.btn.btn-primary Добавить промо-код
 
-    if langs.length === 0
+    if promoCodes.length === 0
         .alert.alert-info.col-12
             | Промо-коды не найдены
     table.table
@@ -19,6 +19,7 @@ block content
             tr(align="middle")
                 th(scope='col') #
                 th(scope='col') Промо-код
+                th(scope='col') % скидки
                 th(scope='col') Доставка
                 th(scope='col') Изменить
                 th(scope='col') Удалить
@@ -26,6 +27,7 @@ block content
             each promoCode in promoCodes
                 tr(align="middle")
                     td= promoCode.promoCodeID
+                    td= promoCode.discount
                     td= promoCode.delivery
                     td
                         a.alert.alert-primary(href="#" + promoCode.promoCodeID style="display: inline-block;") Изменить
