@@ -5,6 +5,7 @@ const LocaleController = require("../../controller/panel/LocaleController");
 
 const router = express.Router();
 
+
 /* Localization */
 
 router.get('/locale/langs-list' , LocaleController.GetLanguagesListAction );
