@@ -96,7 +96,7 @@ module.exports.GetLanguagesListAction = async ( req , res )=>{
 
 module.exports.AddNewLanguageAction = async(req, res)=>{
 
-    res.render('locale/language-single');
+    res.render('locale/new-language');
 };
 
 module.exports.AddNewLanguage = async ( req , res )=>{
