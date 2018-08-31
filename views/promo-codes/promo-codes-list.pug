@@ -5,11 +5,11 @@ block content
 
     form.col-md-12
         .form-group
-            label(for='languageTitle') Промо-код
-            input#languageTitle.form-control(placeholder='Введите промо-код')
+            label(for='promoCode') Промо-код
+            input#promoCode.form-control(placeholder='Введите промо-код')
         .form-group
             #message.alert.alert-danger(style="display: none")
-            #addLanguageButton.btn.btn-primary Добавить промо-код
+            #addPromoCodeButton.btn.btn-primary Добавить промо-код
 
     if promoCodes.length === 0
         .alert.alert-info.col-12
@@ -23,7 +23,7 @@ block content
                 th(scope='col') Доставка
                 th(scope='col') Изменить
                 th(scope='col') Удалить
-        tbody#langsList
+        tbody#promoCodesList
             each promoCode in promoCodes
                 tr(align="middle")
                     td= promoCode.promoCodeID
@@ -38,7 +38,7 @@ block content
                         ) Удалить
 
 
-    #confirmRemoveLanguageModal.modal(tabindex='-1', role='dialog')
+    #confirmRemovePromoCodeModal.modal(tabindex='-1', role='dialog')
         .modal-dialog(role='document')
             .modal-content
                 .modal-header
@@ -48,7 +48,7 @@ block content
                 .modal-body
                     div
                         | Вы действительно хотите удалить промо-код
-                        b#langTitle
+                        b#promoCodeTitle
                 .modal-footer
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Нет
-                    button#confirmRemoveLanguageButton.btn.btn-primary(type='button' data-dismiss='modal') Удалить
+                    button#confirmRemovePromoCodeButton.btn.btn-primary(type='button' data-dismiss='modal') Удалить
