@@ -226,10 +226,12 @@ Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'langu
 //Product.sync({force: true});
 //
 //Category.sync({force: true});
-//ProductAndCategories.sync({force: true});
+// ProductAndCategories.sync({force: true});
  //ProductAttributes.sync({force: true});
- //ProductAndAttributes.sync({force: true});
- //ProductImages.sync({force: true});
+ // ProductAndAttributes.sync({force: true});
+ // ProductImages.sync({force: true});
+
+// Translations.sync({force: true});
 
 module.exports.Category = Category;
 module.exports.Product = Product;

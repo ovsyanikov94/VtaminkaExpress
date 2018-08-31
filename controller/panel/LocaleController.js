@@ -174,3 +174,113 @@ module.exports.AddNewLanguage = async ( req , res )=>{
 
 };
 
+
+module.exports.UpdateLang = async ( req , res )=>{
+
+    let response = new Response();
+
+    try{
+
+        let langID = +req.params.id;
+        let languageTitle = req.body.languageTitle.trim();
+
+        if( isNaN(langID) ){
+
+            response.code = 400;
+            response.message = 'ID языка задан не верно!';
+            response.data = langID;
+
+            return res.send(response);
+
+        }//if
+
+        let lang = await Langs.findById(langID);
+
+        if( lang ){
+
+            let updateResult = await Langs.update({
+                'languageTitle': languageTitle
+            });
+
+            response.code = 200;
+            response.message = 'Язык успешно обновлен';
+            response.data = updateResult;
+
+            res.send(response);
+
+        }//if
+        else{
+
+
+            response.code = 404;
+            response.message = 'Язык не найден!';
+            response.data = langID;
+
+            res.send(response);
+
+        }//else
+
+    }//try
+    catch(ex){
+
+        response.code = 500;
+        response.message = 'Внутренняя ошибка сервера';
+        response.data = ex;
+
+        res.send( response );
+
+    }//catch
+
+};
+
+module.exports.RemoveLang= async ( req , res )=>{
+
+    let response = new Response();
+
+    try{
+
+        let langID = +req.body.languageTitle;
+
+        if( isNaN(langID) ){
+
+            response.code = 400;
+            response.message = 'ID языка задан не верно!';
+            response.data = langID;
+
+            return res.send(response);
+
+        }//if
+
+        let lang = await Langs.findById(langID);
+
+        if(!lang){
+
+            response.code = 404;
+            response.message = 'Язык не найден!';
+            response.data = langID;
+
+            return res.send(response);
+
+
+        }//if
+
+        await lang.destroy();
+
+        response.code = 200;
+        response.message = 'Язык успешно обновлен';
+
+        res.send(response);
+
+    }//try
+    catch(ex){
+
+
+        response.code = 500;
+        response.message = 'Внутренняя ошибка сервера';
+        response.data = ex;
+
+        res.send( response );
+
+    }//catch
+
+};
