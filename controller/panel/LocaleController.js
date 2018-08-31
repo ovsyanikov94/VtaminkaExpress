@@ -36,17 +36,23 @@ module.exports.AddNewLanguage = async ( req , res )=>{
            let langImage = req.files.image;
            let path = `public/images/langs/${newLang.languageID}`;
 
+          if(!fs.existsSync('public/images')){
+              fs.mkdirSync('public/images');
+          }
+
+          if(!fs.existsSync('public/images/langs')){
+              fs.mkdirSync('public/images/langs');
+          }
+
            try{
 
                fs.mkdirSync(path);
 
            }//try
            catch(ex){
-               fs.mkdirSync('public/images');
-               fs.mkdirSync('public/images/langs/');
+
                console.log('not create' , ex);
 
-               
            }
 
            // fs.existsSync()
