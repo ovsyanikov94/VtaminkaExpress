@@ -7,6 +7,25 @@
     let messageBlock = document.querySelector('#message');
     let langsTable = document.querySelector('#langsList');
 
+    let addConst = document.querySelector('#addConctAndLeng');
+
+    if(addConst){
+        addConst.addEventListener('click',async()=>{
+
+            let leng =addConst.dataset.leng
+            let request = await fetch( `${window.ServerAddress}panel/locale/const-list` , {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    'language': leng,
+                })
+            });
+
+            console.log(request);
+        })
+    }
     if( addLanguageButton ){
 
         addLanguageButton.addEventListener('click' , async ()=>{

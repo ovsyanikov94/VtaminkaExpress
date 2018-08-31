@@ -10,6 +10,10 @@ const Connection = require('./routes/connection');
 
 const indexRouter = require('./routes/index');
 
+const productsRoutes = require('./routes/panel/products');
+const categoriesRoutes = require('./routes/panel/categories');
+const localeRoutes = require('./routes/panel/locale');
+
 const fileUpload = require('express-fileupload');
 
 const app = express();
@@ -26,7 +30,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-
+app.use('/panel' , productsRoutes);
+app.use('/panel' , categoriesRoutes);
+app.use('/panel' , localeRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -139,8 +139,8 @@ const ProductImages = connection.define('pImages', {
         }
     }
 },{
-    createdAt: false,
-    updatedAt: false
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 });
 
 Product.belongsToMany( Category , { through: ProductAndCategories , foreignKey: 'productID' , as: 'categories' });
@@ -186,6 +186,11 @@ const WordsConstans = connection.define( 'wordsConstants' , {
         unique: true,
         allowNull: false,
         type: Sequelize.DataTypes.STRING
+    },
+    description:{
+        unique: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING(200)
     }
 
 },{
@@ -211,22 +216,20 @@ const Translations = connection.define( 'translations' , {
     updatedAt: false
 });
 
-WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID' } );
-Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'langID' } );
+WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
+Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
 
 // Langs.sync({force: true});
 // WordsConstans.sync({force: true});
-//Translations.sync({force: true});
-
-
 //
 //
-// Product.sync({force: true});
-// Category.sync({force: true});
-// ProductAndCategories.sync({force: true});
-// ProductAttributes.sync({force: true});
-// ProductAndAttributes.sync({force: true});
-// ProductImages.sync({force: true});
+//Product.sync({force: true});
+//
+//Category.sync({force: true});
+//ProductAndCategories.sync({force: true});
+ //ProductAttributes.sync({force: true});
+ //ProductAndAttributes.sync({force: true});
+ //ProductImages.sync({force: true});
 
 module.exports.Category = Category;
 module.exports.Product = Product;

@@ -2,10 +2,8 @@ extends ../layout
 
 block content
     script( defer src="/javascripts/locale.js" )
-
-
+    
     a.form-group.btn.btn-primary.col-12(href="/panel/lang/new-lang") Добавить язык
-
     if langs.length === 0
         .alert.alert-info.col-12
             | Языки не найдены
