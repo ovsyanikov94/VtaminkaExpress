@@ -235,6 +235,7 @@ module.exports.Category = Category;
 module.exports.Product = Product;
 module.exports.ProductAndCategories = ProductAndCategories;
 
+
 module.exports.ProductAttributes = ProductAttributes;
 module.exports.ProductAndAttributes = ProductAndAttributes;
 module.exports.ProductImages = ProductImages;
