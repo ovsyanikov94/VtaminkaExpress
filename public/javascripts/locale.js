@@ -6,6 +6,7 @@
     let addLanguageButton = document.querySelector('#addLanguageButton');
     let messageBlock = document.querySelector('#message');
     let langsTable = document.querySelector('#langsList');
+    let updateLang = document.querySelector('#updateLang');
 
     let addConst = document.querySelector('#addConctAndLeng');
 
@@ -73,6 +74,54 @@
                 messageBlock.style.display = 'block';
 
             }//else
+
+        });
+
+    }//if
+
+    if(updateLang){
+
+        updateLang.addEventListener('click' , async ()=> {
+
+            let langID = +document.querySelector('form').dataset.langId;
+
+            let langTitle = document.querySelector('#languageTitle').value;
+
+            let langImage = document.querySelector('#languageImage');
+
+            let data = new FormData();
+
+            if( langImage.files.length !== 0 ){
+                data.append('image', langImage.files[0]);
+            }//if
+
+            data.append('langTitle', langTitle);
+
+
+            try{
+
+                let request = await fetch(`${window.ServerAddress}panel/locale/lang/${langID}` , {
+                    method: 'PUT',
+                    body: data
+                });
+
+                let response = await request.json();
+
+                if(response.code===200){
+                    let imageLang = document.querySelector('#imageLang');
+                    imageLang.src= `/images/langs/${langID}/${langImage.files[0].name}`;
+
+                    let label = document.querySelector('#lableImagePath');
+                    label.textContent= `/images/langs/${langID}/${langImage.files[0].name}`;
+                }
+                console.log(response);
+
+            }//try
+            catch(ex){
+
+                console.log('ex' , ex);
+
+            }//catch
 
         });
 
