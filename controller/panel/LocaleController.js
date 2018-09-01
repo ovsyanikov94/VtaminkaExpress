@@ -6,6 +6,46 @@ const Translations =require('../../model/defenitions').Translations;
 const Response = require('../../model/Response');
 const fs = require('fs');
 
+module.exports.RemoveConst = async(req,res)=>{
+    let respone = new Response();
+    let idConst = req.body.constID
+
+    try{
+        if(!idConst){
+
+            respone.code=404;
+            respone.message="значение нн найдено";
+            respone.data = idConst
+            return res.send(respone)
+
+        }
+
+        Translations.destroy({
+            where:{
+                constantID:idConst
+            }
+        });
+
+      WordsConstans.destroy({
+            where:{
+
+                constantID:idConst
+            }
+        });
+
+        respone.code=200;
+        respone.message = "константа удалена";
+        respone.data = idConst
+        res.send(respone)
+    }
+    catch (ex){
+        respone.code=500;
+        respone.message="ощибка сервера";
+        return res.send(respone)
+    }
+
+}
+
 module.exports.AddNewConstLeng=async(req,res)=>{
 
 

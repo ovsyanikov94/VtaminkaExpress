@@ -15,7 +15,7 @@ block content
             .col-4
 
                 #message.alert.alert-danger(style="display: none")
-                #addLanguageButton.btn.btn-primary Добавить перевод
+                #addLanguageButton.btn.btn-primary Добавить константу
 
         if constants.length === 0
             .alert.alert-info.col-12
@@ -39,10 +39,10 @@ block content
                             td
                                 a.alert.alert-primary(href="/panel/products/" + constant.constantID style="display: inline-block;") Изменить
                             td
-                                button.alert.alert-danger(
+                                .alert.alert-danger(
                                     style="cursor: pointer"
-                                    data-product-title=constant.description
-                                    data-product-id=constant.constantID
+                                    data-const-title=constant.description
+                                    data-const-id=constant.constantID
                                 ) Удалить
 
                 #confirmRemoveProductModal.modal(tabindex='-1', role='dialog')
