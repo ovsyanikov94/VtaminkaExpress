@@ -5,14 +5,23 @@ block content
 
     form.col-md-12
         .form-group
-            label(for='promoCode') Промо-код
-            input#promoCode.form-control(placeholder='Введите промо-код')
+            label(for='promoCodeInput') Промо-код
+            input#promoCodeInput.form-control(placeholder='Введите промо-код')
         .form-group
             label(for='percentageInput') Процент скидки
             input#percentageInput.form-control(placeholder='Введите процент скидки')
         .form-group
             label(for='deliveryInput') Доставка
             input#deliveryInput.form-control(placeholder='Введите доставку')
+        .form-group
+            label(for='promoCountInput') Количество
+            input#promoCountInput.form-control(placeholder='Введите кол-во промо-кодов')
+        .form-group
+            label(for='startDateInput') Начальная дата активности промо-кода
+            input#startDateInput.form-control(placeholder='Введите дату начала промо-кода')
+        .form-group
+            label(for='expireDateInput') Конечная дата активности промо-кода
+            input#expireDateInput.form-control(placeholder='Введите дату окончания промо-кода')
         .form-group
             #message.alert.alert-danger(style="display: none")
             #addPromoCodeButton.btn.btn-primary Добавить новый промо-код
@@ -27,7 +36,9 @@ block content
                 th(scope='col') Промо-код
                 th(scope='col') % скидки
                 th(scope='col') Доставка
-                th(scope='col') Изменить
+                th(scope='col') Кол-во кодов
+                th(scope='col') Старт
+                th(scope='col') Окончание
                 th(scope='col') Удалить
         tbody#promoCodesList
             each promoCode in promoCodes

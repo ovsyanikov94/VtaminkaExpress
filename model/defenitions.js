@@ -163,10 +163,22 @@ const PromoCodes = connection.define('promoCodes',{
       allowNull: false,
       type: Sequelize.DataTypes.INTEGER
     },
+    promoCount:{
+      allowNull: false,
+      type: Sequelize.DataTypes.INTEGER
+    },
+    startAtDate:{
+        allowNull: true,
+        type: Sequelize.DataTypes.DATEONLY
+    },
+    expireAtDate:{
+        allowNull: true,
+        type: Sequelize.DataTypes.DATEONLY
+    }
 
 },{
-    createdAt: false,
-    updatedAt: false
+    createdAt: true,
+    updatedAt: true
 });
 
 
