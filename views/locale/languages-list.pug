@@ -1,0 +1,50 @@
+extends ../layout
+
+block content
+    script( defer src="/javascripts/locale.js" )
+    
+    a.form-group.btn.btn-primary.col-12(href="/panel/locale/new-lang") Добавить язык
+    if langs.length === 0
+        .alert.alert-info.col-12
+            | Языки не найдены
+    table.table
+        thead
+            tr(align="middle")
+                th(scope='col') #
+                th(scope='col') Название
+                th(scope='col') Изображение
+                th(scope='col') Изменить
+                th(scope='col') Удалить
+        tbody#langsList
+            each lang in langs
+                tr(align="middle")
+                    td= lang.languageID
+                    td= lang.languageTitle
+                    td
+                        .card(style="width: 5em")
+                            img.card-img-top(src='/' + lang.languageImage, alt='Card image cap')
+
+                    td
+                        a.alert.alert-primary(href="/panel/locale/lang/" + lang.languageID style="display: inline-block;") Изменить
+                    td
+                        button.alert.alert-danger(
+                            style="cursor: pointer"
+                            data-lang-title=lang.languageTitle
+                            data-lang-id=lang.languageID
+                        ) Удалить
+
+
+    #confirmRemoveLanguageModal.modal(tabindex='-1', role='dialog')
+                .modal-dialog(role='document')
+                    .modal-content
+                        .modal-header
+                            h5.modal-title Удаление языка
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                span(aria-hidden='true') ×
+                        .modal-body
+                            div
+                                | Вы действительно хотите удалить язык
+                                b#langTitle
+                        .modal-footer
+                            button.btn.btn-secondary(type='button', data-dismiss='modal') Нет
+                            button#confirmRemoveLanguageButton.btn.btn-primary(type='button' data-dismiss='modal') Удалить

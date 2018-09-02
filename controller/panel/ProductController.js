@@ -202,6 +202,161 @@ module.exports.AddNewProduct = async ( req , res )=>{
 
 };
 
+module.exports.UpdateProduct = async ( req , res )=>{
+
+    let response = new Response();
+
+    try{
+
+        let productID = req.params.id;
+
+        let product = await Product.findById(productID);
+
+        if(!product ){
+
+            response.code = 404;
+            response.message = 'Товар не найден!';
+            response.data = productID;
+            res.status(response.code);
+
+            return res.send(response);
+
+        }//if
+
+        let productTitle = req.body.productTitle;
+        let productDescription = req.body.productDescription;
+        let productPrice = req.body.productPrice;
+        let categories = JSON.parse(req.body.categories);
+        let attributes = JSON.parse(req.body.attributes);
+
+        await ProductAndAttributes.destroy({
+            where: {
+                productID: productID
+            }
+        });
+
+        await ProductAndCategories.destroy({
+            where: {
+                productID: productID
+            }
+        });
+
+        for ( let i = 0 ; i < categories.length; i++ ){
+
+            await ProductAndCategories.create({
+
+               productID: productID,
+               categoryID: categories[i]
+
+            });
+
+        }//for i
+
+        for ( let i = 0 ; i < attributes.length; i++ ){
+
+            let attribute = attributes[i];
+
+            await ProductAndAttributes.create({
+
+                productID: productID,
+                attributeID: attribute.attributeID,
+                attributeValue: attribute.attributeValue
+
+            });
+
+        }//for i
+
+        // await Product.update({
+        //     productTitle: productTitle,
+        //     productPrice: productPrice,
+        //     productDescription: productDescription
+        // },{
+        //     where:{
+        //         productID: productID
+        //     }
+        // });
+
+        await product.update({
+            productTitle: productTitle,
+            productPrice: productPrice,
+            productDescription: productDescription
+        });
+
+        //Начало работы с загруженным файлом
+        if( req.files ){
+
+            let productImage = req.files.image;
+            let path = `public/images/${productID}`;
+
+            let pImage = await ProductImages.findOne({
+                where: {
+                    productID: productID
+                }
+            });
+
+            if(!pImage){
+
+                try{
+                    fs.mkdirSync(path);
+                }//try
+                catch(ex){
+                    console.log(ex);
+                }//catch
+
+
+            }//if
+            else{
+                try{
+                    fs.unlinkSync(`public/${pImage.imagePath}`);
+                }
+                catch(ex){
+                    console.log(ex);
+                }
+
+
+            }//else
+
+
+            // fs.existsSync()
+            productImage.mv( `${path}/${productImage.name}` ,async function(err) {
+
+                if (err){
+                    console.log('FILE UPLOAD ERROR:' , err);
+                    return;
+                }//if
+
+                await ProductImages.destroy({
+                    where:{
+                        'productID': productID,
+                    }
+                });
+
+                await ProductImages.create({
+                    'productID': productID,
+                    'imagePath': `images/${productID}/${productImage.name}`
+                });
+
+            });
+
+        }//if
+
+        response.code = 200;
+        response.message = 'Товар успешно обновлен!';
+
+    }//try
+    catch(ex){
+
+        response.code = 500;
+        response.message = 'Внутренняя ошибка сервера!';
+        console.log(ex);
+
+    }//catch
+
+    res.status(response.code);
+    res.send(response);
+
+};
+
 module.exports.GetProductAction = async ( req , res )=>{
 
     try{
@@ -219,6 +374,8 @@ module.exports.GetProductAction = async ( req , res )=>{
             ]
         });
 
+        //return res.send(product);
+
         if( !product ){
             throw new Error('Product not found!');
         }//if
@@ -232,7 +389,7 @@ module.exports.GetProductAction = async ( req , res )=>{
         let attributes = await ProductAttributes.findAll();
         let categories = await Category.findAll();
 
-        res.render('products/single-product' , { product: product , attributes: attributes, categories: categories });
+        res.render('products/single-product' , {product: product , attributes: attributes, categories: categories });
 
     }//try
     catch(ex){
