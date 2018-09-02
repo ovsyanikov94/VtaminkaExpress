@@ -13,4 +13,6 @@ router.get('/locale/const-list', LocaleController.GetConstList);
 router.post('/locale/new',LocaleController.AddNewConstLeng);
 router.get('/locale/new-lang' , LocaleController.AddNewLanguageAction );
 router.delete('/locale/remove' , LocaleController.RemoveConst );
+router.put('/locale/update' , LocaleController.UpdateConst );
+
 module.exports = router;

@@ -1,9 +1,82 @@
 "use strict";
+let addEventToSaveChange = async function (elem) {
 
+    if(elem){
+        let buttonSaveChange = elem.querySelector('.save-change');
+        console.log('elem11111',elem);
+
+            let parentDiv = buttonSaveChange.parentElement.parentElement;
+                buttonSaveChange.addEventListener('click',async()=>{
+
+                    console.log('element',elem);
+                let idChange = elem.querySelector('#constId').textContent;
+                console.log('id',idChange);
+                let descriptionChange =elem.querySelector('#description').text;
+                console.log('description',descriptionChange);
+                let titleChange = elem.querySelector('#title');
+                console.log('title',titleChange);
+
+                let data = new FormData();
+                data.append('id', +idChange);
+                data.append('description', descriptionChange);
+                data.append('title', titleChange);
+
+                try{
+
+                    let request = await fetch(`${window.ServerAddress}panel/locale/update` , {
+                        method: 'PUT',
+                        body: data
+                    });
+
+                    let response = await request.json();
+
+                    console.log(response);
+
+                }//try
+                catch(ex){
+                    console.log('ex' , ex);
+                }//catch
+            })
+
+
+    }
+
+}//сохранение изменения в БД
+let addEventToChange = function () {
+    let buttonChange = document.querySelectorAll('.alert-primary');
+        [].forEach.call(buttonChange,(btn)=>{
+            let parentElement = btn.parentElement.parentElement;
+            btn.addEventListener('click',()=>{
+                console.log('elem5555555',parentElement);
+                let arreyChaild = parentElement.querySelectorAll('.td')
+                console.log(arreyChaild[1].textContent);
+                parentElement.innerHTML ='';
+                parentElement.innerHTML +=`
+                <tr align="middle">
+                    <td id="constId">${arreyChaild[0].textContent}</td>
+                    <td ><input id="description" class="form-control" placeholder='${arreyChaild[1].textContent}'></td>
+                    <td ><input id="title" class="form-control" placeholder='${arreyChaild[2].textContent}'></td>
+                    <td><div style="cursor: pointer" class="btn btn-primary save-change"  data-const-id=${+arreyChaild[0].textContent} >сохранить</div></td>
+                    <td><div style="cursor: pointer" class="btn btn-danger Annulment" data-const-description=${arreyChaild[1].textContent}  data-const-title=${arreyChaild[2].textContent} data-const-id=${arreyChaild[0].textContent}  >отменить</div></td>
+                </tr>
+                `;
+
+                addEventToSaveChange(parentElement);
+                addSaveChangeAnnulment(parentElement);
+            })
+
+    })
+console.log('nenennnnnnnn');
+
+  //
+
+
+}//конопка изменить константу
 let addEventInButton = function () {
 
+
     let button = document.querySelectorAll('#tableConst .alert-danger');
-    console.log(button);
+
     [].forEach.call(button,(but)=>{
         let idInButton =but.dataset.constId;
             but.addEventListener('click',async()=>{
@@ -33,11 +106,16 @@ let addEventInButton = function () {
         });
     });
 
+    }//кнопка удалить константу
+    let addSaveChangeAnnulment = function () {
+
+
+
     }
 
 ;(function () {
 
-    let addLengButton = document.querySelector('#addLanguageButton');
+    let addLengButton = document.querySelector('#addLanguageButton');//добавить обработку на кнопку добавить константу
     let tableConst = document.querySelector('#tableConst');
 
     let constant =[];
@@ -61,15 +139,15 @@ let addEventInButton = function () {
                 constant.forEach((con)=>{
                     tableConst.innerHTML  += `
                 <tr align="middle">
-                    <td>${con.constantID}</td>
-                    <td>${con.constantTitle}</td>
-                    <td>${con.description}</td>
+                    <td class="td">${con.constantID}</td>
+                    <td class="td">${con.constantTitle}</td>
+                    <td class="td">${con.description}</td>
                     <td><a style="display: inline-block;"class="alert alert-primary"href="/panel/products/" + con.constantID  data-attribute-id=${con.constantID} >Nзменить</a></td>
-                    <td><div style="display: inline-block cursor: pointer"class="alert alert-danger"   data-const-title=${con.description} data-const-id=${con.constantID}  >Удалить</div></td>
+                    <td><div style="cursor: pointer" class="alert alert-danger"   data-const-title=${con.description} data-const-id=${con.constantID}  >Удалить</div></td>
                 </tr>
                 `;
                 })
-                addEventInButton();
+
 
             }//try
             catch(ex){
@@ -77,9 +155,12 @@ let addEventInButton = function () {
                 console.log('ex' , ex);
 
             }//catch
-
+            addEventInButton();
+            addEventToChange();
     })
     }
     console.log('nen');
     addEventInButton();
+    addEventToChange();
+    addEventToSaveChange();
 })();

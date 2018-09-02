@@ -33,11 +33,11 @@ block content
                 tbody#tableConst
                     each constant in constants
                         tr(align="middle")
-                            td= constant.constantID
-                            td= constant.constantTitle
-                            td= constant.description || "значение не задано"
+                            td.td= constant.constantID
+                            td.td= constant.constantTitle
+                            td.td= constant.description || "значение не задано"
                             td
-                                a.alert.alert-primary(href="/panel/products/" + constant.constantID style="display: inline-block;") Изменить
+                                .alert.alert-primary(style="cursor: pointer") Изменить
                             td
                                 .alert.alert-danger(
                                     style="cursor: pointer"

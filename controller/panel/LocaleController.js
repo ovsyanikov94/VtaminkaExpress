@@ -6,6 +6,44 @@ const Translations =require('../../model/defenitions').Translations;
 const Response = require('../../model/Response');
 const fs = require('fs');
 
+module.exports.UpdateConst = async(req,res)=>{
+
+    console.log(req.body);
+    let id = +req.body.id;
+    let title = req.body.title;
+    let description = req.body.description
+    let respone = new Response();
+    try{
+
+        let constUpdate = await WordsConstans.findById(id);
+        console.log(constUpdate);
+        if(!constUpdate){
+            respone.code=404;
+            respone.message="значение нн найдено";
+            respone.data = idConst
+            return res.send(respone);
+        }
+
+
+        let updateResponse =await constUpdate.update({
+            constantTitle:title,
+            description:description
+        });
+        console.log(updateResponse);
+        respone.code=200;
+        respone.message = "константа изменена";
+        respone.data = updateResponse
+        res.send(respone)
+
+    }catch (ex){
+        respone.code=500;
+        respone.message="ощибка сервера";
+        return res.send(respone)
+    }
+
+
+}
+
 module.exports.RemoveConst = async(req,res)=>{
     let respone = new Response();
     let idConst = req.body.constID
