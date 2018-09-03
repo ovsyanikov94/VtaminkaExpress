@@ -285,25 +285,37 @@ module.exports.UpdateProduct = async ( req , res )=>{
         //Начало работы с загруженным файлом
         if( req.files ){
 
+            let productImage = req.files.image;
+            let path = `public/images/${productID}`;
+
             let pImage = await ProductImages.findOne({
                 where: {
                     productID: productID
                 }
             });
 
-            let productImage = req.files.image;
-            let path = `public/images/${productID}`;
+            if(!pImage){
 
-            try{
+                try{
+                    fs.mkdirSync(path);
+                }//try
+                catch(ex){
+                    console.log(ex);
+                }//catch
 
-                fs.unlinkSync(`public/${pImage.imagePath}`);
 
-            }//try
-            catch(ex){
+            }//if
+            else{
+                try{
+                    fs.unlinkSync(`public/${pImage.imagePath}`);
+                }
+                catch(ex){
+                    console.log(ex);
+                }
 
-                console.log('REMOVE FILE ERROR: ' , ex);
 
-            }
+            }//else
+
 
             // fs.existsSync()
             productImage.mv( `${path}/${productImage.name}` ,async function(err) {

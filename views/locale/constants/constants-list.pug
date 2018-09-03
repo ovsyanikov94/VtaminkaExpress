@@ -1,0 +1,74 @@
+extends ../../layout
+
+block content
+    script( defer src="/javascripts/treatmentEventToLocale.js" )
+    form
+        .row
+            .form-group
+                label(for='categoriesSelect') Категории
+                select#categoriesSelect.form-control
+                    each leng in langs
+                        option(
+                        value=leng.languageID
+                        data-category-id=leng.languageID
+
+                        ) #{leng.languageTitle}
+
+
+        .row
+            .col-6
+                strong.label.text-uppercase добавить новое значение
+
+        .row
+            .col-3
+                input#constDescription.form-control(type='text', placeholder='описание')
+            .col-3
+                input#constTitle.form-control(type='text', placeholder='имя константы')
+            .col-3
+                input#constTranslation.form-control(type='text', placeholder='перевод')
+            .col-3
+                #message.alert.alert-danger(style="display: none")
+                #addLanguageButton.btn.btn-primary Добавить перевод
+
+        if constants.length === 0
+            .alert.alert-info.col-12
+                | значений не найдено
+        else
+            table.table
+                thead
+                    tr(align="middle")
+                        th(scope='col') #
+                        th(scope='col') название константы
+                        th(scope='col') описание
+                        th(scope='col') изменить
+                        th(scope='col') Удалить
+
+                tbody
+                    each constant in constants
+                        tr(align="middle")
+                            td= constant.constantID
+                            td= constant.constantTitle
+                            td= constant.description || "значение не задано"
+                            td
+                                a.alert.alert-primary(href="/panel/products/" + constant.constantID style="display: inline-block;") Изменить
+                            td
+                                button.alert.alert-danger(
+                                    style="cursor: pointer"
+                                    data-product-title=constant.description
+                                    data-product-id=constant.constantID
+                                ) Удалить
+
+                #confirmRemoveProductModal.modal(tabindex='-1', role='dialog')
+                    .modal-dialog(role='document')
+                        .modal-content
+                            .modal-header
+                                h5.modal-title Удаление товара
+                                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                    span(aria-hidden='true') ×
+                            .modal-body
+                                div
+                                    | Вы действительно хотите удалить товар
+                                    b#productTitle
+                            .modal-footer
+                                button.btn.btn-secondary(type='button', data-dismiss='modal') Нет
+                                button#confirmRemoveProductButton.btn.btn-primary(type='button' data-dismiss='modal') Удалить
