@@ -9,8 +9,6 @@ const HomeController = require('../controller/panel/HomeController');
 router.get('/', HomeController.HomeAction );
 router.get('/panel', HomeController.HomeAction );
 
-/* PromoCodes */
-router.get('/panel/promo-codes/promo-codes-list', PromoCodes.GetPromoCodesListAction);
-router.post('/panel/promo-codes/new', PromoCodes.AddNewPromoCode);
+
 
 module.exports = router;

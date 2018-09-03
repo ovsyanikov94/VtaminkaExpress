@@ -4,7 +4,7 @@
 
         let addPromoCodeButton = document.querySelector('#addPromoCodeButton');
         let messageBlock = document.querySelector('#message');
-        let promoCodesTable = document.querySelector('#codesList');
+        let promoCodesTable = document.querySelector('#promoCodesList');
 
         if(addPromoCodeButton){
 
@@ -36,6 +36,8 @@
 
                 let responceJSON = await request.json();
 
+                messageBlock.textContent = responceJSON.message;
+
                 if(responceJSON.code === 200){
 
                     let promoCode = responceJSON.data;
@@ -50,13 +52,13 @@
                             <td>${promoCode.startDateValue}</td>
                             <td>${promoCode.expireDateValue}</td>
                             <td >
-                            <a style="display: inline-block;" class="alert alert-primary" href="/panel/locale/lang/${lang.languageID}" >Изменить</a>
+                            <a style="display: inline-block;" class="alert alert-primary" href="/panel/promo-codes/single/${promoCode.promoCodeID}" >Изменить</a>
                             </td>
                             <td>
                                 <button 
                                     class="alert alert-danger" 
-                                    data-lang-title=${lang.languageTitle}
-                                    data-lang-id=${lang.languageID} >Удалить</button>    
+                                    data-promo-id=${promoCode.promoCodeID}
+                                    >Удалить</button>    
                             </td>
                         </tr>
                     `;
@@ -89,4 +91,4 @@
 
 
 
-});
+})();

@@ -378,7 +378,7 @@ module.exports.RemoveLang= async ( req , res )=>{
         response.code = 200;
         response.message = 'Язык успешно обновлен';
 
-        res.send(response);
+
 
     }//try
     catch(ex){
@@ -388,8 +388,48 @@ module.exports.RemoveLang= async ( req , res )=>{
         response.message = 'Внутренняя ошибка сервера';
         response.data = ex;
 
-        res.send( response );
+    }//catch
+
+    res.status( response.code );
+    res.send(response);
+
+};
+
+module.exports.LanguageExist = async ( req , res )=>{
+
+    let response = new Response();
+
+    try{
+
+        let languageTitle = req.query.languageTitle;
+
+        let lang = await Langs.findOne({
+           where:{
+               languageTitle: languageTitle
+           }
+        });
+
+        if( !lang ){
+
+            response.code = 200;
+            response.data = true;
+
+        }//if
+        else{
+            response.code = 400;
+            response.data = false;
+        }//else
+
+    }//try
+    catch(ex){
+
+        response.code = 500;
+        response.message = 'Внутренняя ошибка сервера';
+        response.data = ex;
 
     }//catch
+
+    res.status( response.code );
+    res.send( response );
 
 };

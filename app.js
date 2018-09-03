@@ -14,6 +14,9 @@ const indexRouter = require('./routes/index');
 const productsRoutes = require('./routes/panel/products');
 const categoriesRoutes = require('./routes/panel/categories');
 const localeRoutes = require('./routes/panel/locale');
+const promoRoutes = require('./routes/panel/promo-codes');
+
+
 const productsApiRoutes = require('./routes/api/products');
 
 const fileUpload = require('express-fileupload');
@@ -36,6 +39,7 @@ app.use('/', indexRouter);
 app.use('/panel' , productsRoutes);
 app.use('/panel' , categoriesRoutes);
 app.use('/panel' , localeRoutes);
+app.use('/panel' , promoRoutes);
 
 //API ROUTES
 app.use('/api' , productsApiRoutes);

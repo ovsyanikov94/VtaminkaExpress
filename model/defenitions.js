@@ -153,6 +153,7 @@ const PromoCodes = connection.define('promoCodes',{
     },
     discountCode:{
         allowNull: false,
+        unique: true,
         type: Sequelize.DataTypes.STRING
     },
     discount:{

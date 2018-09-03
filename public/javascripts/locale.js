@@ -126,4 +126,37 @@
         });
 
     }//if
+
+    //Проверка языка на сущ.
+
+    let languageTitleInput = document.querySelector('#languageTitle');
+
+    if(languageTitleInput) {
+
+        languageTitleInput.addEventListener('blur' , async () => {
+
+
+            let request = await fetch( `${window.ServerAddress}panel/locale/lang/exist?languageTitle=${languageTitleInput.value}` , {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+
+            let responseJSON = await request.json();
+
+            if( responseJSON.code !== 200 ){
+
+                document.querySelector('.invalid-feedback').style.display = 'block';
+
+            }//if
+            else{
+                document.querySelector('.invalid-feedback').style.display = 'none';
+            }//else
+
+
+        });
+
+    }//if
+
 })();
