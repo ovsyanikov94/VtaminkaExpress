@@ -259,17 +259,17 @@ const Translations = connection.define( 'translations' , {
 WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
 Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
 
-//PromoCodes.sync({force: true});
-
+// PromoCodes.sync({force: true});
+//
 // WordsConstans.sync({force: true});
 // Translations.sync({force: true});
-//Langs.sync({force: true});
-
-//Product.sync({force: true});
-//Category.sync({force: true});
+// Langs.sync({force: true});
+//
+// Product.sync({force: true});
+// Category.sync({force: true});
 // ProductAndCategories.sync({force: true});
 // ProductAttributes.sync({force: true});
-//ProductAndAttributes.sync({force: true});
+// ProductAndAttributes.sync({force: true});
 // ProductImages.sync({force: true});
 
 module.exports.Category = Category;
