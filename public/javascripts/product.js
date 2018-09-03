@@ -40,7 +40,6 @@ function AddRemoveAttributeListeners( attributes ){
     let addAttributeValue = document.querySelector('#addAttributeValue');
     let attributeValueInput = document.querySelector('#currentAttributeValue');
     let addProductButton = document.querySelector('#addProductButton');
-    //let addProductJSONButton = document.querySelector('#addProductJSONButton');
     //let pr = document.querySelector('#pr');
 
     let attributes = [];

@@ -10,11 +10,13 @@ const ProductAndAttributes = require('../../model/defenitions').ProductAndAttrib
 const ProductAndCategories = require('../../model/defenitions').ProductAndCategories;
 const ProductImages = require('../../model/defenitions').ProductImages;
 const fs = require('fs');
-
+const xmlHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 const RegularExpressions = require('../../model/RegularExpressions');
 
 module.exports.GetProductJSON = async ( req , res )=>{
+
+
 
     let limit = 2;
     let offset = +req.params.offset;
@@ -78,9 +80,14 @@ module.exports.GetProductJSON = async ( req , res )=>{
 
         var str = JSON.stringify(products);
 
+        var url = "http://localhost:3000/panel";
 
-        res.render('products/productJSON' , {products: str, offset:offset });
 
+
+        var xhr = new xmlHttpRequest();
+        xhr.open('GET', url, true)
+
+        xhr.send(str);
     }//try
     catch(ex){
         res.render('error' , { error: ex });
