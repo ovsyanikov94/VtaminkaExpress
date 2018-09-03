@@ -1,0 +1,8 @@
+extends ../layout
+
+block content
+    script( defer src="/javascripts/product.js" )
+
+    h5.modal-title=  products
+    a.form-group.btn.btn-primary.col-12(href="/api/productJson/" + offset) Еще
+

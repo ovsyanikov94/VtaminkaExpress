@@ -4,31 +4,18 @@ block content
     script( defer src="/javascripts/treatmentEventToLocale.js" )
     form
         .row
-            .form-group
-                label(for='categoriesSelect') Категории
-                select#categoriesSelect.form-control
-                    each leng in langs
-                        option(
-                        value=leng.languageID
-                        data-category-id=leng.languageID
-
-                        ) #{leng.languageTitle}
-
-
-        .row
             .col-6
                 strong.label.text-uppercase добавить новое значение
 
         .row
-            .col-3
+            .col-4
                 input#constDescription.form-control(type='text', placeholder='описание')
-            .col-3
+            .col-4
                 input#constTitle.form-control(type='text', placeholder='имя константы')
-            .col-3
-                input#constTranslation.form-control(type='text', placeholder='перевод')
-            .col-3
+            .col-4
+
                 #message.alert.alert-danger(style="display: none")
-                #addLanguageButton.btn.btn-primary Добавить перевод
+                #addLanguageButton.btn.btn-primary Добавить константу
 
         if constants.length === 0
             .alert.alert-info.col-12
@@ -43,19 +30,19 @@ block content
                         th(scope='col') изменить
                         th(scope='col') Удалить
 
-                tbody
+                tbody#tableConst
                     each constant in constants
                         tr(align="middle")
-                            td= constant.constantID
-                            td= constant.constantTitle
-                            td= constant.description || "значение не задано"
+                            td.td= constant.constantID
+                            td.td= constant.constantTitle
+                            td.td= constant.description || "значение не задано"
                             td
-                                a.alert.alert-primary(href="/panel/products/" + constant.constantID style="display: inline-block;") Изменить
+                                .alert.alert-primary(style="cursor: pointer") Изменить
                             td
-                                button.alert.alert-danger(
+                                .alert.alert-danger(
                                     style="cursor: pointer"
-                                    data-product-title=constant.description
-                                    data-product-id=constant.constantID
+                                    data-const-title=constant.description
+                                    data-const-id=constant.constantID
                                 ) Удалить
 
                 #confirmRemoveProductModal.modal(tabindex='-1', role='dialog')
