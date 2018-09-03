@@ -10,6 +10,7 @@
 
     if(removweButton){
 
+
     }
     if(addNewsButton){
         addNewsButton.addEventListener('click',async()=>{
