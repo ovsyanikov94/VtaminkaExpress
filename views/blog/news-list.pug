@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+    script( defer src="/javascripts/news.js" )
+    a.form-group.btn.btn-primary.col-12(href="/panel/news/add-new") Добавить новость
+
+    if news.length === 0
+        .alert.alert-info.col-12
+            | новостей нет
+    else
+        each OneNew in news
+            .form.media.col-12
+                .form-group.media-object.media-left(src=image.imagePath, style='width:100px')
+                .form-group.media
+                    .form.media
+                        label=OneNew.newsTitle
+                    .form.media
+                        .form=OneNew.newsText
+
+            #updateButtona.btn.btn-primary(href="/panel/news/" + OneNew.newsID style="display: inline-block;") Изменить
+            #revomeButton.btn.btn-danger( style="cursor: pointer" data-news-id = OneNew.newsID) Удалить
