@@ -5,8 +5,7 @@
 
     let addNewsButton = document.querySelector('#addNewsButton')
 
-    let updateButton = document.querySelector('#updateButtona');
-    let removweButton = document.querySelector('#updateButtona');
+    let removweButton = document.querySelector('#revomeButton');
 
     if(removweButton){
 
