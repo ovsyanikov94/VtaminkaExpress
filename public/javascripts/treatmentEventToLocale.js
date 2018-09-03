@@ -6,14 +6,17 @@ let addEventToSaveChange = async function (elem) {
         console.log('elem11111',elem);
 
             let parentDiv = buttonSaveChange.parentElement.parentElement;
-                buttonSaveChange.addEventListener('click',async()=>{
+            buttonSaveChange.addEventListener('click',async()=>{
 
-                    console.log('element',elem);
-                let idChange = elem.querySelector('#constId').textContent;
+            console.log('element',elem);
+            let idChange = +elem.querySelector('#constId').innerText;
+
                 console.log('id',idChange);
-                let descriptionChange =elem.querySelector('#description').text;
+
+                let descriptionChange =elem.querySelector('#description').value;
                 console.log('description',descriptionChange);
-                let titleChange = elem.querySelector('#title');
+
+                let titleChange = elem.querySelector('#title').value;
                 console.log('title',titleChange);
 
                 let data = new FormData();
@@ -42,20 +45,23 @@ let addEventToSaveChange = async function (elem) {
     }
 
 }//сохранение изменения в БД
+
 let addEventToChange = function () {
     let buttonChange = document.querySelectorAll('.alert-primary');
         [].forEach.call(buttonChange,(btn)=>{
             let parentElement = btn.parentElement.parentElement;
             btn.addEventListener('click',()=>{
                 console.log('elem5555555',parentElement);
-                let arreyChaild = parentElement.querySelectorAll('.td')
+                let arreyChaild = parentElement.querySelectorAll('.td');
+
                 console.log(arreyChaild[1].textContent);
                 parentElement.innerHTML ='';
+
                 parentElement.innerHTML +=`
                 <tr align="middle">
                     <td id="constId">${arreyChaild[0].textContent}</td>
-                    <td ><input id="description" class="form-control" placeholder='${arreyChaild[1].textContent}'></td>
-                    <td ><input id="title" class="form-control" placeholder='${arreyChaild[2].textContent}'></td>
+                    <td ><input id="description" class="form-control" value='${arreyChaild[1].textContent}'></td>
+                    <td ><input id="title" class="form-control" value='${arreyChaild[2].textContent}'></td>
                     <td><div style="cursor: pointer" class="btn btn-primary save-change"  data-const-id=${+arreyChaild[0].textContent} >сохранить</div></td>
                     <td><div style="cursor: pointer" class="btn btn-danger Annulment" data-const-description=${arreyChaild[1].textContent}  data-const-title=${arreyChaild[2].textContent} data-const-id=${arreyChaild[0].textContent}  >отменить</div></td>
                 </tr>
@@ -72,6 +78,7 @@ console.log('nenennnnnnnn');
 
 
 }//конопка изменить константу
+
 let addEventInButton = function () {
 
 
@@ -107,11 +114,12 @@ let addEventInButton = function () {
     });
 
     }//кнопка удалить константу
-    let addSaveChangeAnnulment = function () {
+
+let addSaveChangeAnnulment = function () {
 
 
 
-    }
+}
 
 ;(function () {
 
@@ -125,28 +133,30 @@ let addEventInButton = function () {
 
         addLengButton.addEventListener('click',async ()=>{
             try{
-            let description = document.querySelector(' #constDescription').value;
-            let title = document.querySelector(' #constTitle').value;
-            let data = new FormData();
-            data.append('description',description);
-            data.append('title',title);
-                let request = await fetch(`${window.ServerAddress}panel/locale/new` , {
-                    method: 'POST',
-                    body: data
-                });
-                let response = await request.json();
-                constant.push(response.data)
-                constant.forEach((con)=>{
-                    tableConst.innerHTML  += `
-                <tr align="middle">
-                    <td class="td">${con.constantID}</td>
-                    <td class="td">${con.constantTitle}</td>
-                    <td class="td">${con.description}</td>
-                    <td><a style="display: inline-block;"class="alert alert-primary"href="/panel/products/" + con.constantID  data-attribute-id=${con.constantID} >Nзменить</a></td>
-                    <td><div style="cursor: pointer" class="alert alert-danger"   data-const-title=${con.description} data-const-id=${con.constantID}  >Удалить</div></td>
-                </tr>
-                `;
-                })
+
+                let description = document.querySelector('#constDescription').value;
+                let title = document.querySelector('#constTitle').value;
+                let data = new FormData();
+
+                data.append('description',description);
+                data.append('title',title);
+                    let request = await fetch(`${window.ServerAddress}panel/locale/new` , {
+                        method: 'POST',
+                        body: data
+                    });
+                    let response = await request.json();
+                    constant.push(response.data)
+                    constant.forEach((con)=>{
+                        tableConst.innerHTML  += `
+                    <tr align="middle">
+                        <td class="td">${con.constantID}</td>
+                        <td class="td">${con.constantTitle}</td>
+                        <td class="td">${con.description}</td>
+                        <td><div style="display: inline-block;"class="alert alert-primary" data-attribute-id=${con.constantID} >Nзменить</div></td>
+                        <td><div style="cursor: pointer" class="alert alert-danger"   data-const-title=${con.description} data-const-id=${con.constantID}  >Удалить</div></td>
+                    </tr>
+                    `;
+                    })
 
 
             }//try
