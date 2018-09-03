@@ -261,8 +261,8 @@ Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'langu
 
 //PromoCodes.sync({force: true});
 
-// WordsConstans.sync({force: true});
-// Translations.sync({force: true});
+//WordsConstans.sync({force: true});
+//Translations.sync({force: true});
 //Langs.sync({force: true});
 
 //Product.sync({force: true});

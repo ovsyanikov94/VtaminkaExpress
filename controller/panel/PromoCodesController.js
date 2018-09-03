@@ -138,3 +138,12 @@ module.exports.UpdatePromoCode = async (req, res)=>{
 
 };
 
+
+//удаление промо-кода
+module.exports.DeletePromoCode = async (req, res)=>{
+
+    let response = new Response();
+
+    
+
+};
