@@ -12,5 +12,7 @@ router.post('/locale/new-lang' , LocaleController.AddNewLanguage );
 router.get('/locale/const-list/:lng', LocaleController.GetConstList);
 router.post('/locale/new',LocaleController.AddNewConstLeng);
 router.get('/locale/new-lang' , LocaleController.AddNewLanguageAction );
+router.get('/locale/lang/:id' , LocaleController.UpdateLanguageAction );
+router.put('/locale/lang/:id' , LocaleController.UpdateLanguage );
 
 module.exports = router;
