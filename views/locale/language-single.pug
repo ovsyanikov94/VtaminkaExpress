@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+    script( defer src="/javascripts/locale.js" )
+
+    form(data-lang-id=lang.languageID).col-md-12
+        .form-group
+            label(for='languageTitle') Название языка
+            input#languageTitle.form-control(placeholder='Введите название' value=lang.languageTitle )
+        .custom-file
+            input#languageImage.custom-file-input(type='file')
+            label.custom-file-label(for='languageImage') Добавить изображение
+        .form-group
+            .card(style="width: 16em")
+                img#imageLang.card-img-top(src='/' + lang.languageImage, alt='Card image cap')
+                .card-body
+                    p#lableImagePath.card-text #{lang.languageImage}
+        .form-group
+            #updateLang.btn.btn-primary Обновить язык

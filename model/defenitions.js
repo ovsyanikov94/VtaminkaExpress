@@ -139,8 +139,8 @@ const ProductImages = connection.define('pImages', {
         }
     }
 },{
-    createdAt: false,
-    updatedAt: false
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 });
 
 const PromoCodes = connection.define('promoCodes',{
@@ -225,6 +225,11 @@ const WordsConstans = connection.define( 'wordsConstants' , {
         unique: true,
         allowNull: false,
         type: Sequelize.DataTypes.STRING
+    },
+    description:{
+        unique: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING(200)
     }
 
 },{
@@ -250,8 +255,8 @@ const Translations = connection.define( 'translations' , {
     updatedAt: false
 });
 
-WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID' } );
-Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'langID' } );
+WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
+Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
 
 //PromoCodes.sync({force: true});
 

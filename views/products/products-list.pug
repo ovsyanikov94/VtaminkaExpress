@@ -4,6 +4,7 @@ block content
     a.form-group.btn.btn-primary.col-12(href="/panel/products/new") Добавить товар
     a.form-group.btn.btn-primary.col-12(href="/panel/products/attributes") Список имеющихся атрибутов
     a.form-group.btn.btn-primary.col-12(href="/panel/products/attributes/new") Добавить атрибут товара
+    a.form-group.btn.btn-primary.col-12(href="/api/productJson/" + 0) Получить товыры в формате JSON
 
     if products.length === 0
         .alert.alert-info.col-12
@@ -47,3 +48,4 @@ block content
                         .modal-footer
                             button.btn.btn-secondary(type='button', data-dismiss='modal') Нет
                             button#confirmRemoveProductButton.btn.btn-primary(type='button' data-dismiss='modal') Удалить
+
