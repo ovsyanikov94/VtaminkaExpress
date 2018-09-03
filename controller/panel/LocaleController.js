@@ -6,6 +6,91 @@ const Translations =require('../../model/defenitions').Translations;
 const Response = require('../../model/Response');
 const fs = require('fs');
 
+module.exports.UpdateConst = async(req,res)=>{
+
+    console.log(req.body);
+    let id = +req.body.id;
+    let title = req.body.title;
+    let description = req.body.description;
+
+    let respone = new Response();
+
+    try{
+
+        let constUpdate = await WordsConstans.findById(id);
+
+        console.log(constUpdate);
+
+        if(!constUpdate){
+
+            respone.code=404;
+            respone.message="значение нн найдено";
+            respone.data = id;
+            return res.send(respone);
+        }
+
+
+        let updateResponse =await constUpdate.update({
+            constantTitle:title,
+            description:description
+        });
+        console.log(updateResponse);
+        respone.code=200;
+        respone.message = "константа изменена";
+        respone.data = updateResponse;
+
+        res.send(respone)
+
+    }catch (ex){
+        respone.code=500;
+        respone.message="ощибка сервера";
+    }
+
+    res.status( respone.code );
+    res.send(respone);
+
+}
+
+module.exports.RemoveConst = async(req,res)=>{
+    let respone = new Response();
+    let idConst = req.body.constID
+
+    try{
+        if(!idConst){
+
+            respone.code=404;
+            respone.message="значение нн найдено";
+            respone.data = idConst
+            return res.send(respone)
+
+        }
+
+        Translations.destroy({
+            where:{
+                constantID:idConst
+            }
+        });
+
+      WordsConstans.destroy({
+            where:{
+
+                constantID:idConst
+            }
+        });
+
+        respone.code=200;
+        respone.message = "константа удалена";
+        respone.data = idConst
+        res.send(respone)
+    }
+    catch (ex){
+        respone.code=500;
+        respone.message="ощибка сервера";
+        return res.send(respone)
+    }
+
+}
+
 module.exports.AddNewConstLeng=async(req,res)=>{
 
 
@@ -13,9 +98,6 @@ module.exports.AddNewConstLeng=async(req,res)=>{
     try{
         let description = req.body.description;
         let title = req.body.title;
-        let transletion = req.body.transletion;
-        let lengId = req.body.lengId;
-
         let newWordsConstans = await WordsConstans.create({
             'constantTitle':title,
             'description':description,
@@ -23,19 +105,6 @@ module.exports.AddNewConstLeng=async(req,res)=>{
         })
 
 
-        if(newWordsConstans){
-            console.log(lengId);
-            console.log(newWordsConstans.constantID);
-            let newTranslete = await Translations.create({
-                'constantID':newWordsConstans.constantID,
-                'languageID':lengId,
-                'translation':transletion,
-
-
-            });
-
-            console.log('Ответ',newTranslete);
-        }
 
         respone.code=200;
         respone.message="перевод добавлен";
@@ -58,22 +127,11 @@ module.exports.GetConstList = async (req,res)=>{
     let respone = new Response();
 
     try{
-        let lang = req.params.lng;
 
-        let allLangs = await Langs.findAll();
-        let currentLang = await Langs.findOne({
-            where: {
-                languageTitle: lang
-            }
-        });
-
-        if(!currentLang){
-            return res.render('error' , { error: { message: 'Язык не найден!' } });
-        }//if
 
         let constants = await WordsConstans.findAll();
 
-        res.render('locale/constants/constants-list',{langs: allLangs , constants: constants})
+        res.render('locale/constants/constants-list',{ constants: constants})
 
 
     }
