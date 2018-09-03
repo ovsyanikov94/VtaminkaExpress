@@ -40,6 +40,7 @@ function AddRemoveAttributeListeners( attributes ){
     let addAttributeValue = document.querySelector('#addAttributeValue');
     let attributeValueInput = document.querySelector('#currentAttributeValue');
     let addProductButton = document.querySelector('#addProductButton');
+    //let pr = document.querySelector('#pr');
 
     let attributes = [];
 
@@ -96,7 +97,7 @@ function AddRemoveAttributeListeners( attributes ){
 
             attributes.forEach( ( attr )=>{
 
-                attributesTable.innerHTML += `
+                pr.innerHTML += `
                 <tr align="middle">
                     <td>${attr.attributeID}</td>
                     <td>${attr.attributeTitle}</td>
@@ -274,5 +275,17 @@ function AddRemoveAttributeListeners( attributes ){
 
 
     }//if
+
+   // if(addProductJSONButton){
+
+        //addProductJSONButton.addEventListener('click' , async ()=> {
+
+            //let products = pr.data.products;
+            //pr.innerHTML += `
+                //<p>products</p>
+                //`;
+
+        //});
+    //}
 
 })();
