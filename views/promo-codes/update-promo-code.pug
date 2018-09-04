@@ -3,7 +3,7 @@ extends ../layout
 block content
     script( defer src="/javascripts/promo-codes.js" )
 
-    form(data-promo-code-id=promoCodeToUpdate.promoCodeID).col-md-12
+    form(data-promo-code-id=promoCode.promoCodeID).col-md-12
         .form-group
             label(for='newPromoCodeInput') Промо-код
             input#newPromoCodeInput.form-control(placeholder='Введите промо-код')

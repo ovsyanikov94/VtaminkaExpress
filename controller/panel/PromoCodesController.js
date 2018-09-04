@@ -134,7 +134,7 @@ module.exports.UpdatePromoCode = async (req, res)=>{
     }//catch
 
     res.status(response.code);
-    res.render(response);
+    res.send(response);
 
 };
 
