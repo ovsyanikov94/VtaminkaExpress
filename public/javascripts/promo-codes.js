@@ -54,12 +54,12 @@
                     promoCodesTable.innerHTML += `
                         <tr align="middle">
                             <td>${promoCode.promoCodeID}</td>
-                            <td>${promoCode.promoCode}</td>
-                            <td>${promoCode.percentageValue}</td>
-                            <td>${promoCode.deliveryValue}</td>
-                            <td>${promoCode.promoCountValue}</td>
-                            <td>${promoCode.startDateValue}</td>
-                            <td>${promoCode.expireDateValue}</td>
+                            <td>${promoCode.discountCode}</td>
+                            <td>${promoCode.discount}</td>
+                            <td>${promoCode.delivery}</td>
+                            <td>${promoCode.promoCount}</td>
+                            <td>${promoCode.startAtDate}</td>
+                            <td>${promoCode.expireAtDate}</td>
                             <td >
                             <a style="display: inline-block;" class="alert alert-primary" href="/panel/promo-codes/single/${promoCode.promoCodeID}" >Изменить</a>
                             </td>
