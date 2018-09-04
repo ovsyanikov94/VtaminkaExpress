@@ -232,6 +232,61 @@ Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'langu
 //  ProductAndAttributes.sync({force: true});
 //  ProductImages.sync({force: true});
 
+const News  = connection.define('news',{
+
+    newsID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    newsTitle:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    },
+    newsText:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING(1000)
+    },
+    image: Sequelize.DataTypes.VIRTUAL
+},{
+        createdAt: 'createdAt',
+        updatedAt: 'updatedAt'
+  }
+);
+
+const newsImage=connection.define('newsImage',{
+    imageID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    newsID:{
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    imagePath:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING(1500),
+        validate:{
+            min: 2,
+            max: 1500
+        }
+    }
+    },
+    {
+
+        createdAt: 'createdAt',
+        updatedAt: 'updatedAt'
+    });
+
+newsImage.belongsTo(News , { foreignKey: 'newsID' });
+// News.sync({force: true});
+//newsImage.sync({force: true});
+
+module.exports.News=News;
+module.exports.newsImage=newsImage;
 module.exports.Category = Category;
 module.exports.Product = Product;
 module.exports.ProductAndCategories = ProductAndCategories;
