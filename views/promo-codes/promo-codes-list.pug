@@ -18,10 +18,10 @@ block content
             input#promoCountInput.form-control(placeholder='Введите кол-во промо-кодов')
         .form-group
             label(for='startDateInput') Начальная дата активности промо-кода
-            input#startDateInput.form-control(placeholder='Введите дату начала промо-кода')
+            input#startDateInput.form-control(type="date")
         .form-group
             label(for='expireDateInput') Конечная дата активности промо-кода
-            input#expireDateInput.form-control(placeholder='Введите дату окончания промо-кода')
+            input#expireDateInput.form-control(type="date")
         .form-group
             #message.alert.alert-danger(style="display: none")
             #addPromoCodeButton.btn.btn-primary Добавить новый промо-код
@@ -39,19 +39,24 @@ block content
                 th(scope='col') Кол-во кодов
                 th(scope='col') Старт
                 th(scope='col') Окончание
+                th(scope='col') Изменить
                 th(scope='col') Удалить
         tbody#promoCodesList
             each promoCode in promoCodes
                 tr(align="middle")
                     td= promoCode.promoCodeID
+                    td= promoCode.discountCode
                     td= promoCode.discount
                     td= promoCode.delivery
+                    td= promoCode.promoCount
+                    td= promoCode.startAtDate
+                    td= promoCode.expireAtDate
                     td
-                        a.alert.alert-primary(href="#" + promoCode.promoCodeID style="display: inline-block;") Изменить
+                        a.alert.alert-primary(href="" + promoCode.promoCodeID style="display: inline-block;") Изменить
                     td
                         button.alert.alert-danger(
-                        style="cursor: pointer"
-                        data-lang-id=promoCode.promoCodeID
+                            style="cursor: pointer"
+                            data-promo-code-id=promoCode.promoCodeID
                         ) Удалить
 
 
