@@ -47,7 +47,7 @@ block content
                             data-lang-id=lang.languageID
                             ) Импортитовать
                     td
-                        a.alert.alert-success(download=lang.languageTitle + '.json' href="/panel/locale/lang/export/" + lang.languageID style="display: inline-block;") Экспортировать
+                        button.alert.alert-success#exportButton(data-lang-id=lang.languageID style="cursor: pointer") Экспортировать
 
 
     #confirmRemoveLanguageModal.modal(tabindex='-1', role='dialog')

@@ -10,7 +10,38 @@
     let importButton = document.querySelector('#importButton');
     let file = document.querySelector('#sendFile');
 
+    let exportButton = document.querySelector('#exportButton');
+
     let addConst = document.querySelector('#addConctAndLeng');
+
+    if(exportButton){
+
+        exportButton.addEventListener('click', async function () {
+            try{
+
+                let data = new FormData();
+
+                data.append('langID', exportButton.dataset.langId);
+
+                let request = await fetch(`${window.ServerAddress}panel/locale/lang/export/` , {
+                    method: 'POST',
+                    body: data
+                });
+
+                let response = await request.json();
+
+                console.log(response);
+
+            }//try
+            catch(ex){
+
+                console.log('ex' , ex);
+
+            }//catch
+
+        });
+
+    }//if
 
     if(importButton){
 
@@ -47,7 +78,7 @@
     if(addConst){
         addConst.addEventListener('click',async()=>{
 
-            let leng =addConst.dataset.leng
+            let leng =addConst.dataset.leng;
             let request = await fetch( `${window.ServerAddress}panel/locale/const-list` , {
                 method: 'GET',
                 headers: {
