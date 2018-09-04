@@ -8,14 +8,14 @@ block content
         .alert.alert-info.col-12
             | новостей нет
     else
-        each OneNew in news
-            .form.media.col-12
-                .form-group.media-object.media-left(src=image.imagePath, style='width:100px')
-                .form-group.media
-                    .form.media
-                        label=OneNew.newsTitle
-                    .form.media
-                        .form=OneNew.newsText
-
-            #updateButtona.btn.btn-primary(href="/panel/news/" + OneNew.newsID style="display: inline-block;") Изменить
-            #revomeButton.btn.btn-danger( style="cursor: pointer" data-news-id = OneNew.newsID) Удалить
+        each OneNews in news
+            .card.mb-3
+                if OneNews.image
+                    img.card-img-top(src='/' + OneNews.image.imagePath, alt='Card image cap')
+                .card-body
+                    h5.card-title= OneNews.newsTitle
+                    p.card-text= OneNews.newsText
+                    p.card-text
+                        small.text-muted= OneNews.createdAt
+                    a#updateButtona.btn.btn-primary(href="/panel/news/" + OneNews.newsID style="display: inline-block;") Изменить
+                    #revomeButton.btn.btn-danger( style="cursor: pointer" data-news-id = OneNews.newsID) Удалить

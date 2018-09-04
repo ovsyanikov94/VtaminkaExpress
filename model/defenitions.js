@@ -247,13 +247,12 @@ const News  = connection.define('news',{
     newsText:{
         allowNull: false,
         type: Sequelize.DataTypes.STRING(1000)
-    }
-    }
-    ,{
-
+    },
+    image: Sequelize.DataTypes.VIRTUAL
+},{
         createdAt: 'createdAt',
         updatedAt: 'updatedAt'
-    }
+  }
 );
 
 const newsImage=connection.define('newsImage',{
@@ -283,7 +282,7 @@ const newsImage=connection.define('newsImage',{
     });
 
 newsImage.belongsTo(News , { foreignKey: 'newsID' });
-//News.sync({force: true});
+// News.sync({force: true});
 //newsImage.sync({force: true});
 
 module.exports.News=News;

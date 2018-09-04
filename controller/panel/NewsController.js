@@ -6,21 +6,27 @@ const News = require('../../model/defenitions').News;
 const NewsImage = require('../../model/defenitions').newsImage;
 const fs = require('fs');
 
-module.exports.GetNewsList=async(req,res)=>{
+module.exports.GetNewsList = async(req,res)=>{
 
-    console.log('START');
+    let limit = req.query.limit || 10;
+    let offset = req.query.offset || 0;
 
-    let news = await News.findAll();
-    let image = await NewsImage.findOne({
-        where:{
-            newsID:news.newsID
-        }
+    let news = await News.findAll({
+        limit: limit,
+        offset: offset
     });
 
-console.log(image);
+    for ( let i = 0 ; i < news.length ; i++ ){
 
+        news[i].image = await NewsImage.findOne({
+            where:{
+                newsID: news[i].newsID
+            }
+        });
 
-    res.render('blog/news-list',{'news':news,'image':image});
+    }//for i
+
+    res.render('blog/news-list',{ 'news':news });
 
 }//GetNewsList
 
@@ -60,18 +66,17 @@ module.exports.addNews=async(req,res)=>{
                 console.log(ex)
             }
 
-
-
             newsImage.mv( `${path}/${newsImage.name}`,async function(err){
+
                 if (err){
                     console.log('FILE UPLOAD ERROR:' , err);
                     return;
                 }//if
 
                 let path = `images/news/${newNews.newsID}/${newsImage.name}`;
-                console.log('1111111111111111111111',path)
+                console.log('1111111111111111111111',path);
 
-                let newsImage = await NewsImage.create({
+                let newImage = await NewsImage.create({
 
                     newsID:newNews.newsID,
                     imagePath:path
