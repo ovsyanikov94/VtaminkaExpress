@@ -447,10 +447,26 @@ const UserAndCart = connection.define('UserAndCart',{
     updatedAt:false
 });
 
+const StatusOrder = connection.define('statusOrder',{
+    statusID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    statusTitle:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING(50)
+    }
+},{
+    createdAt:false,
+    updatedAt:false
+});
 
 Orders.belongsTo(Users,{ foreignKey: 'userID' });
 
 Orders.belongsTo(PromoCodes,{ foreignKey: 'promoID' });
+Orders.belongsTo(StatusOrder,{ foreignKey: 'statusID' });
 
 Users.belongsToMany(Cards,{through:UserAndCart, foreignKey: 'userID'});
 Cards.belongsToMany(Users,{through:UserAndCart, foreignKey: 'cardID'});
@@ -460,9 +476,10 @@ Product.belongsToMany(Orders,{through:OrdersAndProduct, foreignKey: 'productID'}
 
 //Users.sync({force: true});
 //Cards.sync({force:true});
-//Orders.sync({force:true});
-//OrdersAndProduct.sync({force:true});
-//UserAndCart.sync({force:true});
+// Orders.sync({force:true});
+// OrdersAndProduct.sync({force:true});
+// UserAndCart.sync({force:true});
+//StatusOrder.sync({force:true});
 
 
 module.exports.News=News;
@@ -484,3 +501,4 @@ module.exports.Cards = Cards;
 module.exports.Orders = Orders;
 module.exports.OrdersAndProduct = OrdersAndProduct;
 module.exports.UsersAndCart = UserAndCart;
+module.exports.StatusOrder = StatusOrder;
