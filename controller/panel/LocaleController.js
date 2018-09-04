@@ -141,7 +141,6 @@ module.exports.GetConstList = async (req,res)=>{
 
 };
 
-
 module.exports.GetLanguagesListAction = async ( req , res )=>{
 
     let langs = await Langs.findAll();
@@ -232,62 +231,114 @@ module.exports.AddNewLanguage = async ( req , res )=>{
 
 };
 
+module.exports.UpdateLanguageAction  = async(req, res)=>{
 
-module.exports.UpdateLang = async ( req , res )=>{
+
+
+    try{
+        let langID = +req.params.id;
+        let lang = await Langs.findById( langID );
+
+        res.render('locale/language-single',{ lang: lang });
+    }//try
+    catch (ex){
+        res.render('error',{ error: ex});
+    }//catch
+};
+
+module.exports.UpdateLanguage = async ( req , res )=>{
 
     let response = new Response();
 
     try{
 
-        let langID = +req.params.id;
-        let languageTitle = req.body.languageTitle.trim();
+        let langID = req.params.id;
 
-        if( isNaN(langID) ){
+        let lang = await Langs.findById(langID);
 
-            response.code = 400;
-            response.message = 'ID языка задан не верно!';
+        if(!lang ){
+
+            response.code = 404;
+            response.message = 'Язык не найден!';
             response.data = langID;
+            res.status(response.code);
 
             return res.send(response);
 
         }//if
 
-        let lang = await Langs.findById(langID);
+        let langTitle = req.body.langTitle;
 
-        if( lang ){
+        //Начало работы с загруженным файлом
+        if( req.files ){
 
-            let updateResult = await Langs.update({
-                'languageTitle': languageTitle
+            let langImage = req.files.image;
+            let path = `public/images/langs/${langID}`;
+
+
+            if(!lang.languageImage){
+
+                try{
+                    if(!fs.existsSync('public/images')){
+                        fs.mkdirSync('public/images');
+                    }
+
+                    if(!fs.existsSync('public/images/langs')){
+                        fs.mkdirSync('public/images/langs');
+                    }
+
+
+                    fs.mkdirSync(path);
+                }//try
+                catch(ex){
+                    console.log(ex);
+                }//catch
+
+
+            }//if
+            else{
+                try{
+                    fs.unlinkSync(`public/${lang.languageImage}`);
+                }
+                catch(ex){
+                    console.log(ex);
+                }
+
+
+            }//else
+
+
+            // fs.existsSync()
+            langImage.mv( `${path}/${langImage.name}` ,async function(err) {
+
+                if (err){
+                    console.log('FILE UPLOAD ERROR:' , err);
+                    return;
+                }//if
+
+                await lang.update({
+                    languageTitle: langTitle,
+                    languageImage: `images/langs/${langID}/${langImage.name}`,
+                });
+
             });
 
-            response.code = 200;
-            response.message = 'Язык успешно обновлен';
-            response.data = updateResult;
-
-            res.send(response);
-
         }//if
-        else{
 
-
-            response.code = 404;
-            response.message = 'Язык не найден!';
-            response.data = langID;
-
-            res.send(response);
-
-        }//else
+        response.code = 200;
+        response.message = 'Язык успешно обновлен!';
 
     }//try
     catch(ex){
 
         response.code = 500;
-        response.message = 'Внутренняя ошибка сервера';
-        response.data = ex;
-
-        res.send( response );
+        response.message = 'Внутренняя ошибка сервера!';
+        console.log(ex);
 
     }//catch
+
+    res.status(response.code);
+    res.send(response);
 
 };
 
@@ -327,7 +378,7 @@ module.exports.RemoveLang= async ( req , res )=>{
         response.code = 200;
         response.message = 'Язык успешно обновлен';
 
-        res.send(response);
+
 
     }//try
     catch(ex){
@@ -337,8 +388,48 @@ module.exports.RemoveLang= async ( req , res )=>{
         response.message = 'Внутренняя ошибка сервера';
         response.data = ex;
 
-        res.send( response );
+    }//catch
+
+    res.status( response.code );
+    res.send(response);
+
+};
+
+module.exports.LanguageExist = async ( req , res )=>{
+
+    let response = new Response();
+
+    try{
+
+        let languageTitle = req.query.languageTitle;
+
+        let lang = await Langs.findOne({
+           where:{
+               languageTitle: languageTitle
+           }
+        });
+
+        if( !lang ){
+
+            response.code = 200;
+            response.data = true;
+
+        }//if
+        else{
+            response.code = 400;
+            response.data = false;
+        }//else
+
+    }//try
+    catch(ex){
+
+        response.code = 500;
+        response.message = 'Внутренняя ошибка сервера';
+        response.data = ex;
 
     }//catch
+
+    res.status( response.code );
+    res.send( response );
 
 };

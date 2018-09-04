@@ -9,8 +9,8 @@ const ProductAndAttributes = require('../../model/defenitions').ProductAndAttrib
 
 const ProductAndCategories = require('../../model/defenitions').ProductAndCategories;
 const ProductImages = require('../../model/defenitions').ProductImages;
-
 const fs = require('fs');
+
 
 const RegularExpressions = require('../../model/RegularExpressions');
 
@@ -397,3 +397,7 @@ module.exports.GetProductAction = async ( req , res )=>{
     }//catch
 
 };
+
+
+
+
