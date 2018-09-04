@@ -7,6 +7,8 @@ block content
         .form-group
             label(for='languageTitle') Название языка
             input#languageTitle.form-control(placeholder='Введите название')
+            .invalid-feedback
+                | Такой язык уже существует
         .custom-file
             input#langImage.custom-file-input(type='file')
             label.custom-file-label(for='langImage') Добавить изображение

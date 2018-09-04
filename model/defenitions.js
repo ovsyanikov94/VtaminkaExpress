@@ -143,6 +143,46 @@ const ProductImages = connection.define('pImages', {
     updatedAt: 'updatedAt'
 });
 
+const PromoCodes = connection.define('promoCodes',{
+
+    promoCodeID:{
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
+      type: Sequelize.DataTypes.INTEGER
+    },
+    discountCode:{
+        allowNull: false,
+        unique: true,
+        type: Sequelize.DataTypes.STRING
+    },
+    discount:{
+      allowNull: false,
+      type: Sequelize.DataTypes.TINYINT
+    },
+    delivery:{
+      allowNull: false,
+      type: Sequelize.DataTypes.INTEGER
+    },
+    promoCount:{
+      allowNull: false,
+      type: Sequelize.DataTypes.INTEGER
+    },
+    startAtDate:{
+        allowNull: true,
+        type: Sequelize.DataTypes.DATEONLY
+    },
+    expireAtDate:{
+        allowNull: true,
+        type: Sequelize.DataTypes.DATEONLY
+    }
+
+},{
+    createdAt: true,
+    updatedAt: true
+});
+
+
 Product.belongsToMany( Category , { through: ProductAndCategories , foreignKey: 'productID' , as: 'categories' });
 Category.belongsToMany( Product ,  { through: ProductAndCategories , foreignKey: 'categoryID'});
 
@@ -219,19 +259,18 @@ const Translations = connection.define( 'translations' , {
 WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
 Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
 
-// Langs.sync({force: true});
+//PromoCodes.sync({force: true});
+
 // WordsConstans.sync({force: true});
-//
-//
+// Translations.sync({force: true});
+//Langs.sync({force: true});
+
 //Product.sync({force: true});
-//
 //Category.sync({force: true});
 // ProductAndCategories.sync({force: true});
- //ProductAttributes.sync({force: true});
- // ProductAndAttributes.sync({force: true});
- // ProductImages.sync({force: true});
-
-// Translations.sync({force: true});
+// ProductAttributes.sync({force: true});
+//ProductAndAttributes.sync({force: true});
+// ProductImages.sync({force: true});
 
 module.exports.Category = Category;
 module.exports.Product = Product;
@@ -243,3 +282,4 @@ module.exports.ProductImages = ProductImages;
 module.exports.Langs = Langs;
 module.exports.WordsConstans = WordsConstans;
 module.exports.Translations = Translations;
+module.exports.PromoCodes = PromoCodes;
