@@ -5,7 +5,7 @@ const Response = require('../../model/Response');
 const News = require('../../model/defenitions').News;
 const NewsImage = require('../../model/defenitions').newsImage;
 const fs = require('fs');
-
+const fe = require('fs-extra');
 module.exports.GetNewsList = async(req,res)=>{
 
     let limit = req.query.limit || 10;
@@ -16,6 +16,7 @@ module.exports.GetNewsList = async(req,res)=>{
         offset: offset
     });
 
+
     for ( let i = 0 ; i < news.length ; i++ ){
 
         news[i].image = await NewsImage.findOne({
@@ -25,7 +26,6 @@ module.exports.GetNewsList = async(req,res)=>{
         });
 
     }//for i
-
     res.render('blog/news-list',{ 'news':news });
 
 }//GetNewsList
@@ -48,7 +48,6 @@ module.exports.addNews=async(req,res)=>{
         if(req.files){
 
             let newsImage = req.files.image
-            console.log('66666666666666666666',newsImage)
             let path = `public/images/news/${newNews.newsID}`;
 
             console.log(path);
@@ -74,7 +73,6 @@ module.exports.addNews=async(req,res)=>{
                 }//if
 
                 let path = `images/news/${newNews.newsID}/${newsImage.name}`;
-                console.log('1111111111111111111111',path);
 
                 let newImage = await NewsImage.create({
 
@@ -102,6 +100,36 @@ module.exports.addNews=async(req,res)=>{
 }//addNews
 
 module.exports.removeNews=async(req,res)=>{
+
+    let id = req.body.id;
+
+    let news =await News.findOne({
+        where:{
+            newsID:id
+        }
+    });
+
+    if(news){
+
+        let path = await NewsImage.findOne({
+            where:{
+                newsID:id
+            }
+        });
+        console.log('2',path);
+        console.log('2',path.imagePath);
+        fe.remove(`public/${path.imagePath}`, function(err){
+            if (err) return console.error(err);
+
+            console.log("success!")
+        });
+    }
+
+
+
+    res.status(200
+    );
+    res.send("Good");
 
 }//removeNews
 
