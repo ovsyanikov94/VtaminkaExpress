@@ -116,6 +116,7 @@ module.exports.removeNews=async(req,res)=>{
                 newsID:id
             }
         });
+
         console.log('2',path);
         console.log('2',path.imagePath);
         fe.remove(`public/${path.imagePath}`, function(err){
