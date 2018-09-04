@@ -256,8 +256,79 @@ const Translations = connection.define( 'translations' , {
     updatedAt: false
 });
 
+const Users = connection.define('users',{
+
+    userId:{
+        primaryKey: true,
+        allowNull: false,
+        autoIncrement: true,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    userName: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false,
+        validate:{
+            is: RegularExpressions.UserNameExpression
+        }
+
+    },
+    userEmail:{
+        type: Sequelize.DataTypes.STRING(60),
+        allowNull: false,
+        validate:{
+            is: RegularExpressions.EmailExpression,
+
+        }
+    },
+    userPhone:{
+        type: Sequelize.DataTypes.STRING(15),
+        allowNull: false,
+        validate:{
+            is: RegularExpressions.PhoneExpression,
+
+        }
+    },
+
+},{
+    createdAt: 'created',
+    updatedAt: 'updated'
+});
+
+const UserMessages = connection.define('uMessages', {
+    ID: {
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    userId:{
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    message:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING(1500),
+        validate:{
+            min: 2,
+            max: 1500
+        }
+    },
+    processed:{
+        allowNull: false,
+        type: Sequelize.DataTypes.BOOLEAN
+    }
+},{
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+});
+
+UserMessages.belongsTo(Users , { foreignKey: 'userId' });
+
 WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
 Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
+
+//User.sync({force: true});
+//UserMessages.sync({force: true});
 
 //PromoCodes.sync({force: true});
 
@@ -283,3 +354,6 @@ module.exports.Langs = Langs;
 module.exports.WordsConstans = WordsConstans;
 module.exports.Translations = Translations;
 module.exports.PromoCodes = PromoCodes;
+
+module.exports.Users = Users;
+module.exports.UserMessages= UserMessages;
