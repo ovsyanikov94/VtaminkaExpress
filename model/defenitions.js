@@ -285,6 +285,116 @@ newsImage.belongsTo(News , { foreignKey: 'newsID' });
 // News.sync({force: true});
 //newsImage.sync({force: true});
 
+
+const Users = connection.define('users',{
+    userEmail:{
+        primaryKey: true,
+        allowNull:false,
+        unique: true,
+        type:Sequelize.DataTypes.STRING(50)
+    },
+    userName:{
+        allowNull:false,
+        type:Sequelize.DataTypes.STRING(50)
+    }
+},{
+    createdAt: false,
+    updatedAt: false
+});
+
+const Phones = connection.define('phones',{
+    phoneID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    phoneNumber:{
+        unique: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    },
+},{
+    createdAt: false,
+    updatedAt: false
+});
+
+const Cards = connection.define('cards',{
+    cardID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    cardNumber:{
+        unique: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    yearEnd:{
+        allowNull: false,
+        type: Sequelize.DataTypes.DATE
+    },
+    cvv:{
+        allowNull: false,
+        type: Sequelize.DataTypes.TINYINT
+    },
+    userCardName:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    }
+},{
+    createdAt:false,
+    updatedAt:false
+});
+
+const Orders = connection.define('orders',{
+    orderID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    orderAdress:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    },
+    orderDate:{
+        allowNull: false,
+        type: Sequelize.DataTypes.DATE
+    },
+
+},{
+    createdAt:false,
+    updatedAt:false
+});
+
+const OrdersAndProduct = connection.define('OrdersProduct',{
+    ID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+},{
+    createdAt:false,
+    updatedAt:false
+});
+
+Cards.belongsTo(Users,{ foreignKey: 'userEmail' });
+Phones.belongsTo(Users,{ foreignKey: 'userEmail' });
+Orders.belongsTo(Users,{ foreignKey: 'userEmail' });
+Orders.belongsTo(PromoCodes,{ foreignKey: 'promoID' });
+
+Orders.belongsToMany(Product,{through:OrdersAndProduct, foreignKey: 'orderID'});
+Product.belongsToMany(Orders,{through:OrdersAndProduct, foreignKey: 'productID'});
+
+//Users.sync({force: true});
+// Phones.sync({force:true});
+// Cards.sync({force:true});
+// Orders.sync({force:true});
+//OrdersAndProduct.sync({force:true});
+
 module.exports.News=News;
 module.exports.newsImage=newsImage;
 module.exports.Category = Category;
