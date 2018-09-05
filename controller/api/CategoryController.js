@@ -44,11 +44,54 @@ module.exports.GetProductsWithCategory = async ( req , res )=>{
 
     try{
 
-        const categories = await Category.findAll({});
+        let id = +req.query.id;
 
+        const pCategories = await ProductAndCategories.findAll({
+
+            where:{categoryID:id},
+            attributes: {
+                exclude: [
+                    'ID',
+                    'categoryID',
+                ]
+            }
+        });
+
+        const products = await Product.findAll({
+
+            where:{productID:pCategories[1].productID},
+            attributes: {
+                exclude: [
+                    'productDescription',
+                    'created',
+                    'updated'
+                ]
+            }
+
+        });
+
+        for ( let i = 0 ; i < products.length ; i++ ){
+
+            let product = products[i];
+
+            product.image = await ProductImages.findOne({
+                where:{
+                    productID: product.productID
+                },
+                attributes: {
+                    exclude: [
+                        'ID',
+                        'productID',
+                        'createdAt',
+                        'updatedAt'
+                    ]
+                }
+            });
+
+        }//for i
 
         response.code = 200;
-        response.data = categories;
+        response.data = products;
 
     }//try
     catch(ex){
