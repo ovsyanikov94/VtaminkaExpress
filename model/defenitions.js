@@ -331,7 +331,9 @@ const Users = connection.define('users',{
     userID:{
         primaryKey: true,
         allowNull:false,
+
         autoIncrement: true,
+
         type:Sequelize.DataTypes.INTEGER
     },
     userEmail:{
@@ -363,7 +365,7 @@ const Cards = connection.define('cards',{
     cardNumber:{
         unique: true,
         allowNull: false,
-        type: Sequelize.DataTypes.INTEGER
+        type: Sequelize.DataTypes.STRING
     },
     year:{
         allowNull: false,
@@ -375,7 +377,7 @@ const Cards = connection.define('cards',{
     },
     cvv:{
         allowNull: false,
-        type: Sequelize.DataTypes.TINYINT
+        type: Sequelize.DataTypes.INTEGER
     },
     userCardName:{
         allowNull: false,
@@ -395,7 +397,11 @@ const Orders = connection.define('orders',{
     },
     orderAdress:{
         allowNull: false,
-        type: Sequelize.DataTypes.STRING
+        type: Sequelize.DataTypes.STRING(1000)
+    },
+    orderMessage:{
+        allowNull: true,
+        type: Sequelize.DataTypes.STRING(1000)
     },
     orderDate:{
         allowNull: false,
@@ -435,7 +441,7 @@ const OrdersAndProduct = connection.define('OrderDetails',{
     updatedAt:''
 });
 
-const UserAndCart = connection.define('UserAndCart',{
+const UserAndCart = connection.define('UserAndCard',{
     ID:{
         primaryKey: true,
         autoIncrement: true,
@@ -474,6 +480,7 @@ Cards.belongsToMany(Users,{through:UserAndCart, foreignKey: 'cardID'});
 Orders.belongsToMany(Product,{through:OrdersAndProduct, foreignKey: 'orderID'});
 Product.belongsToMany(Orders,{through:OrdersAndProduct, foreignKey: 'productID'});
 
+
 //Users.sync({force: true});
 //Cards.sync({force:true});
 //PromoCodes.sync({force:true});
@@ -481,6 +488,7 @@ Product.belongsToMany(Orders,{through:OrdersAndProduct, foreignKey: 'productID'}
 //OrdersAndProduct.sync({force:true});
 //UserAndCart.sync({force:true});
 //StatusOrder.sync({force:true});
+
 
 
 module.exports.News=News;
