@@ -50,7 +50,7 @@ module.exports.addNews=async(req,res)=>{
             let newsImage = req.files.image
             let path = `public/images/news/${newNews.newsID}`;
 
-            console.log(path);
+
             if(!fs.existsSync('public/images')){
                 fs.mkdirSync('public/images');
             }
@@ -100,45 +100,157 @@ module.exports.addNews=async(req,res)=>{
 }//addNews
 
 module.exports.removeNews=async(req,res)=>{
-
-    let id = req.body.id;
-
-    let news =await News.findOne({
-        where:{
-            newsID:id
-        }
-    });
-
-    if(news){
-
-        let path = await NewsImage.findOne({
+    let response = new Response();
+    let id = +req.body.id;
+    let stat=200;
+    try{
+        let news =await News.findOne({
             where:{
                 newsID:id
             }
         });
 
-        console.log('2',path);
-        console.log('2',path.imagePath);
-        fe.remove(`public/${path.imagePath}`, function(err){
-            if (err) return console.error(err);
+        if(news) {
 
-            console.log("success!")
-        });
+            let path = await NewsImage.findOne({
+                where: {
+                    newsID: id
+                }
+            });
+
+
+
+            fe.remove(`public/${path.imagePath}`, async function (err) {
+                if (!err) {
+
+                    await path.destroy();
+                    await news.destroy();
+                }
+
+            });
+
+            console.log(`public/news/${news.newsID}`);
+            fe.remove(`public/news/${news.newsID}`,async function (err){
+                if(err){
+                    console.log('ERROR');
+                }
+            });
+        }
+        response.code=200
+        response.message = "новость удалена"
+
+    }catch (ex){
+
+        response.code=500
+        response.message = "ощибка сервера"
+        stat=500;
     }
 
 
 
-    res.status(200
-    );
-    res.send("Good");
+
+    res.status(stat);
+    res.send(response);
 
 }//removeNews
 
-module.exports.updateNews=async(req,res)=>{
+module.exports.updateNewsAction=async(req,res)=>{
+    let response = new Response();
+    let id = +req.params.id;
 
+    if(!id){
+        response.code =404;
+        response.message = "новость не найдена ";
+        return response;
+    }
+
+    try{
+
+        let oneNews = await News.findOne({
+            where:{
+                newsID:id
+            }
+        })
+
+        oneNews.image = await NewsImage.findOne({
+            where:{
+                newsID: oneNews.newsID
+            }
+        });
+
+
+        res.render('blog/single-news',{ 'news':oneNews });
+
+    }catch (ex){
+
+    }
+
+    res.render(response)
 }//updateNews
 
-module.exports.GetSingleNews=async(req,res)=>{
+module.exports.UpdataNews=async(req,res)=>{
+    let response = new Response();
+    let id= +req.body.id;
+    let title = req.body.newsTitle;
+    let text = req.body.newsText;
+
+    console.log('nene',req.files);
+    try{
 
 
-}//GetSingleNews
+        if(req.files){
+            let newsImage = req.files.image
+
+
+            let image = await NewsImage.findOne({
+                where:{
+                    newsID:id
+                }
+            })
+
+            console.log(image.imagePath);
+            fe.remove(`public/${image.imagePath}`,async function (err) {
+
+                if(!err){
+                    newsImage.mv( `public/images/news/${id}/${newsImage.name}`,async function (err) {
+
+                        if(!err){
+
+                            let newNews = await News.update({
+                                newsTitle:title,
+                                newsText:text
+                            });
+                            let path = `images/news/${newNews.newsID}/${newsImage.name}`;
+                            let newImage = await NewsImage.update({
+
+                                newsID:newNews.newsID,
+                                imagePath:path
+                            })
+
+                            newNews.image = newImage.imagePath
+                            response.data = newNews
+                        }
+                    });
+                }
+
+                else {
+                    console.log('ERRRORRRRR');
+                }
+            });
+
+
+        }
+
+        response.code=200;
+        response.message="новость обновлена";
+
+        res.send(response)
+    }
+    catch (ex){
+        response.code=500;
+        response.message="ощибка сервера";
+        res.send(response)
+    }
+
+
+}//UpdataNews

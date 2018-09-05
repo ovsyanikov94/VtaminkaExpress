@@ -9,5 +9,9 @@ router.get('/news/news-list', NewsController.GetNewsList);
 router.get('/news/add-new', NewsController.addNewsAction);
 router.post('/news/add-new', NewsController.addNews);
 router.delete('/news/remove', NewsController.removeNews);
+router.get('/news/:id', NewsController.updateNewsAction);
+router.get('/news/update', NewsController.UpdataNews);
+
+
 
 module.exports = router;
