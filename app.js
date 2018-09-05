@@ -14,12 +14,12 @@ const indexRouter = require('./routes/index');
 const productsRoutes = require('./routes/panel/products');
 const categoriesRoutes = require('./routes/panel/categories');
 const localeRoutes = require('./routes/panel/locale');
+const newsRoutes = require('./routes/panel/news');
 const promoRoutes = require('./routes/panel/promo-codes');
 
 
 const productsApiRoutes = require('./routes/api/products');
-const feedbackApiRoutes = require('./routes/api/feedback');
-
+const categoriesApiRoutes = require('./routes/api/categories');
 const fileUpload = require('express-fileupload');
 
 const app = express();
@@ -40,11 +40,12 @@ app.use('/', indexRouter);
 app.use('/panel' , productsRoutes);
 app.use('/panel' , categoriesRoutes);
 app.use('/panel' , localeRoutes);
+app.use('/panel' , newsRoutes);
 app.use('/panel' , promoRoutes);
 
 //API ROUTES
 app.use('/api' , productsApiRoutes);
-app.use('/api' , feedbackApiRoutes);
+app.use('/api' , categoriesApiRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -59,6 +60,7 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
 
   // render the error page
   res.status(err.status || 500);
