@@ -1,6 +1,6 @@
 "use strict";
 
-//const Category = require('../../model/Category');
+const ProductAndCategories = require('../../model/defenitions').ProductAndCategories;
 const Category = require('../../model/defenitions').Category;
 
 const RegularExpressions = require('../../model/RegularExpressions');
@@ -12,6 +12,18 @@ module.exports.GetCategoriesListAction = async ( req , res )=>{
     try{
 
         let categories = await Category.findAll();
+
+        for ( let i = 0 ; i < categories.length ; i++ ){
+
+            let category = categories[i];
+
+            category.productsAmount = await ProductAndCategories.count({
+                where: {
+                    categoryID: category.categoryID
+                }
+            });
+
+        }//for i
 
         res.render('categories/categories-list',{'categories': categories});
 

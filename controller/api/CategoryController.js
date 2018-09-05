@@ -1,5 +1,7 @@
 "use strict";
 
+const Op = require('sequelize').Op;
+
 const Product = require('../../model/defenitions').Product;
 const Category = require('../../model/defenitions').Category;
 const Response = require('../../model/Response');
@@ -16,9 +18,7 @@ module.exports.GetCategories = async ( req , res )=>{
     try{
 
 
-        const categories = await Category.findAll({
-        });
-
+        const categories = await Category.findAll();
 
         response.code = 200;
         response.data = categories;
@@ -44,47 +44,72 @@ module.exports.GetProductsWithCategory = async ( req , res )=>{
 
     try{
 
-        let id = +req.query.id;
+        let categoryID = +req.params.categoryID;
+        let limit = +req.query.limit || 10;
+        let offset = +req.query.offset || 0;
 
-        const pCategories = await ProductAndCategories.findAll({
+        if( isNaN(categoryID) ){
 
-            where:{categoryID:id},
-            attributes: {
-                exclude: [
-                    'ID',
-                    'categoryID',
-                ]
-            }
+            response.code = 404;
+            response.data = {
+                categoryID: categoryID
+            };
+
+            response.message = "Категория передана не верно!";
+
+            res.status(response.code);
+            return res.send(response) ;
+
+        }//if
+
+        const category = await Category.findById(categoryID);
+
+        if( !category ){
+
+            response.code = 404;
+            response.data = {
+                categoryID: categoryID
+            };
+
+            response.message = "Категория не найдена!";
+
+            res.status(response.code);
+            return res.send(response) ;
+
+        }//if
+
+        let products = await ProductAndCategories.findAll({
+            limit: limit,
+            offset: offset,
+            where: {
+                categoryID: categoryID
+            },
+            attributes: [ 'productID' ]
         });
 
-        const products = await Product.findAll({
+        let ids = [].map.call( products , p => p.productID );
 
-            where:{productID:pCategories[1].productID},
+        products = await Product.findAll({
+            order: [
+                [ 'productID' , 'DESC' ]
+            ],
             attributes: {
-                exclude: [
-                    'productDescription',
-                    'created',
-                    'updated'
-                ]
+                exclude: [ 'created' , 'updated' , 'productDescription' ]
+            },
+            where:{
+                productID: {
+                    [Op.in]: ids
+                }
             }
-
         });
 
         for ( let i = 0 ; i < products.length ; i++ ){
 
             let product = products[i];
-
             product.image = await ProductImages.findOne({
-                where:{
+                attributes: [ 'imagePath' ],
+                where: {
                     productID: product.productID
-                },
-                attributes: {
-                    exclude: [
-                        'ID',
-                        'productID',
-                        'createdAt',
-                        'updatedAt'
-                    ]
                 }
             });
 
