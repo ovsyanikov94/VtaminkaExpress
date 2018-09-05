@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+    script( defer src="/javascripts/status.js" )
+
+    form.col-md-12
+        .form-group
+            label(for='statusTitle') Название
+            input#statusTitle.form-control(placeholder='Введите название')
+        .form-group
+            #message.alert.alert-danger(style="display: none")
+
+        #addStatusButton.btn.btn-primary Добавить статус

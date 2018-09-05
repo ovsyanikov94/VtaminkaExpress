@@ -1,0 +1,60 @@
+extends ../layout
+
+block content
+
+    a.form-group.btn.btn-primary.col-12(href="/panel/orders/status") Список имеющихся статусов
+
+
+
+    if orders.length === 0
+        .alert.alert-info.col-12
+            | Заказы не найдены
+    else
+        table.table
+            thead
+                tr(align="middle")
+                    th(scope='col') Номер заказа
+                    th(scope='col') Сумма заказа
+                    th(scope='col') Дата заказа
+                    th(scope='col') Статус заказа
+                    th(scope='col') Подробнее о заказе
+                    th(scope='col') Удалить
+
+            tbody
+                each order in orders
+                    tr(align="middle")
+                        td= order.orderID
+                        td= order.totalPriceWithPromo
+                        td= order.orderDate
+                        td
+                            select#statusSelect( hidden )
+                                each orderStatus in order.statusID
+                                    option( value=orderStatus.statusID )
+                            select#statusSelect.form-control
+                                each status in statuses
+                                    option(
+                                    value=status.statusID
+                                    data-status-id=status.statusID
+                                    ) #{status.statusTitle}
+                        td
+                            a.alert.alert-primary(href="/panel/orders/" + order.orderID style="display: inline-block;") Подробнее...
+                        td
+                            button.alert.alert-danger(
+                            style="cursor: pointer"
+                            data-status-id=status.statusID
+                            ) Удалить
+
+            #confirmRemoveOrderModal.modal(tabindex='-1', role='dialog')
+                .modal-dialog(role='document')
+                    .modal-content
+                        .modal-header
+                            h5.modal-title Удаление заказа
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                span(aria-hidden='true') ×
+                        .modal-body
+                            div
+                                | Вы действительно хотите удалить заказ номер
+                                b#orderId
+                        .modal-footer
+                            button.btn.btn-secondary(type='button', data-dismiss='modal') Нет
+                            button#confirmRemoveOrderButton.btn.btn-primary(type='button' data-dismiss='modal') Удалить

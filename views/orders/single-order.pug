@@ -1,0 +1,52 @@
+extends ../layout
+
+block content
+    script( defer src="/javascripts/order.js" )
+
+    form(data-order-id=order.orderID).col-md-12
+        .form-group
+            label Номер заказа
+            p=order.orderID
+        .form-group
+            label Статус заказа
+            p=status
+        .form-group
+            label Дата заказа
+            p=order.orderDate
+        .form-group
+            label Адрес заказа
+            p=order.orderAdress
+
+        .form-group
+            label(for='productsInOrder') Товары заказа
+            table.table
+                thead
+                    tr(align="middle")
+                        th(scope='col') Изображение
+                        th(scope='col') Название
+                        th(scope='col') Колличество
+                        th(scope='col') Цена за единицу
+                tbody#productsInOrder
+                    each product in order.products
+                        tr(
+                        align="middle"
+                        value=product.productID
+                        data-product-id=product.productID
+                        )
+                            td
+                              .card(style="width: 8em")
+                                 img.card-img-top(src='/' + product.image.imagePath, alt='Card image cap')
+                            td #{product.productTitle}
+                            td #{product.productAmount}
+                            td #{product.productPrice}
+        .form-group
+            label Общая сумма заказа
+            p=order.totalPrice
+        .form-group
+            label Скидка
+            p=promo
+        .form-group
+            label Общая сумма заказа с учетом скидки
+            p=order.totalPriceWithPromo
+
+        a.form-group.btn.btn-primary.col-12(href="/panel/orders") Вернуться к заказам
