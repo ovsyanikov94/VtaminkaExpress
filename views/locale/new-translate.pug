@@ -1,0 +1,56 @@
+extends ../layout
+
+block content
+    script( defer src="/javascripts/locale.js" )
+
+    form.col-md-12
+        .form-group
+            label(for="languageSelected") Выберите язык для добавления перевода
+            select#languageSelected.form-control
+                option(value='0') Выбрать язык
+                each lang in langs
+                    option(
+                    value=lang.languageID
+                    data-category-id=lang.languageID
+                    ) #{lang.languageTitle}
+        .form-group
+            label(for="constantSelected") Выберите константу для языка
+            select#constantSelected.form-control
+                option(value='0') Выбрать константу
+                each wordConst in constants
+                    option(
+                    value=wordConst.constantID
+                    data-category-id=wordConst.constantID
+                    ) #{wordConst.constantTitle}
+        .form-group
+            input#currentTranslate.form-control(placeholder='Введите перевод')
+        .form-group
+            #message.alert.alert-danger(style="display: none")
+        .form-group
+            #addTranslateButton.btn.btn-primary(style="display: inline-block")  Добавить перевод
+
+        if langs.length === 0
+            .alert.alert-info.col-12
+                | Языки не найдены
+        table.table
+            thead
+                tr(align="middle")
+                    th(scope='col') Язык
+                    th(scope='col') Константа
+                    th(scope='col') Перевод
+                    th(scope='col') Изменить
+                    th(scope='col') Удалить
+            tbody#translatesList
+                each d in data
+                    tr(align="middle")
+                        td.td= d.languageTitle
+                        td.td= d.constantTitle
+                        td.td= d.translation || "Перевод отсутствует"
+                        td
+                            .alert.alert-primary(style="cursor: pointer") Изменить
+                        td
+                            .alert.alert-danger(
+                            style="cursor: pointer"
+                            data-transl-lang=d.languageID
+                            data-transl-const=d.constantID
+                            ) Удалить

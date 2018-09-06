@@ -14,11 +14,13 @@ router.get('/locale/const-list', LocaleController.GetConstList);
 router.post('/locale/new',LocaleController.AddNewConstLeng);
 router.get('/locale/new-lang' , LocaleController.AddNewLanguageAction );
 router.get('/locale/langs-list-json', LocaleControllerAPI.GetLanguageListJSON);
-router.get('/locale/translate-to-current-language/:id', LocaleControllerAPI.GetTranslateToCurrentLanguage);
+router.get('/locale/new-translate' , LocaleControllerAPI.AddNewTranslateAction);
+router.post('/locale/new-translate' , LocaleControllerAPI.AddNewTranslate);
 
 router.get( '/locale/lang/exist' , LocaleController.LanguageExist );
 router.get('/locale/lang/:id' , LocaleController.UpdateLanguageAction );
 router.put('/locale/lang/:id' , LocaleController.UpdateLanguage );
+router.get('/locale/new-translate/:id', LocaleControllerAPI.GetTranslateToCurrentLanguage);
 
 router.delete('/locale/remove' , LocaleController.RemoveConst );
 router.put('/locale/update' , LocaleController.UpdateConst );

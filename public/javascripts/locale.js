@@ -7,13 +7,43 @@
     let messageBlock = document.querySelector('#message');
     let langsTable = document.querySelector('#langsList');
     let updateLang = document.querySelector('#updateLang');
+    let currentInputTranslate = document.querySelector('#currentTranslate');
 
     let addConst = document.querySelector('#addConctAndLeng');
+    let addTranslateButton = document.querySelector('#addTranslateButton');
+
+    if(addTranslateButton){
+
+        addTranslateButton.addEventListener('click',async()=>{
+
+
+            let lang = document.querySelector('#languageSelected').value;
+            let wordConst = document.querySelector('#constantSelected').value;
+            let currentTranslate = document.querySelector('#currentTranslate').value;
+
+            console.log(lang);
+            console.log(wordConst);
+            console.log(currentTranslate);
+
+            let request = await fetch( `${window.ServerAddress}panel/locale/new-translate` , {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    'languageID': +lang,
+                    'constantID': +wordConst,
+                    'translation': currentTranslate
+                })
+            });
+
+        })
+    }
 
     if(addConst){
         addConst.addEventListener('click',async()=>{
 
-            let leng =addConst.dataset.leng
+            let leng = addConst.dataset.leng;
             let request = await fetch( `${window.ServerAddress}panel/locale/const-list` , {
                 method: 'GET',
                 headers: {
@@ -160,3 +190,88 @@
     }//if
 
 })();
+
+let addEventToSaveChange = async function (elem) {
+
+    if(elem){
+
+        let buttonSaveChange = elem.querySelector('.save-change');
+        console.log('elem11111',elem);
+
+        let parentDiv = buttonSaveChange.parentElement.parentElement;
+        buttonSaveChange.addEventListener('click',async()=>{
+
+            console.log('element',elem);
+            let idChange = +elem.querySelector('#constId').innerText;
+
+            console.log('id',idChange);
+
+            let descriptionChange =elem.querySelector('#description').value;
+            console.log('description',descriptionChange);
+
+            let titleChange = elem.querySelector('#title').value;
+            console.log('title',titleChange);
+
+            let data = new FormData();
+
+            data.append('id', +idChange);
+            data.append('description', descriptionChange);
+            data.append('title', titleChange);
+
+            try{
+
+                let request = await fetch(`${window.ServerAddress}panel/locale/update` , {
+                    method: 'PUT',
+                    body: data
+                });
+
+                let response = await request.json();
+
+                console.log(response);
+
+            } // try
+
+            catch(ex){
+                console.log('ex' , ex);
+            } // catch
+
+        })
+
+
+    }
+
+} // Cохранение изменения в БД
+
+let addEventToChangeTranslate = function () {
+
+    let buttonChange = document.querySelectorAll('.alert-primary');
+
+    [].forEach.call(buttonChange, (btn) => {
+
+        let parentElement = btn.parentElement.parentElement;
+
+        btn.addEventListener('click',()=>{
+
+            console.log('elem5555555', parentElement);
+            let arrayChild = parentElement.querySelectorAll('.td');
+
+            console.log(arrayChild[1].textContent);
+            parentElement.innerHTML ='';
+
+            parentElement.innerHTML +=`
+                <tr align="middle">
+                    <td id="constId">${arrayChild[0].textContent}</td>
+                    <td ><input id="description" class="form-control" value='${arrayChild[1].textContent}'></td>
+                    <td ><input id="title" class="form-control" value='${arrayChild[2].textContent}'></td>
+                    <td><div style="cursor: pointer" class="btn btn-primary save-change"  data-const-id=${+arrayChild[0].textContent} >Cохранить</div></td>
+                    <td><div style="cursor: pointer" class="btn btn-danger Annulment" data-const-description=${arrayChild[1].textContent}  data-const-title=${arrayChild[2].textContent} data-const-id=${arrayChild[0].textContent} >Отменить</div></td>
+                </tr>
+                `;
+
+            addEventToSaveChange(parentElement);
+
+        })
+
+    });
+
+} // addEventToChangeTranslate - Изменить
