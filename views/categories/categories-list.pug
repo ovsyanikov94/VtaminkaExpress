@@ -23,7 +23,8 @@ block content
                     tr(align="middle")
                         td= category.categoryID
                         td= category.categoryTitle
-                        td= category.productsAmount
+                        td
+                            a(href="/panel/categories/" + category.productsAmount ) Просмотреть
                         td
                             a.alert.alert-primary(href="/panel/category/"+category.categoryID style="display: inline-block;") Изменить
                         td

@@ -2,10 +2,14 @@
 
 const ProductAndCategories = require('../../model/defenitions').ProductAndCategories;
 const Category = require('../../model/defenitions').Category;
+const Product = require('../../model/defenitions').Product;
+const ProductImages = require('../../model/defenitions').ProductImages;
 
 const RegularExpressions = require('../../model/RegularExpressions');
 
 const Response = require('../../model/Response');
+
+const Op = require('sequelize').Op;
 
 module.exports.GetCategoriesListAction = async ( req , res )=>{
 
@@ -119,6 +123,58 @@ module.exports.UpdateCategory = async ( req , res )=>{
         response.data = ex;
 
         res.send( response );
+
+    }//catch
+
+};
+
+module.exports.GetProductsByCategories = async(req,res)=>{
+
+    try{
+
+        let categoryID = +req.params.categoryID;
+
+        let products = await ProductAndCategories.findAll({
+            where: {
+                categoryID: categoryID
+            },
+            attributes: [ 'productID' ]
+        });
+
+        let ids = [].map.call( products , p => p.productID );
+
+        products = await Product.findAll({
+            order: [
+                [ 'productID' , 'DESC' ]
+            ],
+            attributes: {
+                exclude: [ 'created' , 'updated' , 'productDescription' ]
+            },
+            where:{
+                productID: {
+                    [Op.in]: ids
+                }
+            }
+        });
+
+        for ( let i = 0 ; i < products.length ; i++ ){
+
+            let product = products[i];
+            product.image = await ProductImages.findOne({
+                attributes: [ 'imagePath' ],
+                where: {
+                    productID: product.productID
+                }
+            });
+
+        }//for i
+
+        res.render('categories/products-by-categories',{'products': products});
+
+    }//try
+    catch (ex){
+
+        res.render('error',{'error': ex});
 
     }//catch
 

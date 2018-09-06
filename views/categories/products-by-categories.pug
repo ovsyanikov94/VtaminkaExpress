@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+
+    if products.length === 0
+        .alert.alert-info.col-12
+            | Товары не найдены
+    else
+        table.table
+            thead
+                tr(align="middle")
+                    th(scope='col') #
+                    th(scope='col') Название
+                    th(scope='col') Цена
+
+            tbody
+                each product in products
+                    tr(align="middle")
+                        td= product.productID
+                        td= product.productTitle
+                        td= product.productPrice

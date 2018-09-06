@@ -7,6 +7,7 @@ const router = express.Router();
 
 /* Categories */
 router.get('/categories', CategoryController.GetCategoriesListAction );
+router.get('/categories/:categoryID' , CategoryController.GetProductsByCategories);
 router.get('/category/new' , CategoryController.AddCategoryAction);
 router.get('/category/:id' , CategoryController.GetCategoryAction );
 router.post('/category/new' , CategoryController.AddCategory);
