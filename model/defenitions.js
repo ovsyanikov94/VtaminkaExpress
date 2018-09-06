@@ -228,9 +228,9 @@ Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'langu
 //
 // Category.sync({force: true});
 // ProductAndCategories.sync({force: true});
-//  ProductAttributes.sync({force: true});
-//  ProductAndAttributes.sync({force: true});
-//  ProductImages.sync({force: true});
+// ProductAttributes.sync({force: true});
+// ProductAndAttributes.sync({force: true});
+// ProductImages.sync({force: true});
 
 const News  = connection.define('news',{
 
@@ -283,7 +283,7 @@ const newsImage=connection.define('newsImage',{
 
 newsImage.belongsTo(News , { foreignKey: 'newsID' });
 // News.sync({force: true});
-//newsImage.sync({force: true});
+// newsImage.sync({force: true});
 
 module.exports.News=News;
 module.exports.newsImage=newsImage;
