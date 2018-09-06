@@ -20,6 +20,7 @@ router.put('/locale/lang/:id' , LocaleController.UpdateLanguage );
 router.delete('/locale/remove' , LocaleController.RemoveConst );
 router.put('/locale/update' , LocaleController.UpdateConst );
 
-
+router.get('/locale/transletion',LocaleController.GelTransletionList);
+router.post('/locale/add-transletion',LocaleController.AddTransletion);
 
 module.exports = router;

@@ -585,3 +585,30 @@ module.exports.ExportLanguage = async ( req , res )=>{
     res.send( response );
 
 };
+
+module.exports.GelTransletionList=async(req , res)=>{
+
+
+    let leng = await Langs.findAll();
+    let constans =await WordsConstans.findAll();
+    let transletion = await Translations.findAll();
+
+    [].forEach.call(transletion,async(t)=>{
+
+        t.titleConst = await WordsConstans.findOne({
+            where:{
+                constantID:t.constantID
+            }
+        });
+        t.titleLeng= await Langs.findOne({
+            where:{
+                languageID:t.languageID
+            }
+        });
+    })
+    res.render('locale/transleton/trasletion-list',{'lengs':leng,'constans':constans,'translations':transletion});
+};
+
+module.exports.AddTransletion=async(req , res)=>{
+
+};

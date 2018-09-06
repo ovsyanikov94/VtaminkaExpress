@@ -210,7 +210,9 @@ const Translations = connection.define( 'translations' , {
     translation: {
         allowNull: false,
         type: Sequelize.DataTypes.STRING
-    }
+    },
+    titleConst: Sequelize.DataTypes.VIRTUAL,
+    titleLeng: Sequelize.DataTypes.VIRTUAL
 
 },{
     createdAt: false,
