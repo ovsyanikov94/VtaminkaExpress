@@ -21,6 +21,4 @@ router.delete('/locale/remove' , LocaleController.RemoveConst );
 router.put('/locale/update' , LocaleController.UpdateConst );
 
 
-
-
 module.exports = router;
