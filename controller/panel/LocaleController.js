@@ -234,8 +234,6 @@ module.exports.AddNewLanguage = async ( req , res )=>{
 
 module.exports.UpdateLanguageAction  = async(req, res)=>{
 
-
-
     try{
         let langID = +req.params.id;
         let lang = await Langs.findById( langID );
@@ -245,6 +243,7 @@ module.exports.UpdateLanguageAction  = async(req, res)=>{
     catch (ex){
         res.render('error',{ error: ex});
     }//catch
+
 };
 
 module.exports.UpdateLanguage = async ( req , res )=>{
@@ -307,7 +306,6 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
 
             }//else
-
 
             // fs.existsSync()
             langImage.mv( `${path}/${langImage.name}` ,async function(err) {
@@ -541,6 +539,8 @@ module.exports.ImportLanguage = async ( req , res )=>{
 
 module.exports.ExportLanguage = async ( req , res )=>{
 
+    let response = new Response();
+
     try{
 
         let lang = await Langs.findById(req.params.id);
@@ -573,13 +573,14 @@ module.exports.ExportLanguage = async ( req , res )=>{
     }//try
     catch(ex){
 
-        let response = new Response();
+
         response.code = 500;
         response.message = 'Внутренняя ошибка сервера!';
         console.log('EX: ' , ex);
-        res.status( response.code );
-        res.send( response );
 
     }//catch
+
+    res.status( response.code );
+    res.send( response );
 
 };

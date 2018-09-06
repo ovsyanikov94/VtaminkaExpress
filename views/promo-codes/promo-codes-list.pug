@@ -1,0 +1,76 @@
+extends ../layout
+
+block content
+    script( defer src="/javascripts/promo-codes.js" )
+
+    form.col-md-12
+        .form-group
+            label(for='promoCodeInput') Промо-код
+            input#promoCodeInput.form-control(placeholder='Введите промо-код')
+        .form-group
+            label(for='percentageInput') Процент скидки
+            input#percentageInput.form-control(placeholder='Введите процент скидки')
+        .form-group
+            label(for='deliveryInput') Доставка
+            input#deliveryInput.form-control(placeholder='Введите доставку')
+        .form-group
+            label(for='promoCountInput') Количество
+            input#promoCountInput.form-control(placeholder='Введите кол-во промо-кодов')
+        .form-group
+            label(for='startDateInput') Начальная дата активности промо-кода
+            input#startDateInput.form-control(type="date")
+        .form-group
+            label(for='expireDateInput') Конечная дата активности промо-кода
+            input#expireDateInput.form-control(type="date")
+        .form-group
+            #message.alert.alert-danger(style="display: none")
+            #addPromoCodeButton.btn.btn-primary Добавить новый промо-код
+
+    if promoCodes.length === 0
+        .alert.alert-info.col-12
+            | Промо-коды не найдены
+    table.table
+        thead
+            tr(align="middle")
+                th(scope='col') #
+                th(scope='col') Промо-код
+                th(scope='col') % скидки
+                th(scope='col') Доставка
+                th(scope='col') Кол-во кодов
+                th(scope='col') Старт
+                th(scope='col') Окончание
+                th(scope='col') Изменить
+                th(scope='col') Удалить
+        tbody#promoCodesList
+            each promoCode in promoCodes
+                tr(align="middle")
+                    td= promoCode.promoCodeID
+                    td= promoCode.discountCode
+                    td= promoCode.discount
+                    td= promoCode.delivery
+                    td= promoCode.promoCount
+                    td= promoCode.startAtDate
+                    td= promoCode.expireAtDate
+                    td
+                        a.alert.alert-primary(href="#" + promoCode.promoCodeID style="display: inline-block;") Изменить
+                    td
+                        button.alert.alert-danger(
+                            style="cursor: pointer"
+                            data-lang-id=promoCode.promoCodeID
+                        ) Удалить
+
+
+    #confirmRemovePromoCodeModal.modal(tabindex='-1', role='dialog')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5.modal-title Удаление промо-кода
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                .modal-body
+                    div
+                        | Вы действительно хотите удалить промо-код
+                        b#promoCodeTitle
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Нет
+                    button#confirmRemovePromoCodeButton.btn.btn-primary(type='button' data-dismiss='modal') Удалить
