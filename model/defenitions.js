@@ -484,7 +484,7 @@ Product.belongsToMany(Orders,{through:OrdersAndProduct, foreignKey: 'productID'}
 
 //Users.sync({force: true});
 //Cards.sync({force:true});
-PromoCodes.sync({force:true});
+//PromoCodes.sync({force:true});
 //Orders.sync({force:true});
 //OrdersAndProduct.sync({force:true});
 //UserAndCart.sync({force:true});

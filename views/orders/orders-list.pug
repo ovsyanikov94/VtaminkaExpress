@@ -16,43 +16,50 @@ block content
                     th(scope='col') Номер заказа
                     th(scope='col') Сумма заказа
                     th(scope='col') Дата заказа
-                    th(scope='col') Статус заказа
+                    th(scope='col') Текущий статус заказа
+                    th(scope='col') Изменить статус заказа
                     th(scope='col') Подробнее о заказе
                     th(scope='col') Удалить
 
-            tbody
+            tbody#orders
                 each order in orders
-                    tr(align="middle")
+                    tr(align="middle")(data-order-id=order.orderID)
                         td= order.orderID
-                        td= order.totalPriceWithPromo
-                        td= order.orderDate
+                        td= order.totalPrice
+                        td= order.orderDate.toLocaleString()
+
+
                         td
-                            #currentStutus.label= ""
-                            if order.statusID=null
-                            #currentStutus.label.text(style="color:red")= "НОВЫЙ ЗАКАЗ! ОПРЕДЕЛИТЕСЬ СО СТАТУСОМ"
+                            #currentStutus.label.label-info(data-order-id=order.orderID)= order.currentStatusName
+                            #massege.p=""
+                            code
+                                if order.currentStatusName === "Новый"
+                                    #massege.p.text(style="color:red")= "ПРИМИТЕ НОВЫЙ ЗАКАЗ В ОБРАБОТКУ!"
+                                if order.currentStatusName !== "Новый"
+                                    #massege.p.text= ""
 
-                            if order.statusID != null
-                                select#statusSelect(  )
-                                    each status in statuses
-                                        option( value=order.statusID )
-                                        #currentStutus.label.text= status.statusTitle
-                                //#currentStutus.label.text= "НОВЫЙ ЗАКАЗ! ОПРЕДЕЛИТЕСЬ СО СТАТУСОМ"
+                        td
 
-
-                            label(for='statusSelect') Изменить статус
-                            select#statusSelect.form-control
+                            select.form-control(
+                            data-order-id=order.orderID
+                            )
                                 each status in statuses
                                     option(
                                     value=status.statusID
-                                    data-status-id=status.statusID
-                                    data-order-id=order.statusID
+                                    data-status-id=order.statusID
                                     ) #{status.statusTitle}
+                            br
+                            button.btn.btn-wrapper.btn-sm(
+                            style="cursor: pointer"
+                            data-order-id=order.orderID
+                            ) Изменить
+
                         td
                             a.alert.alert-primary(href="/panel/orders/" + order.orderID style="display: inline-block;") Подробнее...
                         td
                             button.alert.alert-danger(
                             style="cursor: pointer"
-                            data-status-id=order.statusID
+                            data-order-id=order.orderID
                             ) Удалить
 
             #confirmRemoveOrderModal.modal(tabindex='-1', role='dialog')
@@ -65,7 +72,8 @@ block content
                         .modal-body
                             div
                                 | Вы действительно хотите удалить заказ номер
+                                br
                                 b#orderId
                         .modal-footer
                             button.btn.btn-secondary(type='button', data-dismiss='modal') Нет
-                            button#confirmRemoveOrderButton.btn.btn-primary(type='button' data-dismiss='modal') Удалить
+                            button#confirmRemoveOrderButton.btn.btn-primary(type='button' data-dismiss='modal' ) Удалить
