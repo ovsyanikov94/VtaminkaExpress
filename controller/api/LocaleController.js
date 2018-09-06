@@ -15,6 +15,7 @@ module.exports.GetTranslateToCurrentLanguage = async (req,res)=>{
 
     let langID = +req.params.id;
 
+
     let translate = await Translations.findAll(
         {
             where: {
