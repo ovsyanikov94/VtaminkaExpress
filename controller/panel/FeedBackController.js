@@ -50,13 +50,14 @@ module.exports.ProcessedFeedBack = async ( req , res )=>{
         fBack.fProcessed = true;
         //console.log(fBack);
         if(fBack){
-            let updateResult = await FeedBack.update({
 
-                fUserName:  fBack.fUserName,
-                fUserEmail: fBack.fUserEmail,
-                fUserPhone: fBack.fUserPhone,
-                fMessage: fBack.fMessage,
-                fProcessed:  fBack.fProcessed,
+            let updateResult = await fBack.update({
+                // 'feedBackID': fBackId,
+                // 'fUserName':  fBack.fUserName,
+                // 'fUserEmail': fBack.fUserEmail,
+                // 'fUserPhone': fBack.fUserPhone,
+                // 'fMessage': fBack.fMessage,
+                'fProcessed':  fBack.fProcessed,
             });
 
             response.code = 200;
@@ -66,7 +67,7 @@ module.exports.ProcessedFeedBack = async ( req , res )=>{
         else{
             response.code = 404;
             response.message = 'Сообщение не найденo!';
-            response.data = categoryID;
+            response.data = fBackId;
 
         }//if
 
