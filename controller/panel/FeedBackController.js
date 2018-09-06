@@ -46,7 +46,9 @@ module.exports.ProcessedFeedBack = async ( req , res )=>{
         }//if
 
         let fBack = await FeedBack.findById(fBackId);
-        console.log(fBack);
+
+        fBack.fProcessed = true;
+        //console.log(fBack);
         if(fBack){
             let updateResult = await FeedBack.update({
 
@@ -54,7 +56,7 @@ module.exports.ProcessedFeedBack = async ( req , res )=>{
                 fUserEmail: fBack.fUserEmail,
                 fUserPhone: fBack.fUserPhone,
                 fMessage: fBack.fMessage,
-                fProcessed:  true,
+                fProcessed:  fBack.fProcessed,
             });
 
             response.code = 200;
