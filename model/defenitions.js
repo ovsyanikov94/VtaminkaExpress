@@ -21,7 +21,8 @@ const Category = connection.define('productcategories',{
             is: RegularExpressions.CategoryTitleExpression
         }
 
-    }
+    },
+    productsAmount: Sequelize.DataTypes.VIRTUAL
 
 },{
     createdAt: false,
@@ -143,46 +144,6 @@ const ProductImages = connection.define('pImages', {
     updatedAt: 'updatedAt'
 });
 
-const PromoCodes = connection.define('promoCodes',{
-
-    promoCodeID:{
-      primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
-      type: Sequelize.DataTypes.INTEGER
-    },
-    discountCode:{
-        allowNull: false,
-        unique: true,
-        type: Sequelize.DataTypes.STRING
-    },
-    discount:{
-      allowNull: false,
-      type: Sequelize.DataTypes.TINYINT
-    },
-    delivery:{
-      allowNull: false,
-      type: Sequelize.DataTypes.INTEGER
-    },
-    promoCount:{
-      allowNull: false,
-      type: Sequelize.DataTypes.INTEGER
-    },
-    startAtDate:{
-        allowNull: true,
-        type: Sequelize.DataTypes.DATEONLY
-    },
-    expireAtDate:{
-        allowNull: true,
-        type: Sequelize.DataTypes.DATEONLY
-    }
-
-},{
-    createdAt: true,
-    updatedAt: true
-});
-
-
 Product.belongsToMany( Category , { through: ProductAndCategories , foreignKey: 'productID' , as: 'categories' });
 Category.belongsToMany( Product ,  { through: ProductAndCategories , foreignKey: 'categoryID'});
 
@@ -256,15 +217,83 @@ const Translations = connection.define( 'translations' , {
     updatedAt: false
 });
 
-const Users = connection.define('users',{
+WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
+Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
 
-    userId:{
+// Langs.sync({force: true});
+// WordsConstans.sync({force: true});
+//
+//
+// Product.sync({force: true});
+//
+// Category.sync({force: true});
+// ProductAndCategories.sync({force: true});
+//  ProductAttributes.sync({force: true});
+//  ProductAndAttributes.sync({force: true});
+//  ProductImages.sync({force: true});
+
+const News  = connection.define('news',{
+
+    newsID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    newsTitle:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    },
+    newsText:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING(1000)
+    },
+    image: Sequelize.DataTypes.VIRTUAL
+},{
+        createdAt: 'createdAt',
+        updatedAt: 'updatedAt'
+  }
+);
+
+const newsImage=connection.define('newsImage',{
+    imageID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    newsID:{
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    imagePath:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING(1500),
+        validate:{
+            min: 2,
+            max: 1500
+        }
+    }
+    },
+    {
+
+        createdAt: 'createdAt',
+        updatedAt: 'updatedAt'
+    });
+
+newsImage.belongsTo(News , { foreignKey: 'newsID' });
+// News.sync({force: true});
+//newsImage.sync({force: true});
+
+const FeedBack = connection.define('feedBack',{
+
+    feedBackID:{
         primaryKey: true,
         allowNull: false,
         autoIncrement: true,
         type: Sequelize.DataTypes.INTEGER
     },
-    userName: {
+    fUserName: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
         validate:{
@@ -272,77 +301,45 @@ const Users = connection.define('users',{
         }
 
     },
-    userEmail:{
-        type: Sequelize.DataTypes.STRING(60),
+    fUserEmail:{
+        type: Sequelize.DataTypes.STRING(75),
         allowNull: false,
         validate:{
             is: RegularExpressions.EmailExpression,
-
         }
     },
-    userPhone:{
-        type: Sequelize.DataTypes.STRING(15),
+    fUserPhone:{
+        type: Sequelize.DataTypes.STRING(16),
         allowNull: false,
         validate:{
             is: RegularExpressions.PhoneExpression,
-
         }
     },
+    fMessage:{
+        type: Sequelize.DataTypes.STRING(1500),
+        allowNull: false,
+        validate:{
+            is: RegularExpressions.ProductDescriptionExpression
+        }
+    },
+    fProcessed:{
+        type: Sequelize.DataTypes.BOOLEAN,
+        allowNull: false,
+
+    },
+
 
 },{
     createdAt: 'created',
     updatedAt: 'updated'
 });
 
-const UserMessages = connection.define('uMessages', {
-    ID: {
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-        type: Sequelize.DataTypes.INTEGER
-    },
-    userId:{
-        allowNull: false,
-        type: Sequelize.DataTypes.INTEGER
-    },
-    message:{
-        allowNull: false,
-        type: Sequelize.DataTypes.STRING(1500),
-        validate:{
-            min: 2,
-            max: 1500
-        }
-    },
-    processed:{
-        allowNull: false,
-        type: Sequelize.DataTypes.BOOLEAN
-    }
-},{
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-});
+//FeedBack.sync({force: true});
 
-UserMessages.belongsTo(Users , { foreignKey: 'userId' });
+module.exports.FeedBack= FeedBack;
 
-WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
-Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
-
-//User.sync({force: true});
-//UserMessages.sync({force: true});
-
-//PromoCodes.sync({force: true});
-
-// WordsConstans.sync({force: true});
-// Translations.sync({force: true});
-//Langs.sync({force: true});
-
-//Product.sync({force: true});
-//Category.sync({force: true});
-// ProductAndCategories.sync({force: true});
-// ProductAttributes.sync({force: true});
-//ProductAndAttributes.sync({force: true});
-// ProductImages.sync({force: true});
-
+module.exports.News=News;
+module.exports.newsImage=newsImage;
 module.exports.Category = Category;
 module.exports.Product = Product;
 module.exports.ProductAndCategories = ProductAndCategories;
@@ -353,7 +350,3 @@ module.exports.ProductImages = ProductImages;
 module.exports.Langs = Langs;
 module.exports.WordsConstans = WordsConstans;
 module.exports.Translations = Translations;
-module.exports.PromoCodes = PromoCodes;
-
-module.exports.Users = Users;
-module.exports.UserMessages= UserMessages;
