@@ -5,7 +5,7 @@ const Response = require('../../model/Response');
 const News = require('../../model/defenitions').News;
 const NewsImage = require('../../model/defenitions').newsImage;
 const fs = require('fs');
-
+const fe = require('fs-extra');
 module.exports.GetNewsList = async(req,res)=>{
 
     let limit = req.query.limit || 10;
@@ -16,6 +16,7 @@ module.exports.GetNewsList = async(req,res)=>{
         offset: offset
     });
 
+
     for ( let i = 0 ; i < news.length ; i++ ){
 
         news[i].image = await NewsImage.findOne({
@@ -25,7 +26,6 @@ module.exports.GetNewsList = async(req,res)=>{
         });
 
     }//for i
-
     res.render('blog/news-list',{ 'news':news });
 
 }//GetNewsList
@@ -48,10 +48,9 @@ module.exports.addNews=async(req,res)=>{
         if(req.files){
 
             let newsImage = req.files.image
-            console.log('66666666666666666666',newsImage)
             let path = `public/images/news/${newNews.newsID}`;
 
-            console.log(path);
+
             if(!fs.existsSync('public/images')){
                 fs.mkdirSync('public/images');
             }
@@ -74,7 +73,6 @@ module.exports.addNews=async(req,res)=>{
                 }//if
 
                 let path = `images/news/${newNews.newsID}/${newsImage.name}`;
-                console.log('1111111111111111111111',path);
 
                 let newImage = await NewsImage.create({
 
@@ -103,13 +101,165 @@ module.exports.addNews=async(req,res)=>{
 
 module.exports.removeNews=async(req,res)=>{
 
+    let response = new Response();
+    let id = +req.body.id;
+    let stat=200;
+    try{
+        let news =await News.findOne({
+            where:{
+                newsID:id
+            }
+        });
+
+        if(news) {
+
+            let path = await NewsImage.findOne({
+                where: {
+                    newsID: id
+                }
+            });
+
+
+
+            fe.remove(`public/${path.imagePath}`, async function (err) {
+                if (!err) {
+
+                    await path.destroy();
+                    await news.destroy();
+                }
+
+            });
+
+            fe.remove(`public/images/news/${news.newsID}`,async function (err){
+                if(err){
+                    console.log('ERROR');
+                }
+            });
+        }
+        response.code=200
+        response.message = "новость удалена"
+
+    }catch (ex){
+
+
+
+        response.code=500
+        response.message = "ощибка сервера"
+        stat=500;
+    }
+
+
+
+
+    res.status(stat);
+    res.send(response);
+
 }//removeNews
 
-module.exports.updateNews=async(req,res)=>{
+module.exports.updateNewsAction=async(req,res)=>{
+    let response = new Response();
+    let id = +req.params.id;
+
+    if(!id){
+        response.code =404;
+        response.message = "новость не найдена ";
+        return response;
+    }
+
+    try{
+
+        let oneNews = await News.findOne({
+            where:{
+                newsID:id
+            }
+        })
+
+        oneNews.image = await NewsImage.findOne({
+            where:{
+                newsID: oneNews.newsID
+            }
+        });
+
+
+        res.render('blog/single-news',{ 'news':oneNews });
+
+    }catch (ex){
+        res.render('error',{ 'error': ex });
+    }//catch
+
 
 }//updateNews
 
-module.exports.GetSingleNews=async(req,res)=>{
+module.exports.UpdataNews=async(req,res)=>{
+
+    let response = new Response();
+    let id= +req.body.id;
+    let title = req.body.newsTitle;
+    let text = req.body.newsText;
+
+    try{
+
+        let news = await News.findById( id );
+
+        if( news ){
+
+            let newNews = await news.update({
+                newsTitle:title,
+                newsText:text
+            });
+
+            if(req.files){
+
+                let newsImage = req.files.image;
 
 
-}//GetSingleNews
+                let image = await NewsImage.findOne({
+                    where:{
+                        newsID:id
+                    }
+                });
+
+                if( !image ){
+                    fs.mkdirSync( `public/images/news/${id}` );
+                }//if
+                else{
+                    fe.removeSync(`public/${image.imagePath}`);
+                }//else
+
+                await newsImage.mv( `public/images/news/${id}/${newsImage.name}`);
+
+
+                let path = `images/news/${newNews.newsID}/${newsImage.name}`;
+
+                let newImage = await image.update({
+                    newsID:newNews.newsID,
+                    imagePath:path
+                });
+
+                response.data = path;
+
+            }//if
+
+            response.code = 200;
+
+        }//if
+        else{
+
+            response.code = 404;
+            response.message = "новость не найдена!";
+
+        }//else
+
+    }//try
+    catch (ex){
+
+        response.code=500;
+        response.message="ощибка сервера";
+        console.log( ex );
+
+    }//catch
+
+    res.status(response.code);
+    res.send(response);
+
+}//UpdataNews
