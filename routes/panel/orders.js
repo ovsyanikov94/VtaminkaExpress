@@ -7,7 +7,7 @@ const router = express.Router();
 /* Orders */
 
 router.get('/orders' ,OrderController.GetOrdersListAction );
-
+router.put('/orders/:id' ,OrderController.ChangeStatusOrder );
 
 
 module.exports = router;

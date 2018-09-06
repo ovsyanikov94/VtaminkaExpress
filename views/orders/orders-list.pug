@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-
+    script( defer src="/javascripts/order.js" )
     a.form-group.btn.btn-primary.col-12(href="/panel/orders/status") Список имеющихся статусов
 
 
@@ -27,21 +27,32 @@ block content
                         td= order.totalPriceWithPromo
                         td= order.orderDate
                         td
-                            select#statusSelect( hidden )
-                                each orderStatus in order.statusID
-                                    option( value=orderStatus.statusID )
+                            #currentStutus.label= ""
+                            if order.statusID=null
+                            #currentStutus.label.text(style="color:red")= "НОВЫЙ ЗАКАЗ! ОПРЕДЕЛИТЕСЬ СО СТАТУСОМ"
+
+                            if order.statusID != null
+                                select#statusSelect(  )
+                                    each status in statuses
+                                        option( value=order.statusID )
+                                        #currentStutus.label.text= status.statusTitle
+                                //#currentStutus.label.text= "НОВЫЙ ЗАКАЗ! ОПРЕДЕЛИТЕСЬ СО СТАТУСОМ"
+
+
+                            label(for='statusSelect') Изменить статус
                             select#statusSelect.form-control
                                 each status in statuses
                                     option(
                                     value=status.statusID
                                     data-status-id=status.statusID
+                                    data-order-id=order.statusID
                                     ) #{status.statusTitle}
                         td
                             a.alert.alert-primary(href="/panel/orders/" + order.orderID style="display: inline-block;") Подробнее...
                         td
                             button.alert.alert-danger(
                             style="cursor: pointer"
-                            data-status-id=status.statusID
+                            data-status-id=order.statusID
                             ) Удалить
 
             #confirmRemoveOrderModal.modal(tabindex='-1', role='dialog')

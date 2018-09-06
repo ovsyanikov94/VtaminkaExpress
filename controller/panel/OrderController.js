@@ -41,3 +41,27 @@ module.exports.GetOrdersListAction = async ( req , res )=>{
     }//catch
 
 };
+
+module.exports.ChangeStatusOrder = async ( req , res )=>{
+
+    try{
+
+        let orders = await Orders.findAll({
+            limit: 10,
+            offset: 0
+        });
+
+        let statuses = await StatusOrder.findAll({
+
+        });
+
+        res.render('orders/orders-list' , { 'orders': orders, 'statuses': statuses  });
+
+    }//try
+    catch(ex){
+
+        res.render('error' , ex);
+
+    }//catch
+
+};
