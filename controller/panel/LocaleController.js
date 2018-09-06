@@ -5,6 +5,7 @@ const WordsConstans =require('../../model/defenitions').WordsConstans;
 const Translations =require('../../model/defenitions').Translations;
 const Response = require('../../model/Response');
 const fs = require('fs');
+const connection = require('../../routes/connection');
 
 module.exports.UpdateConst = async(req,res)=>{
 
@@ -49,7 +50,7 @@ module.exports.UpdateConst = async(req,res)=>{
     res.status( respone.code );
     res.send(respone);
 
-}
+};
 
 module.exports.RemoveConst = async(req,res)=>{
     let respone = new Response();
@@ -60,7 +61,7 @@ module.exports.RemoveConst = async(req,res)=>{
 
             respone.code=404;
             respone.message="значение нн найдено";
-            respone.data = idConst
+            respone.data = idConst;
             return res.send(respone)
 
         }
@@ -80,7 +81,7 @@ module.exports.RemoveConst = async(req,res)=>{
 
         respone.code=200;
         respone.message = "константа удалена";
-        respone.data = idConst
+        respone.data = idConst;
         res.send(respone)
     }
     catch (ex){
@@ -102,7 +103,7 @@ module.exports.AddNewConstLeng=async(req,res)=>{
             'constantTitle':title,
             'description':description,
 
-        })
+        });
 
 
 
@@ -233,8 +234,6 @@ module.exports.AddNewLanguage = async ( req , res )=>{
 
 module.exports.UpdateLanguageAction  = async(req, res)=>{
 
-
-
     try{
         let langID = +req.params.id;
         let lang = await Langs.findById( langID );
@@ -244,6 +243,7 @@ module.exports.UpdateLanguageAction  = async(req, res)=>{
     catch (ex){
         res.render('error',{ error: ex});
     }//catch
+
 };
 
 module.exports.UpdateLanguage = async ( req , res )=>{
@@ -306,7 +306,6 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
 
             }//else
-
 
             // fs.existsSync()
             langImage.mv( `${path}/${langImage.name}` ,async function(err) {
@@ -426,6 +425,158 @@ module.exports.LanguageExist = async ( req , res )=>{
         response.code = 500;
         response.message = 'Внутренняя ошибка сервера';
         response.data = ex;
+
+    }//catch
+
+    res.status( response.code );
+    res.send( response );
+
+};
+
+module.exports.ImportLanguage = async ( req , res )=>{
+
+    let response = new Response();
+
+    try{
+
+        let file = req.files.file;
+
+        if(file){
+
+            let LangID = req.body.langID;
+
+            let lang = await Langs.findById(LangID);
+
+            let fileData = JSON.parse(file.data);
+
+            fileData = Object.entries(fileData);
+
+            let checkTranstate;
+
+            for(let i = 0; i < fileData.length; i++){
+
+                checkTranstate = await connection.query(`
+                    SELECT *
+                    FROM \`translations\` AS t
+                    JOIN \`wordsconstants\` AS wc ON wc.constantID = t.constantID
+                    WHERE t.langID = '${LangID}' AND wc.constantTitle = '${fileData[i][0]}'`);
+
+
+                if(checkTranstate[0].length > 0){
+
+                    if(fileData[i][1] === ""){
+
+                        Translations.destroy({
+                            where: {
+                                ID: checkTranstate[0][0].ID
+                            }
+                        });
+
+                    }//if
+                    else {
+
+                        let translate = await Translations.findById(checkTranstate[0][0].ID);
+
+                        translate.update({
+                            translation: fileData[i][1]
+                        })
+
+                    }//else
+
+                }//if
+                else {
+
+                    if(fileData[i][1] === "")
+                        continue;
+
+                    let constant = await WordsConstans.findOne({
+
+                        where: {
+                            constantTitle: fileData[i][0]
+                        }
+
+                    });
+
+                    Translations.create({
+                        translation: fileData[i][1],
+                        constantID: constant.constantID,
+                        langID: LangID
+                    });
+
+                }//else
+
+            }//for
+
+            let path = `public/i18n/${lang.dataValues.languageTitle}.json`;
+
+            if(fs.existsSync(path)){
+
+                fs.unlinkSync(path);
+
+            }//if
+
+            fs.appendFileSync(path, file.data);
+
+        }//if
+
+        response.code = 200;
+        response.message = 'Данные успешно добавлены!';
+        response.data = {};
+
+    }//try
+    catch(ex){
+
+        response.code = 500;
+        response.message = 'Внутренняя ошибка сервера!';
+        console.log('EX: ' , ex);
+
+    }//catch
+
+    res.status( response.code );
+    res.send( response );
+
+};
+
+module.exports.ExportLanguage = async ( req , res )=>{
+
+    let response = new Response();
+
+    try{
+
+        let lang = await Langs.findById(req.params.id);
+
+        let translations = await connection.query(`
+            SELECT wc.constantTitle, t.translation
+            FROM \`translations\` as t
+            JOIN \`wordsconstants\` as wc ON wc.constantID = t.constantID
+            WHERE t.languageID = '${lang.languageID}'
+        `);
+
+        let constants = await WordsConstans.findAll();
+
+        let jsonData = {};
+
+        constants.forEach(item => {
+
+            jsonData[`${item.constantTitle}`] = "";
+
+        });
+
+        translations[0].forEach(item => {
+
+            jsonData[`${item.constantTitle}`] = item.translation;
+
+        });
+
+        res.send( jsonData );
+
+    }//try
+    catch(ex){
+
+
+        response.code = 500;
+        response.message = 'Внутренняя ошибка сервера!';
+        console.log('EX: ' , ex);
 
     }//catch
 
