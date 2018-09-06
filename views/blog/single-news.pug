@@ -4,8 +4,18 @@ block content
     script( defer src="/javascripts/news.js" )
     form
         .form-group
-            label(for='Title') Заголовок
-            input#Title.form-control(type='text', placeholder='введите заголовок новости')
+            if news.image
+                img#newsImg.card-img-top(src='/' + news.image.imagePath, alt='Card image cap' style="width: 400px; height: 250px;")
         .form-group
-            label(for='TextNews') Текс новости
-            textarea#TextNews.form-control(rows='3')
+            .custom-file(style="display: inline-block;")
+                 label.custom-file-label(for='newsImage' ) Добавить новое изображение
+                 input#newsImage.custom-file-input(type='file' )
+        .form-group
+            input#titleNews.form-control(value= news.newsTitle )
+        .form-group
+            textarea#textNews.form-control( rows=10 ) #{news.newsText}
+        .form-group
+            p.card-text
+                small.text-muted= news.createdAt
+        .form-group
+            #updateNewsButtona.btn.btn-primary(data-news-id = news.newsID style="display: inline-block;") сохранить
