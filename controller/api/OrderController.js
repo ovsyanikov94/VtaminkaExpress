@@ -7,6 +7,7 @@ const Cards = require('../../model/defenitions').Cards;
 const Orders = require('../../model/defenitions').Orders;
 const OrdersAndProduct = require('../../model/defenitions').OrdersAndProduct;
 const PromoCodes = require('../../model/defenitions').PromoCodes;
+const StatusOrder = require('../../model/defenitions').StatusOrder;
 
 const Response = require('../../model/Response');
 
@@ -97,14 +98,14 @@ module.exports.AddOrder = async ( req , res )=>{
 
         }//if
         else{
-            console.log('net takogo polzovatel');
+
             
              user = await Users.create({
                 userEmail:userEmail,
                 userName: userName,
                 userPhone:userPhone
             });
-            console.log('polzovatel add');
+
         }//else
 
         let card = await Cards.findOne({
@@ -175,6 +176,24 @@ module.exports.AddOrder = async ( req , res )=>{
             }
         }//if
 
+        let status = await StatusOrder.findOne({
+            where:{
+                statusTitle: "Новый"
+            }
+        });
+
+        if(!status){
+            await StatusOrder.create({
+                statusTitle: "Новый"
+            });
+        }//if
+
+        let newStatus = await StatusOrder.findOne({
+            where:{
+                statusTitle: "Новый"
+            }
+        });
+
         let newOrder = await Orders.create({
 
             orderAdress:userAdress,
@@ -184,7 +203,7 @@ module.exports.AddOrder = async ( req , res )=>{
             totalPriceWithPromo: totalPriceWithDiscount,
             userID: user.userID,
             promoID:promoID,
-            //statusID:''
+            statusID: newStatus.statusID
         });
 
         for(let i=0; i<products.length; i++){
@@ -208,7 +227,8 @@ module.exports.AddOrder = async ( req , res )=>{
             where:{
                 orderID: newOrder.orderID
             }
-        })
+        });
+
         response.code = 200;
         response.data = oD;
 

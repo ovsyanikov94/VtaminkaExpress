@@ -462,6 +462,7 @@ const StatusOrder = connection.define('statusOrder',{
     },
     statusTitle:{
         allowNull: false,
+        unique:true,
         type: Sequelize.DataTypes.STRING(50)
     }
 },{
