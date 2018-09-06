@@ -3,18 +3,19 @@ extends ../layout
 block content
     script( defer src="/javascripts/news.js" )
     form
-        .card.mb-3
+        .form-group
             if news.image
-
                 img#newsImg.card-img-top(src='/' + news.image.imagePath, alt='Card image cap' style="width: 400px; height: 250px;")
-
-            .card-body
-                .custom-file(style="display: inline-block;")
-                     label.custom-file-label(for='newsImage' ) Добавить новое изображение
-                     input#newsImage.custom-file-input(type='file' )
-                input#titleNews.card-title(value= news.newsTitle )
-                textarea#textNews.card(style="width: 800px; height: 350px;") #{news.newsText}
-
-                p.card-text
-                    small.text-muted= news.createdAt
-                #updateNewsButtona.btn.btn-primary(data-news-id = news.newsID style="display: inline-block;") сохранить
+        .form-group
+            .custom-file(style="display: inline-block;")
+                 label.custom-file-label(for='newsImage' ) Добавить новое изображение
+                 input#newsImage.custom-file-input(type='file' )
+        .form-group
+            input#titleNews.form-control(value= news.newsTitle )
+        .form-group
+            textarea#textNews.form-control( rows=10 ) #{news.newsText}
+        .form-group
+            p.card-text
+                small.text-muted= news.createdAt
+        .form-group
+            #updateNewsButtona.btn.btn-primary(data-news-id = news.newsID style="display: inline-block;") сохранить
