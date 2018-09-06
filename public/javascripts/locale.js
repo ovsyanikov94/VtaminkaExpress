@@ -12,14 +12,14 @@
     if(addConst){
         addConst.addEventListener('click',async()=>{
 
-            let leng =addConst.dataset.leng
+            let lang =addConst.dataset.lang
             let request = await fetch( `${window.ServerAddress}panel/locale/const-list` , {
                 method: 'GET',
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    'language': leng,
+                    'language': lang,
                 })
             });
 
@@ -78,4 +78,40 @@
 
     }//if
 
+    let langID = -1;
+
+    let removeButtons = document.querySelectorAll('.alert-danger');
+    let modalBody = document.querySelector('#languageName');
+
+    [].forEach.call( removeButtons , ( button )=>{
+
+        button.addEventListener('click' , async function (){
+
+            let title = button.dataset.languageTitle;
+            langID = +button.dataset.langId;
+
+            modalBody.textContent = title;
+            $('#confirmRemoveLangModal').modal();
+
+        });
+
+    } );
+
+    let confirmRemoveButton = document.querySelector('#confirmRemoveButton');
+
+    if(confirmRemoveButton){
+
+        confirmRemoveButton.addEventListener('click' , async function (){
+
+            console.log(langID);
+
+        });
+
+    }//if
+
+
 })();
+
+
+
+
