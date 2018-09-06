@@ -27,7 +27,43 @@ block content
                         ) #{constan.constantTitle}
             .form-group.col-3
 
-                input#attributeTitle.form-control(placeholder='Введите перевод константы')
+                input#translationText.form-control(placeholder='Введите перевод константы')
             .form-group.col-3
                 #message.alert.alert-danger(style="display: none")
-                #addLanguageButton.btn.btn-primary Добавить перевод
+                #addTranslationButton.btn.btn-primary Добавить перевод
+
+        if translations.length === 0
+            table.table
+                thead
+                    tr(align="middle")
+                        th(scope='col') #
+                        th(scope='col') константа
+                        th(scope='col') язык
+                        th(scope='col') перевод
+                        th(scope='col') изменить
+                        th(scope='col') удалить
+                tbody#tableBody
+        else
+            table.table
+                thead
+                    tr(align="middle")
+                        th(scope='col') #
+                        th(scope='col') константа
+                        th(scope='col') язык
+                        th(scope='col') перевод
+                        th(scope='col') изменить
+                        th(scope='col') удалить
+                tbody#tableBody
+                    each translation in translations
+                        tr(align="middle")
+                            td= translation.ID
+                            td= translation.titleConst
+                            td= translation.titleLeng
+                            td= translation.translation
+                            td
+                                #updataTranslationButton.alert.alert-primary(style="cursor: pointer") Изменить
+                            td
+                                #removeTranslationButton.alert.alert-danger(
+                                style="cursor: pointer"
+                                data-translation-id=translation.ID
+                                ) Удалить

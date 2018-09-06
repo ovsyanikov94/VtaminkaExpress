@@ -606,9 +606,79 @@ module.exports.GelTransletionList=async(req , res)=>{
             }
         });
     })
+    console.log(transletion.length);
     res.render('locale/transleton/trasletion-list',{'lengs':leng,'constans':constans,'translations':transletion});
 };
 
+module.exports.RemoveTransletion=async(req , res)=>{
+
+    console.log('start');
+    let respone = new Response();
+    let id = req.body.id;
+
+    try{
+        let removeTrans = Translations.destroy({
+            where:{
+                ID:id
+            }
+        });
+
+        respone.code=200;
+        respone.message="перевод удален";
+
+    }//try
+    catch (ex){
+        respone.code=500;
+        respone.message="ощибка сервера";
+
+    }//catch
+
+    res.status(respone.code);
+    res.send(respone);
+};
 module.exports.AddTransletion=async(req , res)=>{
 
-};
+    let respone = new Response();
+
+    let constId = req.body.idConst;
+    let lengId = req.body.idleng;
+    let translation = req.body.translation
+
+    let constant = await WordsConstans.findOne({
+        where:{
+            constantID:constId
+        }
+    });
+
+
+    let leng =  await Langs.findOne({
+        where:{
+            languageID:lengId
+        }
+    });
+
+    if(constant&&leng&&translation){
+
+        let trans = await Translations.create({
+            constantID:constId,
+            languageID:lengId,
+            translation:translation
+        })
+
+        trans.titleConst = constant.constantTitle;
+        trans.titleLeng = leng.languageTitle;
+
+        respone.code=200;
+        respone.message="перевод добавлен";
+        respone.data=trans
+    }//if
+
+    else {
+        respone.code=404;
+        respone.message="значение не найдено";
+    }//else
+
+    res.status(respone.code);
+    res.send(respone);
+
+};//AddTransletion
