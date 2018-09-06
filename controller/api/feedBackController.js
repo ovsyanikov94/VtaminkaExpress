@@ -3,8 +3,8 @@
 const Response = require('../../model/Response');
 
 const RegularExpressions = require('../../model/RegularExpressions');
-const Users = require('../../model/defenitions').Users;
-const UMessages = require('../../model/defenitions').UserMessages;
+const FeedBack = require('../../model/defenitions').FeedBack;
+
 
 module.exports.AddFeedBack = async ( req , res )=>{
 
@@ -59,35 +59,20 @@ module.exports.AddFeedBack = async ( req , res )=>{
 
         }//if
 
-        let User = await Users.findOne({
-            where:{
-                userName: userName,
-                userEmail: userEmail,
-                userPhone: userPhone
-            }
 
-        });
-        if(!User){
-            User = await User.create({
-                userName: userName,
-                userEmail: userEmail,
-                userPhone: userPhone
-            });
-        }
 
-        let message = await UMessages.create({
-            userId:  User.userId,
-            message: userMessage,
-            processed: false
+        let newFeedBack = await FeedBack.create({
+            fUserName:  userName,
+            fUserEmail: userEmail,
+            fUserPhone: userPhone,
+            fMessage: userMessage,
+            fProcessed: false
         });
 
 
         response.code = 200;
         response.message = 'Сообщение успешно добавлено';
-        response.data = {
-            User: User,
-            Message: message
-        };
+        response.data = newFeedBack;
 
         //res.send(response);
 
@@ -106,3 +91,4 @@ module.exports.AddFeedBack = async ( req , res )=>{
     res.send( response );
 
 };
+
