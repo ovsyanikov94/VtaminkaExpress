@@ -609,10 +609,48 @@ module.exports.GelTransletionList=async(req , res)=>{
     console.log(transletion.length);
     res.render('locale/transleton/trasletion-list',{'lengs':leng,'constans':constans,'translations':transletion});
 };
+module.exports.UpdataTranslationAction=async(req, res)=>{
+
+    let id = req.params.id
+
+    res.render('locale/transleton/updataTranslation',{'id':id})
+};
+
+module.exports.UpdataTranslation=async(req,res)=>{
+
+    console.log('strt55555');
+    let respone = new Response();
+    let id = req.body.id;
+    let text =req.body.text
+
+    console.log(id);
+    console.log(text);
+
+    try{
+        let updateTran = await Translations.findOne({
+
+            where:{
+                ID:id
+            },
+
+        });
+
+        updateTran.update({translation:text})
+        respone.code = 200;
+        respone.message = "перевод обнавлен";
+        respone.data = updateTran;
+    }catch (ex){
+        respone.code = 500;
+        respone.message = "ощибка сервера";
+
+    }
+    res.status(respone.code);
+    res.send(respone);
+}
 
 module.exports.RemoveTransletion=async(req , res)=>{
 
-    console.log('start');
+
     let respone = new Response();
     let id = req.body.id;
 

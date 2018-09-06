@@ -1,12 +1,37 @@
 "use strict";
-let updataButton = function () {
-    let removeButton = document.querySelectorAll(' #updataTranslationButton');
-
-}
 
 let removeButton = function () {
 
     let removeButton = document.querySelectorAll(' #removeTranslationButton');
+    let updataTranslationButton = document.querySelector(' #updataTranslationButton');
+
+    if(updataTranslationButton){
+
+        updataTranslationButton.addEventListener('click',async()=>{
+            try{
+                let id = updataTranslationButton.dataset.id;
+                let text = document.querySelector('#translationText').value;
+                let data = new FormData();
+                data.append('id', id);
+                data.append('text', text);
+                let request = await fetch(`${window.ServerAddress}panel/locale/updata-translation` , {
+                    method: 'PUT',
+                    body: data
+                });
+
+                let response = await request.json();
+                if(response.code === 200){
+                    /*let message = document.querySelector('#message');
+                    message.value = response.message
+                    message.style="display: block"*/
+                }
+            }//try
+            catch(ex){
+                console.log('ex' , ex);
+            }//catch
+
+        })
+    }
 
     [].forEach.call(removeButton,(btn)=>{
 

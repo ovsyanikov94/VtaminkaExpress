@@ -24,4 +24,7 @@ router.get('/locale/transletion',LocaleController.GelTransletionList);
 router.post('/locale/add-translation',LocaleController.AddTransletion);
 router.delete('/locale/remove-translation',LocaleController.RemoveTransletion);
 
+router.put('/locale/updata-translation',LocaleController.UpdataTranslation);
+router.get('/locale/updata-translation/:id',LocaleController.UpdataTranslationAction);
+
 module.exports = router;

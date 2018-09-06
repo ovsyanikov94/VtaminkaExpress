@@ -61,7 +61,7 @@ block content
                             td= translation.titleLeng
                             td= translation.translation
                             td
-                                #updataTranslationButton.alert.alert-primary(style="cursor: pointer") Изменить
+                                 a.alert.alert-primary(href="/panel/locale/updata-translation/"+translation.ID style="cursor: pointer") Изменить
                             td
                                 #removeTranslationButton.alert.alert-danger(
                                 style="cursor: pointer"
