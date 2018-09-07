@@ -1,37 +1,13 @@
 "use strict";
 
+
 let removeButton = function () {
 
     let removeButton = document.querySelectorAll(' #removeTranslationButton');
-    let updataTranslationButton = document.querySelector(' #updataTranslationButton');
 
-    if(updataTranslationButton){
 
-        updataTranslationButton.addEventListener('click',async()=>{
-            try{
-                let id = updataTranslationButton.dataset.id;
-                let text = document.querySelector('#translationText').value;
-                let data = new FormData();
-                data.append('id', id);
-                data.append('text', text);
-                let request = await fetch(`${window.ServerAddress}panel/locale/updata-translation` , {
-                    method: 'PUT',
-                    body: data
-                });
 
-                let response = await request.json();
-                if(response.code === 200){
-                    /*let message = document.querySelector('#message');
-                    message.value = response.message
-                    message.style="display: block"*/
-                }
-            }//try
-            catch(ex){
-                console.log('ex' , ex);
-            }//catch
 
-        })
-    }
 
     [].forEach.call(removeButton,(btn)=>{
 
@@ -69,9 +45,62 @@ let removeButton = function () {
 
 (function () {
 
-
+    let updataTranslationButton = document.querySelector(' #updataTranslationButton');
     let addTranslationButton = document.querySelector('#addTranslationButton');
+    if(updataTranslationButton){
 
+        updataTranslationButton.addEventListener('click',async()=>{
+            try{
+                let id = updataTranslationButton.dataset.id;
+                let text = document.querySelector('#translationText').value;
+
+                if(text){
+                    let data = new FormData();
+                    data.append('id', id);
+                    data.append('text', text);
+                    let request = await fetch(`${window.ServerAddress}panel/locale/updata-translation` , {
+                        method: 'PUT',
+                        body: data
+                    });
+
+                    let response = await request.json();
+                    let message = document.querySelector('#message');
+                    message.textContent = response.message;
+                    if(response.code === 200){
+
+
+                        if( message.classList.contains('alert-danger') ){
+                            message.classList.remove('alert-danger');
+                        }//if
+
+                        message.classList.add('alert-success');
+
+                        message.style.display = 'block';
+
+                    }//if
+                    else{
+
+                        if( message.classList.contains('alert-success') ){
+                            message.classList.remove('alert-success');
+                        }//if
+
+                        message.classList.add('alert-danger');
+
+                        message.style.display = 'block';
+
+                    }//else
+
+                }
+
+
+
+            }//try
+            catch(ex){
+                console.log('ex' , ex);
+            }//catch
+
+        })
+    }
     if(addTranslationButton){
 
         addTranslationButton.addEventListener('click',async()=>{
@@ -109,6 +138,7 @@ let removeButton = function () {
                     </tr>
                     `
                 }
+
                 removeButton();
             }//try
             catch(ex){
@@ -117,5 +147,6 @@ let removeButton = function () {
 
         })
     }
+
     removeButton();
 })();

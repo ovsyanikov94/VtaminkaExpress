@@ -589,27 +589,6 @@ module.exports.ExportLanguage = async ( req , res )=>{
 module.exports.GelTransletionList=async(req , res)=>{
 
 
-    // let leng = await Langs.findAll();
-    // let constans =await WordsConstans.findAll();
-    // let transletion = await Translations.findAll();
-    //
-    //
-    //
-    // [].forEach.call(transletion,async(t)=>{
-    //
-    //     t.titleConst = await WordsConstans.findOne({
-    //         where:{
-    //             constantID:t.constantID
-    //         }
-    //     });
-    //     t.titleLeng= await Langs.findOne({
-    //         where:{
-    //             languageID:t.languageID
-    //         }
-    //     });
-    // });
-    //
-    // console.log(transletion.length);
 
     let translations = await Translations.findAll({
 
@@ -623,7 +602,7 @@ module.exports.GelTransletionList=async(req , res)=>{
        ]
 
     });
-    console.log(translations);
+
 
     let languages = await Langs.findAll();
     let constants = await WordsConstans.findAll();
@@ -632,9 +611,25 @@ module.exports.GelTransletionList=async(req , res)=>{
 };
 module.exports.UpdataTranslationAction=async(req, res)=>{
 
-    let id = req.params.id
 
-    res.render('locale/transleton/updataTranslation',{'id':id})
+    let id = req.params.id;
+    console.log(id);
+    let translations = await Translations.findOne({
+            where:{
+                ID:id
+            },
+            include: [
+                {
+                    model: WordsConstans
+                },
+                {
+                    model: Langs
+                }
+        ]
+
+    });
+
+    res.render('locale/transleton/updataTranslation',{'translations':translations})
 };
 
 module.exports.UpdataTranslation=async(req,res)=>{
