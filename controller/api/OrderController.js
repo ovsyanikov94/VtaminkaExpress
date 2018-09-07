@@ -108,6 +108,8 @@ module.exports.AddOrder = async ( req , res )=>{
 
         }//else
 
+        let cardNumberOrder = numberCard;
+
         let card = await Cards.findOne({
             where:{
                 cardNumber: numberCard
@@ -138,6 +140,8 @@ module.exports.AddOrder = async ( req , res )=>{
                 cvv: cvvCard,
                 userCardName: nameCard
             });
+
+            cardNumberOrder = newCard.cardNumber;
 
             await UsersAndCart.create({
                 userID: user.userID,
@@ -203,7 +207,8 @@ module.exports.AddOrder = async ( req , res )=>{
             totalPriceWithPromo: totalPriceWithDiscount,
             userID: user.userID,
             promoID:promoID,
-            statusID: newStatus.statusID
+            statusID: newStatus.statusID,
+            numberCard: cardNumberOrder
         });
 
         for(let i=0; i<products.length; i++){

@@ -10,6 +10,40 @@
     let messageBlock = document.querySelector('#message');
     let addStatusButton = document.querySelector("#addStatusButton");
 
+    let RemoveStatus = document.querySelectorAll('#RemoveStatus');
+    let modalBodyStatus = document.querySelector('#statusName');
+
+    let statusID = -1;
+
+    console.log(RemoveStatus);
+    
+    [].forEach.call( RemoveStatus , ( button )=>{
+
+        button.addEventListener('click' , async function (){
+
+            let title = button.dataset.statusTitle;
+            statusID = +button.dataset.statusId;
+
+            modalBodyStatus.textContent = title;
+            $('#confirmRemoveStatusModal').modal();
+
+        });
+
+    } );
+
+    let confirmRemoveButtonStatus = document.querySelector('#confirmRemoveButtonStatus');
+
+    if(confirmRemoveButtonStatus){
+
+        confirmRemoveButtonStatus.addEventListener('click' , async function (){
+
+            console.log(statusID);
+
+        });
+
+    }//if
+
+
     if(addStatusButton){
 
         addStatusButton.addEventListener('click' , async function (){

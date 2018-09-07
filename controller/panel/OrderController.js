@@ -339,3 +339,57 @@ module.exports.AddStatus = async ( req , res )=>{
     }//catch
 
 };
+
+module.exports.RemoveStatus = async ( req , res )=>{
+
+    let response = new Response();
+
+    try{
+
+        let statusID = +req.body.statusID;
+
+        if( isNaN(statusID) ){
+
+            response.code = 400;
+            response.message = 'ID статуса задан не верно!';
+            response.data = statusID;
+
+            return res.send(response);
+
+        }//if
+
+        let status = await StatusOrder.findById(statusID);
+
+        if(!status){
+
+            response.code = 404;
+            response.message = 'Статус не найдена!';
+            response.data = statusID;
+
+            return res.send(response);
+
+
+        }//if
+
+        await status.destroy();
+
+        response.code = 200;
+        response.message = 'Статус удален';
+
+        res.status(response.code);
+        res.send(response);
+
+    }//try
+    catch(ex){
+
+
+        response.code = 500;
+        response.message = 'Внутренняя ошибка сервера';
+        response.data = ex;
+
+        res.status(response.code);
+        res.send( response );
+
+    }//catch
+
+};
