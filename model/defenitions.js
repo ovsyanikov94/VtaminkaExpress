@@ -210,9 +210,7 @@ const Translations = connection.define( 'translations' , {
     translation: {
         allowNull: false,
         type: Sequelize.DataTypes.STRING
-    },
-    titleConst: Sequelize.DataTypes.VIRTUAL,
-    titleLeng: Sequelize.DataTypes.VIRTUAL
+    }
 
 },{
     createdAt: false,
@@ -221,6 +219,9 @@ const Translations = connection.define( 'translations' , {
 
 WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
 Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
+
+Translations.belongsTo( WordsConstans , { foreignKey: 'constantID' } );
+Translations.belongsTo( Langs , { foreignKey: 'languageID' } );
 
 // Langs.sync({force: true});
 // WordsConstans.sync({force: true});

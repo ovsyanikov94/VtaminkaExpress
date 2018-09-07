@@ -589,25 +589,46 @@ module.exports.ExportLanguage = async ( req , res )=>{
 module.exports.GelTransletionList=async(req , res)=>{
 
 
-    let leng = await Langs.findAll();
-    let constans =await WordsConstans.findAll();
-    let transletion = await Translations.findAll();
+    // let leng = await Langs.findAll();
+    // let constans =await WordsConstans.findAll();
+    // let transletion = await Translations.findAll();
+    //
+    //
+    //
+    // [].forEach.call(transletion,async(t)=>{
+    //
+    //     t.titleConst = await WordsConstans.findOne({
+    //         where:{
+    //             constantID:t.constantID
+    //         }
+    //     });
+    //     t.titleLeng= await Langs.findOne({
+    //         where:{
+    //             languageID:t.languageID
+    //         }
+    //     });
+    // });
+    //
+    // console.log(transletion.length);
 
-    [].forEach.call(transletion,async(t)=>{
+    let translations = await Translations.findAll({
 
-        t.titleConst = await WordsConstans.findOne({
-            where:{
-                constantID:t.constantID
-            }
-        });
-        t.titleLeng= await Langs.findOne({
-            where:{
-                languageID:t.languageID
-            }
-        });
-    })
-    console.log(transletion.length);
-    res.render('locale/transleton/trasletion-list',{'lengs':leng,'constans':constans,'translations':transletion});
+       include: [
+           {
+               model: WordsConstans
+           },
+           {
+               model: Langs
+           }
+       ]
+
+    });
+    console.log(translations);
+
+    let languages = await Langs.findAll();
+    let constants = await WordsConstans.findAll();
+
+    res.render('locale/transleton/trasletion-list',{constants : constants, languages: languages ,  translations: translations});
 };
 module.exports.UpdataTranslationAction=async(req, res)=>{
 
@@ -618,7 +639,7 @@ module.exports.UpdataTranslationAction=async(req, res)=>{
 
 module.exports.UpdataTranslation=async(req,res)=>{
 
-    console.log('strt55555');
+
     let respone = new Response();
     let id = req.body.id;
     let text =req.body.text
@@ -674,6 +695,7 @@ module.exports.RemoveTransletion=async(req , res)=>{
     res.status(respone.code);
     res.send(respone);
 };
+
 module.exports.AddTransletion=async(req , res)=>{
 
     let respone = new Response();
@@ -701,16 +723,18 @@ module.exports.AddTransletion=async(req , res)=>{
             constantID:constId,
             languageID:lengId,
             translation:translation
-        })
-
-        trans.titleConst = constant.constantTitle;
-        trans.titleLeng = leng.languageTitle;
+        });
 
         respone.code=200;
         respone.message="перевод добавлен";
-        respone.data=trans
-    }//if
+        respone.data = {
+            'ConstantTitle': constant.constantTitle,
+            'LanguageTitle': leng.languageTitle,
+            'Translation': translation,
+            'TranslationID': trans.ID,
+        };
 
+    }//if
     else {
         respone.code=404;
         respone.message="значение не найдено";

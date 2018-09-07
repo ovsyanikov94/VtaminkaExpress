@@ -7,26 +7,25 @@ block content
             strong.label.text-uppercase добавить новое значение
         .row
             .form-group.col-3
-                if lengs.length == 0
-                select#lengSelect.form-control
-                    each leng in lengs
-                        option(
-                        value=leng.languageID
-                        data-category-id=leng.languageID
+                if languages.length !== 0
+                    select#lengSelect.form-control
+                        each language in languages
+                            option(
+                            value=language.languageID
+                            data-category-id=language.languageID
 
-                        ) #{leng.languageTitle}
+                            ) #{language.languageTitle}
 
             .form-group.col-3
-                if constans.length == 0
-                select#constSelect.form-control
-                    each constan in constans
-                        option(
-                        value=constan.constantID
-                        data-category-id=constan.constantID
+                if constants.length !== 0
+                    select#constSelect.form-control
+                        each constant in constants
+                            option(
+                            value=constant.constantID
+                            data-category-id=constant.constantID
 
-                        ) #{constan.constantTitle}
+                            ) #{constant.constantTitle}
             .form-group.col-3
-
                 input#translationText.form-control(placeholder='Введите перевод константы')
             .form-group.col-3
                 #message.alert.alert-danger(style="display: none")
@@ -57,8 +56,8 @@ block content
                     each translation in translations
                         tr(align="middle")
                             td= translation.ID
-                            td= translation.titleConst
-                            td= translation.titleLeng
+                            td= translation.wordsConstant.constantTitle
+                            td= translation.lang.languageTitle
                             td= translation.translation
                             td
                                  a.alert.alert-primary(href="/panel/locale/updata-translation/"+translation.ID style="cursor: pointer") Изменить

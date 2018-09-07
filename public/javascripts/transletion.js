@@ -92,7 +92,7 @@ let removeButton = function () {
                 });
 
                 let response = await request.json();
-                if(response.code ==200){
+                if(response.code === 200){
 
                     console.log(response);
                     let table= document.querySelector('#tableBody');
@@ -100,10 +100,10 @@ let removeButton = function () {
 
                     table.innerHTML +=`
                     <tr align="middle">
-                        <td class="td">${response.ID}</td>
-                        <td class="td">${response.titleConst}</td>
-                        <td class="td">${response.titleLeng}</td>
-                        <td class="td">${response.translation}</td>
+                        <td class="td">${response.data.TranslationID}</td>
+                        <td class="td">${response.data.ConstantTitle}</td>
+                        <td class="td">${response.data.LanguageTitle}</td>
+                        <td class="td">${response.data.Translation}</td>
                         <td><div style="display: inline-block;"class="alert alert-primary" data-attribute-id=${response.ID} >Nзменить</div></td>
                         <td><div style="cursor: pointer" class="alert alert-danger"  data-const-id=${response.ID}  >Удалить</div></td>
                     </tr>
