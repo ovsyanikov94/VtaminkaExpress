@@ -24,7 +24,7 @@ block content
                         td= category.categoryID
                         td= category.categoryTitle
                         td
-                            a(href="/panel/categories/" + category.productsAmount ) Просмотреть
+                            a(href="/panel/categories/" + category.categoryID ) #{category.productsAmount}
                         td
                             a.alert.alert-primary(href="/panel/category/"+category.categoryID style="display: inline-block;") Изменить
                         td
