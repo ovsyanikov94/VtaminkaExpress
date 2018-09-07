@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-    script( defer src="/javascripts/status.js" )
+    script( defer src="/javascripts/order.js" )
 
     a.form-group.btn.btn-primary.col-12(href="/panel/orders/status/new") Добавить статус
 
@@ -25,7 +25,7 @@ block content
                         td= status.statusTitle
                         td= status.orderAmount
                         td
-                            a.alert.alert-primary(href="/panel/status/"+status.statusID style="display: inline-block;") Изменить
+                            a.alert.alert-primary(href="/panel/orders/status/"+status.statusID style="display: inline-block;") Изменить
                         td
                             button.alert.alert-danger(
                             style="cursor: pointer"

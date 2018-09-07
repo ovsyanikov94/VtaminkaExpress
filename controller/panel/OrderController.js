@@ -339,3 +339,89 @@ module.exports.AddStatus = async ( req , res )=>{
     }//catch
 
 };
+module.exports.GetUpdateStatusAction = async ( req , res )=>{
+
+    try{
+
+        let statusID = +req.params.id;
+
+        let status = await StatusOrder.findById( statusID );
+
+        res.render('orders/single-status',{'status': status});
+
+    }//try
+    catch(ex){
+
+        res.render('error',{'error': ex});
+
+    }//catch
+
+};
+module.exports.UpdateStatus = async ( req , res )=>{
+
+    let response = new Response();
+
+    try{
+
+        let statusID = +req.params.id;
+        let statusTitle = req.body.statusTitle.trim();
+
+        if( isNaN(statusID) ){
+
+            response.code = 400;
+            response.message = 'ID статуса задан не верно!';
+            response.data = statusID;
+
+            return res.send(response);
+
+        }//if
+
+        if(!statusTitle.match(RegularExpressions.CategoryTitleExpression)){
+
+            response.code = 400;
+            response.message = 'Название статуса имеет неверный формат!';
+            response.data = statusTitle;
+
+            return res.send(response);
+
+        }//if
+
+        let status = await StatusOrder.findById(statusID);
+
+        if( status ){
+
+            let updateResult = await status.update({
+                'statusTitle':  statusTitle
+            });
+
+            response.code = 200;
+            response.message = 'Статус успешно обновлен';
+            response.data = updateResult;
+            res.status(response.code);
+            res.send(response);
+
+        }//if
+        else{
+
+
+            response.code = 404;
+            response.message = 'Статус не найден!';
+            response.data = statusID;
+            res.status(response.code);
+            res.send(response);
+
+        }//else
+
+    }//try
+    catch(ex){
+
+        response.code = 500;
+        response.message = 'Внутренняя ошибка сервера';
+        response.data = ex;
+        console.log(ex);
+        res.status(response.code);
+        res.send( response );
+
+    }//catch
+
+};

@@ -9,7 +9,74 @@
     let currentStatusLabels = document.querySelectorAll('.label-info');
     let messageBlock = document.querySelector('#message');
     let addStatusButton = document.querySelector("#addStatusButton");
+    let updateStatusButton = document.querySelector("#updateStatusButton");
 
+    if( updateStatusButton ){
+
+        updateStatusButton.addEventListener('click' , async function (){
+
+            let statusTitle = document.querySelector('#statusTitle').value;
+
+            let statusID = updateStatusButton.dataset.statusId;
+
+            if(!statusTitle.match(RegularExpressions.CategoryTitleExpression)){
+
+                if( messageBlock.classList.contains('alert-success') ){
+                    messageBlock.classList.remove('alert-success');
+                }//if
+
+                messageBlock.classList.add('alert-danger');
+
+                messageBlock.textContent = "Название категории некорректно!";
+                messageBlock.style.display = 'block';
+                return;
+
+            }//if
+
+            let request = await fetch( `${window.ServerAddress}panel/orders/status/${statusID}` , {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    'statusTitle': statusTitle,
+                })
+            });
+
+            let responseJSON = await request.json();
+
+            messageBlock.textContent = responseJSON.message;
+
+            if( responseJSON.code === 200 ){
+
+                if( messageBlock.classList.contains('alert-danger') ){
+                    messageBlock.classList.remove('alert-danger');
+                }//if
+
+                messageBlock.classList.add('alert-success');
+
+                messageBlock.style.display = 'block';
+
+            }//if
+            else{
+
+                if( messageBlock.classList.contains('alert-success') ){
+                    messageBlock.classList.remove('alert-success');
+                }//if
+
+                messageBlock.classList.add('alert-danger');
+
+                messageBlock.style.display = 'block';
+
+            }//else
+
+            console.log(responseJSON);
+
+
+        });
+
+
+    }//if
     if(addStatusButton){
 
         addStatusButton.addEventListener('click' , async function (){
