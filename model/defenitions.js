@@ -259,6 +259,9 @@ const Translations = connection.define( 'translations' , {
 WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
 Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
 
+Translations.belongsTo( Langs , {foreignKey: 'languageID' , as: 'language'} );
+Translations.belongsTo( WordsConstans , {foreignKey: 'constantID' , as: 'constant'} );
+
 // PromoCodes.sync({force: true});
 //
 // WordsConstans.sync({force: true});

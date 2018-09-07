@@ -2,7 +2,7 @@
 
 const Langs = require('../../model/defenitions').Langs;
 const Translations = require('../../model/defenitions').Translations;
-const Constants = require('../../model/defenitions').WordsConstans;
+const WordsConstans = require('../../model/defenitions').WordsConstans;
 const Connection = require('../../routes/connection');
 
 const Response = require('../../model/Response');
@@ -10,19 +10,23 @@ const Response = require('../../model/Response');
 module.exports.AddNewTranslateAction = async(req, res)=>{
 
     let langs = await Langs.findAll();
-    let constants = await Constants.findAll();
-    let translates = await Translations.findAll();
+    let constants = await WordsConstans.findAll();
+    let translations = await Translations.findAll({
+        include:[
+            {
+                model: Langs,
+                as: 'language'
+            },
+            {
+                model: WordsConstans,
+                as: 'constant'
+            }
+        ]
+    });
 
-    let data = await Connection.query('SELECT w.constantTitle, l.languageTitle, t.translation ' +
-        'FROM `translations` as t ' +
-        'JOIN `langs` as l on l.languageID = t.languageID ' +
-        'JOIN `wordsconstants` as w on w.constantID = t.constantID', {type: 'SELECT'});
-
-    res.render('locale/new-translate', {'langs': langs, 'constants': constants, 'translates':translates, 'data': data});
+    res.render('locale/new-translate', {'langs': langs, 'constants': constants, 'translations':translations});
 
 };
-
-
 
 module.exports.AddNewTranslate = async(req,res)=>{
 
@@ -40,22 +44,37 @@ module.exports.AddNewTranslate = async(req,res)=>{
             'constantID':constID,
             'translation': translation
 
-        })
+        });
 
+        let language = await Langs.findById( langID  , {
+            attributes: [ 'languageTitle' ]
+        });
 
+        let constant = await WordsConstans.findById( constID  , {
+            attributes: [ 'constantTitle' ]
+        });
 
         respone.code = 200;
-        respone.messag = "Перевод добавлен";
-        respone.data= newTranslation
+        respone.message = "Перевод добавлен";
+        respone.data = {
+            'ID': newTranslation.ID,
+            'languageID':langID,
+            'constantID':constID,
+            'translation': translation,
+            'languageTitle': language.languageTitle,
+            'constantTitle': constant.constantTitle
+        };
 
-    }
+    }//try
     catch (ex){
 
         respone.code = 500;
-        respone.message="Ошибка сервера";
+        respone.message = "Ошибка сервера";
+        console.log( ex );
 
-    }
+    }//catch
 
+    res.status( respone.code );
     res.send(respone)
 
 };

@@ -35,22 +35,23 @@ block content
         table.table
             thead
                 tr(align="middle")
+                    th(scope='col') #
                     th(scope='col') Язык
                     th(scope='col') Константа
                     th(scope='col') Перевод
                     th(scope='col') Изменить
                     th(scope='col') Удалить
             tbody#translatesList
-                each d in data
+                each translation in translations
                     tr(align="middle")
-                        td.td= d.languageTitle
-                        td.td= d.constantTitle
-                        td.td= d.translation || "Перевод отсутствует"
+                        td.td= translation.ID
+                        td.td= translation.language.languageTitle
+                        td.td= translation.constant.constantTitle
+                        td.td= translation.translation || "Перевод отсутствует"
                         td
                             .alert.alert-primary(style="cursor: pointer") Изменить
                         td
                             .alert.alert-danger(
-                            style="cursor: pointer"
-                            data-transl-lang=d.languageID
-                            data-transl-const=d.constantID
+                                style="cursor: pointer"
+                                data-translation-Id=translation.ID
                             ) Удалить

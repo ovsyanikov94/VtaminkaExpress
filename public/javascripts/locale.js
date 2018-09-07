@@ -21,10 +21,6 @@
             let wordConst = document.querySelector('#constantSelected').value;
             let currentTranslate = document.querySelector('#currentTranslate').value;
 
-            console.log(lang);
-            console.log(wordConst);
-            console.log(currentTranslate);
-
             let request = await fetch( `${window.ServerAddress}panel/locale/new-translate` , {
                 method: 'POST',
                 headers: {
@@ -37,7 +33,28 @@
                 })
             });
 
-        })
+            let responseJSON = await request.json();
+
+            if( responseJSON.code === 200 ){
+
+                document.querySelector("#translatesList").innerHTML += `
+                    <tr align="middle">
+                        <td>${responseJSON.data.ID}</td>
+                        <td>${responseJSON.data.languageTitle}</td>
+                        <td>${responseJSON.data.constantTitle}</td>
+                        <td>${responseJSON.data.translation}</td>
+                        <td>
+                            <div class="alert alert-primary" style="cursor: pointer" >Изменить</div>
+                        </td>
+                        <td>
+                            <div class="alert alert-danger" style="cursor: pointer" >Удалить</div>
+                        </td>
+                    </tr>
+                `;
+
+            }//if
+
+        });
     }
 
     if(addConst){
@@ -252,7 +269,6 @@ let addEventToChangeTranslate = function () {
 
         btn.addEventListener('click',()=>{
 
-            console.log('elem5555555', parentElement);
             let arrayChild = parentElement.querySelectorAll('.td');
 
             console.log(arrayChild[1].textContent);
