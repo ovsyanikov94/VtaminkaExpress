@@ -1,6 +1,7 @@
 extends ../layout
 
 block content
+    script( defer src="/javascripts/product.js" )
 
     if products.length === 0
         .alert.alert-info.col-12
@@ -12,6 +13,8 @@ block content
                     th(scope='col') #
                     th(scope='col') Название
                     th(scope='col') Цена
+                    th(scope='col') Изменить
+                    th(scope='col') Удалить
 
             tbody
                 each product in products
@@ -19,3 +22,26 @@ block content
                         td= product.productID
                         td= product.productTitle
                         td= product.productPrice
+                        td
+                            a.alert.alert-primary(href="/panel/products/" + product.productID style="display: inline-block;") Изменить
+                        td
+                            button.alert.alert-danger(
+                            style="cursor: pointer"
+                            data-product-title=product.productTitle
+                            data-product-id=product.productID
+                            ) Удалить
+
+            #confirmRemoveProductModal.modal(tabindex='-1', role='dialog')
+                .modal-dialog(role='document')
+                    .modal-content
+                        .modal-header
+                            h5.modal-title Удаление продукта
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                span(aria-hidden='true') ×
+                        .modal-body
+                            div
+                                | Вы действительно хотите удалить товар?
+                                b#productName
+                        .modal-footer
+                            button.btn.btn-secondary(type='button', data-dismiss='modal') Нет
+                            button#confirmRemoveButton.btn.btn-primary(type='button' data-dismiss='modal') Удалить

@@ -398,6 +398,56 @@ module.exports.GetProductAction = async ( req , res )=>{
 
 };
 
+module.exports.RemoveProduct = async ( req , res )=>{
 
+    let response = new Response();
+
+    try{
+
+        let productID = +req.body.productID;
+
+        if( isNaN(productID) ){
+
+            response.code = 400;
+            response.message = 'ID продукта задан не верно!';
+            response.data = productID;
+
+            return res.send(response);
+
+        }//if
+
+        let product = await Category.findById(productID);
+
+        if(!product){
+
+            response.code = 404;
+            response.message = 'Продукт не найден!';
+            response.data = productID;
+
+            return res.send(response);
+
+
+        }//if
+
+        await product.destroy();
+
+        response.code = 200;
+        response.message = 'Продукт успешно удален';
+
+        res.send(response);
+
+    }//try
+    catch(ex){
+
+
+        response.code = 500;
+        response.message = 'Внутренняя ошибка сервера';
+        response.data = ex;
+
+        res.send( response );
+
+    }//catch
+
+};
 
 
