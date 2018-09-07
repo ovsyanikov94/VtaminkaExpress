@@ -136,7 +136,7 @@
                 try{
 
                     //обновляем данные по промо-коду
-                    let request = await fetch(`${window.ServerAddress}panel/promo-codes/${promoCodeID}`,{
+                    let request = await fetch(`${window.ServerAddress}panel/promo-codes/single/${promoCodeID}`,{
                         method:'PUT',
                         body: data
                     });
@@ -163,6 +163,8 @@
                         //выводим сообщение на форме
                         messageBlock.style.display = 'block';
 
+                        setTimeout( () => { window.location.href = "/promo-codes/promo-codes-list";} , 1500);
+
                     }//if
                     else{
 
@@ -177,19 +179,12 @@
 
                     }//else
 
-                    //console.log(response);
-
                 }//try
                 catch(ex){
                     console.log('ex' , ex);
                 }//catch
             });
         }//if updateButton
-
-
-
-
-
 
 })();
 

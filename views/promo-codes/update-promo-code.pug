@@ -6,22 +6,22 @@ block content
     form(data-promo-code-id=promoCode.promoCodeID).col-md-12
         .form-group
             label(for='newPromoCodeInput') Промо-код
-            input#newPromoCodeInput.form-control(placeholder='Введите промо-код')
+            input#newPromoCodeInput.form-control(placeholder='Введите промо-код' value=promoCode.discountCode)
         .form-group
             label(for='newPercentageInput') Процент скидки
-            input#newPercentageInput.form-control(placeholder='Введите процент скидки')
+            input#newPercentageInput.form-control(placeholder='Введите процент скидки' value=promoCode.discount)
         .form-group
             label(for='newDeliveryInput') Доставка
-            input#newDeliveryInput.form-control(placeholder='Введите доставку')
+            input#newDeliveryInput.form-control(placeholder='Введите доставку' value=promoCode.delivery)
         .form-group
             label(for='newPromoCountInput') Количество
-            input#newPromoCountInput.form-control(placeholder='Введите кол-во промо-кодов')
+            input#newPromoCountInput.form-control(placeholder='Введите кол-во промо-кодов' value=promoCode.promoCount)
         .form-group
             label(for='newStartDateInput') Начальная дата активности промо-кода
-            input#newStartDateInput.form-control(type="date")
+            input#newStartDateInput.form-control(type="date" value=promoCode.startAtDate)
         .form-group
             label(for='newExpireDateInput') Конечная дата активности промо-кода
-            input#newExpireDateInput.form-control(type="date")
+            input#newExpireDateInput.form-control(type="date" value=promoCode.expireAtDate)
         .form-group
             #message.alert.alert-danger(style="display: none")
             #updatePromoCodeButton.btn.btn-primary Обновить промо-код

@@ -2,7 +2,6 @@
 
 const Response = require('../../model/Response');
 const PromoCodes = require('../../model/defenitions').PromoCodes;
-//const fs = require('fs');
 //const RegularExpressions = require('../../model/RegularExpressions');
 
 //получаем список имеющихся промокодов в базе данных
@@ -76,6 +75,8 @@ module.exports.UpdatePromoCodeAction = async (req, res)=>{
 
         let promoCodeID = +req.params.id;
         let promoCodeToUpdate = await PromoCodes.findById(promoCodeID);
+
+        console.log(promoCodeToUpdate);
 
         res.render('promo-codes/update-promo-code', { promoCode : promoCodeToUpdate });
 
