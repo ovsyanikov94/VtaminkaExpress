@@ -10,6 +10,7 @@ const PromoCodes = require('../../model/defenitions').PromoCodes;
 
 
 const Product = require('../../model/defenitions').Product;
+
 const Category = require('../../model/defenitions').Category;
 const Response = require('../../model/Response');
 const ProductAttributes = require('../../model/defenitions').ProductAttributes;
@@ -221,6 +222,7 @@ module.exports.GetSingleOrderAction = async ( req , res )=>{
 
                 if(ordersAndProduct[j].productID === allProduct[i].productID){
                     let product={
+                        productID:allProduct[i].productID,
                         productTitle:allProduct[i].productTitle,
                         amount:ordersAndProduct[j].productAmount,
                         fixedPrice:ordersAndProduct[j].productPrice
@@ -234,11 +236,26 @@ module.exports.GetSingleOrderAction = async ( req , res )=>{
 
         }//for i
 
-        let status = await StatusOrder.findById( order.statusID , {
+        let status = await ProductImages.findById( order.statusID , {
 
         });
 
+        let productImages =  await ProductImages.findAll({
 
+        });
+        for(let i=0; i<products.length; i++){
+
+            for(let j=0; j<productImages.length; j++){
+
+                if(productImages[j].productID == products[i].productID){
+                    products[i].imagePath = productImages[j].imagePath;
+
+                }//if
+
+            }//for j
+
+
+        }//for i
 
 
         res.render('orders/single-order' , {order: order, user: user, promo:promo, products: products, status: status });

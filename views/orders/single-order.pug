@@ -30,6 +30,7 @@ block content
             table.table
                 thead
                     tr(align="middle")
+                        th(scope='col') Изображение
                         th(scope='col') Название
                         th(scope='col') Колличество
                         th(scope='col') Цена за единицу
@@ -38,7 +39,9 @@ block content
                         tr(
                         align="middle"
                         )
-
+                            td
+                                .card(style="width: 5em")
+                                    img.card-img-top(src='/' + product.imagePath, alt='Card image cap')
                             td #{product.productTitle}
                             td #{product.amount}
                             td #{product.fixedPrice}
