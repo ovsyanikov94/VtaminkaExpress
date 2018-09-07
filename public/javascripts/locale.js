@@ -2,15 +2,48 @@
 
 (function (){
 
-
     let addLanguageButton = document.querySelector('#addLanguageButton');
     let messageBlock = document.querySelector('#message');
     let langsTable = document.querySelector('#langsList');
     let updateLang = document.querySelector('#updateLang');
     let currentInputTranslate = document.querySelector('#currentTranslate');
+    let changeTranslationButton = document.querySelectorAll('#changeTranslationButton');
 
     let addConst = document.querySelector('#addConctAndLeng');
     let addTranslateButton = document.querySelector('#addTranslateButton');
+
+
+    if(changeTranslationButton){
+
+            [].forEach.call(changeTranslationButton, (btn) => {
+
+                let parentElement = btn.parentElement.parentElement;
+
+                btn.addEventListener('click', async() => {
+
+                    let arrayChild = parentElement.querySelectorAll('.td');
+                    parentElement.innerHTML ='';
+
+                    let lang = document.querySelector('#languageSelected').value;
+
+                    parentElement.innerHTML += `
+                    
+                        <tr align="middle">
+                            <td id="translateID">${arrayChild[0].textContent}</td>
+                            <td><input id="languageSelected" class="form-control" value='${arrayChild[1].textContent}'></td>
+                            <td><input id="constantTitle" class="form-control" value='${arrayChild[2].textContent}'></td>
+                            <td><input id="translation" class="form-control" value='${arrayChild[3].textContent}'></td>
+                            <td><div style="cursor: pointer" class="btn btn-primary Save-Change" data-const-translateID=${+arrayChild[0].textContent}>Cохранить</div></td>
+                            <td><div style="cursor: pointer" class="btn btn-danger Anullment" data-const-translation=${arrayChild[3].textContent} data-const-languageSelected=${arrayChild[1].textContent}  data-const-constantTitle=${arrayChild[2].textContent} data-const-translateID=${arrayChild[0].textContent} >Отмена</div></td>
+                        </tr>
+                    
+                    `;
+
+                })
+
+            })
+
+    };
 
     if(addTranslateButton){
 
