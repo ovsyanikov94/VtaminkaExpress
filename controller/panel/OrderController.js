@@ -188,12 +188,7 @@ module.exports.GetSingleOrderAction = async ( req , res )=>{
     try{
 
         let order = await Orders.findById( req.params.id , {
-            include: [
-                {
-                    model: Product,
 
-                }
-            ]
         });
 
         if( !order ){
@@ -236,7 +231,7 @@ module.exports.GetSingleOrderAction = async ( req , res )=>{
 
         }//for i
 
-        let status = await ProductImages.findById( order.statusID , {
+        let status = await StatusOrder.findById( order.statusID , {
 
         });
 
