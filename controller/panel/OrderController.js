@@ -54,7 +54,7 @@ module.exports.GetOrdersListAction = async ( req , res )=>{
     }//try
     catch(ex){
 
-        res.render('error' , ex);
+        res.render('error',{'error': ex});
 
     }//catch
 
@@ -339,6 +339,7 @@ module.exports.AddStatus = async ( req , res )=>{
     }//catch
 
 };
+
 module.exports.GetUpdateStatusAction = async ( req , res )=>{
 
     try{
@@ -359,19 +360,22 @@ module.exports.GetUpdateStatusAction = async ( req , res )=>{
 };
 module.exports.UpdateStatus = async ( req , res )=>{
 
+
     let response = new Response();
 
     try{
 
-        let statusID = +req.params.id;
         let statusTitle = req.body.statusTitle.trim();
+
+        let statusID = +req.params.id;
+
 
         if( isNaN(statusID) ){
 
             response.code = 400;
             response.message = 'ID статуса задан не верно!';
             response.data = statusID;
-
+            res.status(response.code);
             return res.send(response);
 
         }//if
@@ -412,16 +416,65 @@ module.exports.UpdateStatus = async ( req , res )=>{
 
         }//else
 
+
     }//try
     catch(ex){
 
-        response.code = 500;
-        response.message = 'Внутренняя ошибка сервера';
-        response.data = ex;
-        console.log(ex);
+
         res.status(response.code);
         res.send( response );
 
     }//catch
 
 };
+module.exports.RemoveStatus = async ( req , res )=>{
+
+
+        let response = new Response();
+
+        try{
+
+
+            let statusID = +req.body.statusID;
+
+
+            if( isNaN(statusID) ){
+
+                response.code = 400;
+                response.message = 'ID статуса задан не верно!';
+                response.data = statusID;
+
+                return res.send(response);
+
+            }//if
+
+
+            let status = await StatusOrder.findById(statusID);
+
+            if(status) {
+
+
+                await status.destroy();
+
+                response.code = 200;
+                response.message = 'Статус удален';
+
+                res.status(response.code);
+                res.send(response);
+            }
+
+        }//try
+        catch(ex){
+
+
+            response.code = 500;
+            response.message = 'Внутренняя ошибка сервера';
+            response.data = ex;
+            console.log(ex);
+
+            res.status(response.code);
+            res.send( response );
+
+        }//catch
+
+    };

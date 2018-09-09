@@ -12,6 +12,9 @@ block content
             label Заказчик
             p.font-weight-bold(style="font-size:20px")=user.userName
             p.font-weight-bold(style="font-size:20px")=user.userEmail
+        .form-group
+            label Номер карты
+            p.font-weight-bold(style="font-size:20px")=order.numberCard
         hr.hr-primary
         .form-group
             label Сообщение заказчика
@@ -53,13 +56,18 @@ block content
             label Общая сумма заказа
             p.font-weight-bold(style="font-size:20px")= order.totalPrice + ' руб.'
         .form-group
-            label Скидка
-            p.font-weight-bold(style="font-size:20px")= promo.discount*order.totalPrice/100  + ' руб.'
+            if promo
+                label Скидка
+                p.font-weight-bold(style="font-size:20px")= promo.discount*order.totalPrice/100  + ' руб.'
+            else
+                label Скидки нет
         .form-group
-            label Стоимость доставки
-            p.font-weight-bold(style="font-size:20px")= order.totalPrice*promo.discount/100 + ' руб.'
+            if promo
+                label Стоимость доставки
+                p.font-weight-bold(style="font-size:20px")= order.totalPrice*promo.discount/100 + ' руб.'
+            else
+                label Без доставки
         .form-group
-            label Общая сумма заказа с учетом скидки
-            p.font-weight-bold(style="font-size:20px")=order.totalPriceWithPromo + order.totalPrice*promo.discount/100 + ' руб.'
-
+            //label Общая сумма заказа с учетом скидки
+            //p.font-weight-bold(style="font-size:20px")=order.totalPriceWithPromo + order.totalPrice*promo.discount/100 + ' руб.'
         a.form-group.btn.btn-primary.col-12(href="/panel/orders") Вернуться к заказам

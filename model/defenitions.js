@@ -261,11 +261,11 @@ const Translations = connection.define( 'translations' , {
 WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
 Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
 
-//Langs.sync({force: true});
-//WordsConstans.sync({force: true});
+// Langs.sync({force: true});
+// WordsConstans.sync({force: true});
 //
 //
-// Product.sync({force: true});
+//Product.sync({force: true});
 //PromoCodes.sync({force: true});
 // Category.sync({force: true});
 // ProductAndCategories.sync({force: true});
@@ -415,6 +415,10 @@ const Orders = connection.define('orders',{
         allowNull: true,
         type: Sequelize.DataTypes.INTEGER
     },
+    numberCard:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    }
 
 },{
     createdAt:'',
@@ -482,13 +486,13 @@ Orders.belongsToMany(Product,{through:OrdersAndProduct, foreignKey: 'orderID'});
 Product.belongsToMany(Orders,{through:OrdersAndProduct, foreignKey: 'productID'});
 
 
-//Users.sync({force: true});
-//Cards.sync({force:true});
+// Users.sync({force: true});
+// Cards.sync({force:true});
 //PromoCodes.sync({force:true});
 //Orders.sync({force:true});
-//OrdersAndProduct.sync({force:true});
-//UserAndCart.sync({force:true});
-//StatusOrder.sync({force:true});
+// OrdersAndProduct.sync({force:true});
+// UserAndCart.sync({force:true});
+// StatusOrder.sync({force:true});
 
 
 

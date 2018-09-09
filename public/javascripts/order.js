@@ -3,70 +3,49 @@
 
 ;(function (){
 
-    let updateStatusButtons = document.querySelectorAll('.btn-wrapper');
     let selectes = document.querySelectorAll('select');
-    let rows = document.querySelectorAll('tr');
     let currentStatusLabels = document.querySelectorAll('.label-info');
+    let updateStatusButtons = document.querySelectorAll('.btn-wrapper');
+    let rows = document.querySelectorAll('tr');
+
     let messageBlock = document.querySelector('#message');
     let addStatusButton = document.querySelector("#addStatusButton");
-    let updateStatusButton = document.querySelector("#updateStatusButton");
 
-    if( updateStatusButton ){
+    [].forEach.call( updateStatusButtons , ( button )=>{
 
-        updateStatusButton.addEventListener('click' , async function (){
+        button.addEventListener('click' , async function (){
 
-            let statusTitle = document.querySelector('#statusTitle').value;
+            let orderId = +button.dataset.orderId;
 
-            let statusID = updateStatusButton.dataset.statusId;
+            let selectOrderStatus = [].filter.call(selectes , ( sel )=> { return +sel.dataset.orderId === orderId; });
 
-            if(!statusTitle.match(RegularExpressions.CategoryTitleExpression)){
 
-                if( messageBlock.classList.contains('alert-success') ){
-                    messageBlock.classList.remove('alert-success');
-                }//if
+            let ind = selectOrderStatus[0].selectedIndex;
+            let newStatusId = selectOrderStatus[0].options[ind].value;
 
-                messageBlock.classList.add('alert-danger');
-
-                messageBlock.textContent = "Название категории некорректно!";
-                messageBlock.style.display = 'block';
-                return;
-
-            }//if
-
-            let request = await fetch( `${window.ServerAddress}panel/orders/status/${statusID}` , {
+            let request = await fetch( `${window.ServerAddress}panel/orders/${orderId}` , {
                 method: 'PUT',
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    'statusTitle': statusTitle,
+                    'newStatusId': newStatusId,
                 })
             });
 
             let responseJSON = await request.json();
 
-            messageBlock.textContent = responseJSON.message;
 
-            if( responseJSON.code === 200 ){
+            let labelOrderStatus = [].filter.call(currentStatusLabels , ( sel )=> { return +sel.dataset.orderId === orderId; });
+            if( responseJSON.code === 200){
 
-                if( messageBlock.classList.contains('alert-danger') ){
-                    messageBlock.classList.remove('alert-danger');
-                }//if
 
-                messageBlock.classList.add('alert-success');
+                labelOrderStatus[0].textContent = responseJSON.statusTitle;
 
-                messageBlock.style.display = 'block';
 
             }//if
             else{
-
-                if( messageBlock.classList.contains('alert-success') ){
-                    messageBlock.classList.remove('alert-success');
-                }//if
-
-                messageBlock.classList.add('alert-danger');
-
-                messageBlock.style.display = 'block';
+                labelOrderStatus[0].textContent = "Не удалось изменить статус заказа";
 
             }//else
 
@@ -75,8 +54,8 @@
 
         });
 
+    } );
 
-    }//if
     if(addStatusButton){
 
         addStatusButton.addEventListener('click' , async function (){
@@ -141,53 +120,6 @@
     }//if
 
 
-
-    [].forEach.call( updateStatusButtons , ( button )=>{
-
-        button.addEventListener('click' , async function (){
-
-            let orderId = +button.dataset.orderId;
-
-            let selectOrderStatus = [].filter.call(selectes , ( sel )=> { return +sel.dataset.orderId === orderId; });
-            //let newStatusId = [].filter.call(selectOrderStatus[0] , ( opt )=> { return opt.selected === true; });
-
-            let ind = selectOrderStatus[0].selectedIndex;
-            let newStatusId = selectOrderStatus[0].options[ind].value;
-
-            let request = await fetch( `${window.ServerAddress}panel/orders/${orderId}` , {
-                method: 'PUT',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    'newStatusId': newStatusId,
-                })
-            });
-
-            let responseJSON = await request.json();
-
-
-            let labelOrderStatus = [].filter.call(currentStatusLabels , ( sel )=> { return +sel.dataset.orderId === orderId; });
-            if( responseJSON.code === 200){
-
-
-                labelOrderStatus[0].textContent = responseJSON.statusTitle;
-
-
-            }//if
-            else{
-                labelOrderStatus[0].textContent = "Не удалось изменить статус заказа";
-
-            }//else
-
-            console.log(responseJSON);
-
-
-        });
-
-    } );
-
-
     let modalBody = document.querySelector('#orderId');
     let removeButtons = document.querySelectorAll('.alert-danger');
 
@@ -198,6 +130,7 @@
 
             let orderNumber = button.dataset.orderId;
             orderId = orderNumber;
+            console.log(orderNumber);
             modalBody.textContent = orderNumber;
             $('#confirmRemoveOrderModal').modal();
 
@@ -229,7 +162,7 @@
             if( responseJSON.code === 200 ){
 
                 let row = [].filter.call(rows , ( sel )=> { return +sel.dataset.orderId == orderId; });
-console.log(row);
+
                 document.querySelector('#orders').removeChild( row[0]);
 
             }//if
