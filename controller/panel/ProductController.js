@@ -437,6 +437,8 @@ module.exports.RemoveProduct = async ( req , res )=>{
 
         if(productImage){
 
+            let path = `public/images/${productID}`;
+            fs.unlinkSync(path);
             await productImage.destroy();
 
         }//if
