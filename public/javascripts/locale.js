@@ -2,11 +2,81 @@
 
 (function (){
 
-
     let addLanguageButton = document.querySelector('#addLanguageButton');
     let messageBlock = document.querySelector('#message');
     let langsTable = document.querySelector('#langsList');
     let updateLang = document.querySelector('#updateLang');
+    let importButton = document.querySelector('#importButton');
+    let file = document.querySelector('#sendFile');
+
+    let exportButtons = document.querySelectorAll('.btn-export');
+
+    if(exportButtons){
+
+        exportButtons.forEach( exportButton => {
+
+            exportButton.addEventListener('click', async function () {
+                try{
+
+                    let data = new FormData();
+
+                    data.append('langID', exportButton.dataset.langId);
+
+                    let request = await fetch(`${window.ServerAddress}panel/locale/lang/export/` , {
+                        method: 'POST',
+                        body: data
+                    });
+
+                    let response = await request.json();
+
+                    console.log(response);
+
+                }//try
+                catch(ex){
+
+                    console.log('ex' , ex);
+
+                }//catch
+
+            });
+
+        } );
+
+
+
+    }//if
+
+    if(importButton){
+
+        importButton.addEventListener('click', async function () {
+
+            let data = new FormData();
+
+            data.append('file', file.files[0]);
+
+            data.append('langID', importButton.dataset.langId);
+
+            try{
+
+                let request = await fetch(`${window.ServerAddress}panel/locale/lang/import/` , {
+                    method: 'POST',
+                    body: data
+                });
+
+                let response = await request.json();
+
+                console.log(response);
+
+            }//try
+            catch(ex){
+
+                console.log('ex' , ex);
+
+            }//catch
+
+        });
+
+    }//if
 
     let addConst = document.querySelector('#addConctAndLeng');
 
@@ -51,8 +121,6 @@
             messageBlock.textContent = responseJSON.message;
 
             if( responseJSON.code === 200 ){
-
-                let lang = responseJSON.data;
 
                 if( messageBlock.classList.contains('alert-danger') ){
                     messageBlock.classList.remove('alert-danger');

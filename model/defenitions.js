@@ -147,10 +147,10 @@ const ProductImages = connection.define('pImages', {
 const PromoCodes = connection.define('promoCodes',{
 
     promoCodeID:{
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
-        type: Sequelize.DataTypes.INTEGER
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
+      type: Sequelize.DataTypes.INTEGER
     },
     discountCode:{
         allowNull: false,
@@ -182,7 +182,6 @@ const PromoCodes = connection.define('promoCodes',{
     createdAt: true,
     updatedAt: true
 });
-
 
 
 Product.belongsToMany( Category , { through: ProductAndCategories , foreignKey: 'productID' , as: 'categories' });
@@ -258,20 +257,23 @@ const Translations = connection.define( 'translations' , {
     updatedAt: false
 });
 
-WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
-Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
+WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'languageID'} );
+Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'constantID' } );
 
-// Langs.sync({force: true});
-// WordsConstans.sync({force: true});
-//
-//
-//Product.sync({force: true});
+Translations.belongsTo( Langs , { foreignKey: 'languageID' } );
+Translations.belongsTo( WordsConstans , { foreignKey: 'constantID', as: 'constant' } );
+
 //PromoCodes.sync({force: true});
+
+// WordsConstans.sync({force: true});
+//Product.sync({force: true});
 // Category.sync({force: true});
+// Translations.sync({force: true});
+//Langs.sync({force: true})
 // ProductAndCategories.sync({force: true});
-//  ProductAttributes.sync({force: true});
-//  ProductAndAttributes.sync({force: true});
-//  ProductImages.sync({force: true});
+// ProductAttributes.sync({force: true});
+// ProductAndAttributes.sync({force: true});
+// ProductImages.sync({force: true});
 
 const News  = connection.define('news',{
 
