@@ -541,34 +541,38 @@ module.exports.ImportLanguage = async ( req , res )=>{
 
 module.exports.ExportLanguage = async ( req , res )=>{
 
+    let response = new Response();
+
     try{
 
         let lang = await Langs.findById(req.body.langID);
 
-        let translations = await connection.query(`
-            SELECT wc.constantTitle, t.translation
-            FROM \`translations\` as t
-            JOIN \`wordsconstants\` as wc ON wc.constantID = t.constantID
-            WHERE t.langID = '${lang.languageID}'
-        `);
+        if( !lang ){
+            throw new Error('Язык не найден');
+        }//if
 
-        let constants = await WordsConstans.findAll();
+        let translations = await Translations.findAll({
+            where: {
+                languageID: lang.languageID
+            },
+            include:[
+                {
+                    model: WordsConstans,
+                    attributes: [ 'constantTitle' ],
+                    as: 'constant'
+                }
+            ]
+        });
 
         let jsonData = {};
 
-        constants.forEach(item => {
+        translations.forEach(item => {
 
-            jsonData[`${item.constantTitle}`] = "";
-
-        });
-
-        translations[0].forEach(item => {
-
-            jsonData[`${item.constantTitle}`] = item.translation;
+            jsonData[`${item.constant.constantTitle}`] = item.translation;
 
         });
 
-        let path = `public/i18n/${lang.dataValues.languageTitle}.json`;
+        let path = `public/i18n/${lang.languageTitle}.json`;
 
         if(fs.existsSync(path)){
 
@@ -578,22 +582,20 @@ module.exports.ExportLanguage = async ( req , res )=>{
 
         fs.appendFileSync(path, JSON.stringify(jsonData));
 
-        let response = new Response();
         response.code = 200;
         response.message = 'Экспорт успешен';
-        res.status( response.code );
-        res.send( response );
 
     }//try
     catch(ex){
 
-        let response = new Response();
-        response.code = 500;
-        response.message = 'Внутренняя ошибка сервера!';
         console.log('EX: ' , ex);
-        res.status( response.code );
-        res.send( response );
+
+        response.code = 500;
+        response.message = ex.message;
 
     }//catch
+
+    res.status( response.code );
+    res.send( response );
 
 };

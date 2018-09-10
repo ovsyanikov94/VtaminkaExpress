@@ -249,19 +249,18 @@ const Translations = connection.define( 'translations' , {
     translation: {
         allowNull: false,
         type: Sequelize.DataTypes.STRING
-    },
-    langID: {
-        allowNull: false,
-        type: Sequelize.DataTypes.STRING
-    },
+    }
 
 },{
     createdAt: false,
     updatedAt: false
 });
 
-WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
-Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'langID' } );
+WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'languageID'} );
+Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'constantID' } );
+
+Translations.belongsTo( Langs , { foreignKey: 'languageID' } );
+Translations.belongsTo( WordsConstans , { foreignKey: 'constantID', as: 'constant' } );
 
 //PromoCodes.sync({force: true});
 
