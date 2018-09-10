@@ -73,3 +73,43 @@ module.exports.GetProducts = async ( req , res )=>{
     res.send( response );
 
 };
+
+module.exports.GetInformationProduct = async (req, res)=>{
+
+    let response = new Response();
+
+    try {
+
+        let ID = req.params.id;
+
+        let products = await Product.findOne({
+
+            where: {
+                productID: ID
+            },
+            include: [
+                {
+                    model: ProductAndAttributes,
+                    as: 'productsAndAttributes'
+                },
+                {
+                    model: ProductAndCategories,
+                    as: 'productAndCategories'
+                }
+            ]
+
+        });
+
+        res.send(products);
+        console.log(products);
+
+    } // Try
+    catch(ex){
+
+        response.code = 500;
+        response.message = "Ошибка сервера";
+        console.log( ex );
+
+    } // Catch
+
+};
