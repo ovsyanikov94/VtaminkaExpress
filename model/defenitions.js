@@ -158,16 +158,16 @@ const PromoCodes = connection.define('promoCodes',{
         type: Sequelize.DataTypes.STRING
     },
     discount:{
-      allowNull: false,
-      type: Sequelize.DataTypes.TINYINT
+        allowNull: false,
+        type: Sequelize.DataTypes.TINYINT
     },
     delivery:{
-      allowNull: false,
-      type: Sequelize.DataTypes.INTEGER
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
     },
     promoCount:{
-      allowNull: false,
-      type: Sequelize.DataTypes.INTEGER
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
     },
     startAtDate:{
         allowNull: true,
@@ -266,11 +266,10 @@ Translations.belongsTo( WordsConstans , { foreignKey: 'constantID', as: 'constan
 //PromoCodes.sync({force: true});
 
 // WordsConstans.sync({force: true});
-// Translations.sync({force: true});
-//Langs.sync({force: true});
-
 //Product.sync({force: true});
-//Category.sync({force: true});
+// Category.sync({force: true});
+// Translations.sync({force: true});
+//Langs.sync({force: true})
 // ProductAndCategories.sync({force: true});
 // ProductAttributes.sync({force: true});
 // ProductAndAttributes.sync({force: true});
@@ -329,6 +328,176 @@ newsImage.belongsTo(News , { foreignKey: 'newsID' });
 // News.sync({force: true});
 //newsImage.sync({force: true});
 
+
+const Users = connection.define('users',{
+    userID:{
+        primaryKey: true,
+        allowNull:false,
+
+        autoIncrement: true,
+
+        type:Sequelize.DataTypes.INTEGER
+    },
+    userEmail:{
+        allowNull:false,
+        unique: true,
+        type:Sequelize.DataTypes.STRING(50)
+    },
+    userName:{
+        allowNull:false,
+        type:Sequelize.DataTypes.STRING(50)
+    },
+    userPhone:{
+        allowNull:false,
+        type:Sequelize.DataTypes.STRING(50)
+    },
+},{
+    createdAt: false,
+    updatedAt: false
+});
+
+
+const Cards = connection.define('cards',{
+    cardID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    cardNumber:{
+        unique: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    },
+    year:{
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    month:{
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    cvv:{
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    userCardName:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    }
+},{
+    createdAt:false,
+    updatedAt:false
+});
+
+const Orders = connection.define('orders',{
+    orderID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    orderAdress:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING(1000)
+    },
+    orderMessage:{
+        allowNull: true,
+        type: Sequelize.DataTypes.STRING(1000)
+    },
+    orderDate:{
+        allowNull: false,
+        type: Sequelize.DataTypes.DATE
+    },
+    totalPrice:{
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    totalPriceWithPromo:{
+        allowNull: true,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    numberCard:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    }
+
+},{
+    createdAt:'',
+    updatedAt:''
+});
+
+const OrdersAndProduct = connection.define('OrderDetails',{
+    ID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    productPrice:{
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    productAmount:{
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    }
+},{
+    createdAt:'',
+    updatedAt:''
+});
+
+const UserAndCart = connection.define('UserAndCard',{
+    ID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+},{
+    createdAt: false,
+    updatedAt:false
+});
+
+const StatusOrder = connection.define('statusOrder',{
+    statusID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    statusTitle:{
+        allowNull: false,
+        unique:true,
+        type: Sequelize.DataTypes.STRING(50)
+    }
+},{
+    createdAt:false,
+    updatedAt:false
+});
+
+Orders.belongsTo(Users,{ foreignKey: 'userID' });
+
+Orders.belongsTo(PromoCodes,{ foreignKey: 'promoID' });
+Orders.belongsTo(StatusOrder,{ foreignKey: 'statusID' });
+
+Users.belongsToMany(Cards,{through:UserAndCart, foreignKey: 'userID'});
+Cards.belongsToMany(Users,{through:UserAndCart, foreignKey: 'cardID'});
+
+Orders.belongsToMany(Product,{through:OrdersAndProduct, foreignKey: 'orderID'});
+Product.belongsToMany(Orders,{through:OrdersAndProduct, foreignKey: 'productID'});
+
+
+// Users.sync({force: true});
+// Cards.sync({force:true});
+//PromoCodes.sync({force:true});
+// Orders.sync({force:true});
+// OrdersAndProduct.sync({force:true});
+// UserAndCart.sync({force:true});
+// StatusOrder.sync({force:true});
+
+
+
 module.exports.News=News;
 module.exports.newsImage=newsImage;
 module.exports.Category = Category;
@@ -342,3 +511,10 @@ module.exports.Langs = Langs;
 module.exports.WordsConstans = WordsConstans;
 module.exports.Translations = Translations;
 module.exports.PromoCodes = PromoCodes;
+
+module.exports.Users = Users;
+module.exports.Cards = Cards;
+module.exports.Orders = Orders;
+module.exports.OrdersAndProduct = OrdersAndProduct;
+module.exports.UsersAndCart = UserAndCart;
+module.exports.StatusOrder = StatusOrder;
