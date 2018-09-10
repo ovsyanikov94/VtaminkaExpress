@@ -416,7 +416,7 @@ module.exports.RemoveProduct = async ( req , res )=>{
 
         }//if
 
-        let product = await Category.findById(productID);
+        let product = await Product.findById(productID);
 
         if(!product){
 
@@ -426,6 +426,18 @@ module.exports.RemoveProduct = async ( req , res )=>{
 
             return res.send(response);
 
+
+        }//if
+
+        let productImage = await ProductImages.findOne({
+            where:{
+                productID : productID
+            }
+        });
+
+        if(productImage){
+
+            await productImage.destroy();
 
         }//if
 

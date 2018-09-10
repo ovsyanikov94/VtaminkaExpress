@@ -17,9 +17,9 @@ block content
                     th(scope='col') Изменить
                     th(scope='col') Удалить
 
-            tbody
+            tbody#productTable
                 each product in products
-                    tr(align="middle")
+                    tr(align="middle" data-product-id=product.productID)
                         td= product.productID
                         td= product.productTitle
                         td= product.categoryTitle.categoryTitle
@@ -37,7 +37,7 @@ block content
                 .modal-dialog(role='document')
                     .modal-content
                         .modal-header
-                            h5.modal-title Удаление продукта
+                            h5.modal-title Удаление товара
                             button.close(type='button', data-dismiss='modal', aria-label='Close')
                                 span(aria-hidden='true') ×
                         .modal-body

@@ -302,22 +302,32 @@ function AddRemoveAttributeListeners( attributes ){
 
         confirmRemoveButton.addEventListener('click' , async function (){
 
+            let data = new FormData();
+            data.append('productID', productID);
+
             try{
 
-                let request = await fetch(`${window.ServerAddress}panel/products/${productID}` , {
-                    method: 'PUT',
+                let request=await fetch( `${window.ServerAddress}panel/products/delete` , {
+                    method: 'DELETE',
                     body: data
                 });
 
-                let response = await request.json();
 
+                let response = await request.json();
                 console.log(response);
 
+                if(response.code === 200){
+
+                    let table = document.querySelector(`#productTable`);
+                    let row = document.querySelector(`#productTable tr[data-product-id='${productID}']`);
+
+                    table.removeChild( row );
+
+                }//if
+
             }//try
-            catch(ex){
-
-                console.log('ex' , ex);
-
+            catch (ex) {
+                console.log(ex);
             }//catch
 
         });
