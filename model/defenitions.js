@@ -328,6 +328,58 @@ newsImage.belongsTo(News , { foreignKey: 'newsID' });
 // News.sync({force: true});
 //newsImage.sync({force: true});
 
+const FeedBack = connection.define('feedBack',{
+
+    feedBackID:{
+        primaryKey: true,
+        allowNull: false,
+        autoIncrement: true,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    fUserName: {
+        type: Sequelize.DataTypes.STRING,
+        allowNull: false,
+        validate:{
+            is: RegularExpressions.UserNameExpression
+        }
+
+    },
+    fUserEmail:{
+        type: Sequelize.DataTypes.STRING(75),
+        allowNull: false,
+        validate:{
+            is: RegularExpressions.EmailExpression,
+        }
+    },
+    fUserPhone:{
+        type: Sequelize.DataTypes.STRING(16),
+        allowNull: false,
+        validate:{
+            is: RegularExpressions.PhoneExpression,
+        }
+    },
+    fMessage:{
+        type: Sequelize.DataTypes.STRING(1500),
+        allowNull: false,
+        validate:{
+            is: RegularExpressions.ProductDescriptionExpression
+        }
+    },
+    fProcessed:{
+        type: Sequelize.DataTypes.BOOLEAN,
+        allowNull: false,
+
+    },
+
+
+},{
+    createdAt: 'created',
+    updatedAt: 'updated'
+});
+
+//FeedBack.sync({force: true});
+
+
 
 const Users = connection.define('users',{
     userID:{
@@ -497,7 +549,6 @@ Product.belongsToMany(Orders,{through:OrdersAndProduct, foreignKey: 'productID'}
 // StatusOrder.sync({force:true});
 
 
-
 module.exports.News=News;
 module.exports.newsImage=newsImage;
 module.exports.Category = Category;
@@ -511,6 +562,8 @@ module.exports.Langs = Langs;
 module.exports.WordsConstans = WordsConstans;
 module.exports.Translations = Translations;
 module.exports.PromoCodes = PromoCodes;
+
+module.exports.FeedBack= FeedBack;
 
 module.exports.Users = Users;
 module.exports.Cards = Cards;

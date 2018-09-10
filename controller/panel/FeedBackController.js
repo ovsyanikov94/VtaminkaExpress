@@ -2,10 +2,7 @@
 
 const FeedBack = require('../../model/defenitions').FeedBack;
 
-//const RegularExpressions = require('../../model/RegularExpressions');
-
 const nodemailer = require('nodemailer');
-
 const Response = require('../../model/Response');
 
 module.exports.GetFeedBacksListAction = async ( req , res )=>{
@@ -56,7 +53,6 @@ module.exports.ProcessedFeedBack = async ( req , res )=>{
             let updateResult = await fBack.update({
                 'fProcessed':  fBack.fProcessed,
             });
-
 
             const transporter = nodemailer.createTransport({
                 host: 'smtp.ethereal.email',
