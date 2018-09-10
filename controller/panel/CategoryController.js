@@ -262,7 +262,7 @@ module.exports.RemoveCategory = async ( req , res )=>{
         await category.destroy();
 
         response.code = 200;
-        response.message = 'Категория успешно обновлена';
+        response.message = 'Категория успешно удалена';
 
         res.send(response);
 

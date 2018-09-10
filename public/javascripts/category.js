@@ -167,7 +167,27 @@
 
         confirmRemoveButton.addEventListener('click' , async function (){
 
-                console.log(categoryID);
+            let data = new FormData();
+            data.append('id', categoryID);
+
+            try{
+
+                let request=await fetch( `${window.ServerAddress}panel/category/delete` , {
+                    method: 'DELETE',
+                    body: data
+                });
+
+                let response = await request.json();
+                if(response.code === 200){
+
+
+
+                }
+
+            }
+            catch (ex) {
+                console.log(ex);
+            }//catch
 
         });
 
