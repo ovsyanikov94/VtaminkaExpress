@@ -23,6 +23,4 @@ router.put('/locale/update' , LocaleController.UpdateConst );
 router.post('/locale/lang/export/' , LocaleController.ExportLanguage );
 router.post('/locale/lang/import/' , LocaleController.ImportLanguage );
 
-
-
 module.exports = router;
