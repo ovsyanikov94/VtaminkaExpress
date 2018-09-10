@@ -1,0 +1,68 @@
+extends ../../layout
+
+block content
+    script( defer src="/javascripts/transletion.js" )
+    form
+        .row
+            strong.label.text-uppercase добавить новое значение
+        .row
+            .form-group.col-3
+                if languages.length !== 0
+                    select#lengSelect.form-control
+                        each language in languages
+                            option(
+                            value=language.languageID
+                            data-category-id=language.languageID
+
+                            ) #{language.languageTitle}
+
+            .form-group.col-3
+                if constants.length !== 0
+                    select#constSelect.form-control
+                        each constant in constants
+                            option(
+                            value=constant.constantID
+                            data-category-id=constant.constantID
+
+                            ) #{constant.constantTitle}
+            .form-group.col-3
+                input#translationText.form-control(placeholder='Введите перевод константы')
+            .form-group.col-3
+                #message.alert.alert-danger(style="display: none")
+                #addTranslationButton.btn.btn-primary Добавить перевод
+
+        if translations.length === 0
+            table.table
+                thead
+                    tr(align="middle")
+                        th(scope='col') #
+                        th(scope='col') константа
+                        th(scope='col') язык
+                        th(scope='col') перевод
+                        th(scope='col') изменить
+                        th(scope='col') удалить
+                tbody#tableBody
+        else
+            table.table
+                thead
+                    tr(align="middle")
+                        th(scope='col') #
+                        th(scope='col') константа
+                        th(scope='col') язык
+                        th(scope='col') перевод
+                        th(scope='col') изменить
+                        th(scope='col') удалить
+                tbody#tableBody
+                    each translation in translations
+                        tr(align="middle")
+                            td= translation.ID
+                            td= translation.constant.constantTitle
+                            td= translation.lang.languageTitle
+                            td= translation.translation
+                            td
+                                 a.alert.alert-primary(href="/panel/locale/updata-translation/"+translation.ID style="cursor: pointer; display: inline-block" ) Изменить
+                            td
+                                #removeTranslationButton.alert.alert-danger(
+                                style="cursor: pointer"
+                                data-translation-id=translation.ID
+                                ) Удалить

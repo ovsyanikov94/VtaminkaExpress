@@ -4,6 +4,7 @@ block content
     script( defer src="/javascripts/locale.js" )
     a.form-group.btn.btn-primary.col-12(href="/panel/locale/const-list") Добавить константу
     a.form-group.btn.btn-primary.col-12(href="/panel/locale/new-lang") Добавить язык
+    a.form-group.btn.btn-primary.col-12(href="/panel/locale/transletion") Добавить перевод
     if langs.length === 0
         .alert.alert-info.col-12
             | Языки не найдены
@@ -15,6 +16,8 @@ block content
                 th(scope='col') Изображение
                 th(scope='col') Изменить
                 th(scope='col') Удалить
+                th(scope='col') Импорт
+                th(scope='col') Экспорт
         tbody#langsList
             each lang in langs
                 tr(align="middle")
@@ -32,6 +35,12 @@ block content
                             data-lang-title=lang.languageTitle
                             data-lang-id=lang.languageID
                         ) Удалить
+                    td
+                        .custom-file
+                            label.custom-file-label(for='newsImage' ) Выбрать файл
+                            input#newsImage.custom-file-input(type='file')
+                    td
+                        button.btn.btn-success.btn-export(data-lang-id=lang.languageID style="cursor: pointer") Экспортировать
 
 
     #confirmRemoveLanguageModal.modal(tabindex='-1', role='dialog')

@@ -2,8 +2,7 @@
 
 const FeedBack = require('../../model/defenitions').FeedBack;
 
-//const RegularExpressions = require('../../model/RegularExpressions');
-
+const nodemailer = require('nodemailer');
 const Response = require('../../model/Response');
 
 module.exports.GetFeedBacksListAction = async ( req , res )=>{
@@ -52,12 +51,36 @@ module.exports.ProcessedFeedBack = async ( req , res )=>{
         if(fBack){
 
             let updateResult = await fBack.update({
-                // 'feedBackID': fBackId,
-                // 'fUserName':  fBack.fUserName,
-                // 'fUserEmail': fBack.fUserEmail,
-                // 'fUserPhone': fBack.fUserPhone,
-                // 'fMessage': fBack.fMessage,
                 'fProcessed':  fBack.fProcessed,
+            });
+
+            const transporter = nodemailer.createTransport({
+                host: 'smtp.ethereal.email',
+                port: 587,
+                auth: {
+                    user: 'vnbqgi2yx6tbqw7v@ethereal.email',
+                    pass: 'futnncvaa2zAFjd9v4'
+                }
+            });
+
+            let mailOptions = {
+                from: 'Vtaminka support<Vtaminka@gmail.com>', // sender address
+                to: fBack.fUserEmail, // list of receivers
+                subject: 'Support', // Subject line
+                text: 'Ваше сообщение обработано!', // plain text body
+            };
+
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                }
+                console.log('Message sent: %s', info.messageId);
+                // Preview only available when sending through an Ethereal account
+                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+                // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+                // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
             });
 
             response.code = 200;

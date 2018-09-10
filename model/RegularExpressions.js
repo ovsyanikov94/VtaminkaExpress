@@ -27,6 +27,21 @@ class RegularExpressions{
         return /^[a-z0-9а-я\s_\-:,.;"'?!()]{1,75}$/i
     }
 
+    static get NameOrderExpression(){
+        return /^[A-ZА-Я]{1}[a-zа-я]{1,10}$/
+    }
+    static get EmaailOrderExpression(){
+        return /^[a-z0-9\.\_\-]+@[a-z0-9]{2,6}(\.[a-z0-9]+)?\.[a-z]{2,5}$/ig;
+    }
+
+    static get PhoneOrderExpression(){
+        return /^\+38\(0[0-9]{2}\)\-[0-9]{3}(\-[0-9]{2}){2}$/i
+    }
+
+    static get CardOrderExpression(){
+        return /^([0-9]{4}-){3}[0-9]{4}$/i
+    }
+
 }
 
 module.exports = RegularExpressions;
