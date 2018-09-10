@@ -1,5 +1,7 @@
 "use strict";
 
+
+
 (function (){
 
     let addLanguageButton = document.querySelector('#addLanguageButton');
@@ -12,6 +14,60 @@
     let addConst = document.querySelector('#addConctAndLeng');
     let addTranslateButton = document.querySelector('#addTranslateButton');
 
+    let addEventToSaveChange = async function (elem) {
+
+        if(elem) {
+
+            let buttonSaveChange = elem.querySelector('.save-change');
+            console.log('elem11111',elem);
+
+            let parentDiv = buttonSaveChange.parentElement;
+
+            parentDiv.addEventListener('click', async()=>{
+
+                console.log('element',elem);
+
+                let translateIDChange = +elem.querySelector('#translateID').innerText;
+                console.log('id', translateIDChange);
+
+                let languageChange = elem.querySelector('#languageSel').value;
+                console.log('languageTitle', languageChange);
+
+                let constantChange = elem.querySelector('#constantTitle').value;
+                console.log('constantTitle', constantChange);
+
+                let translateChange = elem.querySelector('translation').innerText;
+                console.log('translation', translateChange)
+
+                let data = new FormData();
+
+                data.append('id', +translateIDChange);
+                data.append('languageTitle', languageChange);
+                data.append('constantTitle', constantChange);
+                data.append('translation', translateChange);
+
+                try {
+
+                    let request = await fetch(`${window.ServerAddress}panel/locale/update` , {
+                        method: 'PUT',
+                        body: data
+                    });
+
+                    let response = await request.json();
+
+                    console.log(response);
+
+                } // Try
+
+                catch(ex) {
+                    console.log('ex' , ex);
+                } // Catch
+
+            })
+
+        }
+
+    } // Save change to DB
 
     if(changeTranslationButton){
 
@@ -24,24 +80,54 @@
                     let arrayChild = parentElement.querySelectorAll('.td');
                     parentElement.innerHTML ='';
 
-                    let lang = document.querySelector('#languageSelected').value;
+                    let languagesList = document.querySelector('#languageSelected');
+                    let constantsList = document.querySelector('#constantSelected');
+
+                    let lngUser = languagesList.options;
+                    let cnstUser = constantsList.options;
+
+                    let languageFromList = '';
+                    let constantsFromList = '';
+
+                    [].forEach.call(lngUser, (lng)=>{
+
+                        languageFromList+= lng.outerHTML;
+                        console.dir(lng);
+
+                    });
+
+                    [].forEach.call(cnstUser, (cnst)=>{
+
+                        constantsFromList+= cnst.outerHTML;
+                        console.dir(cnst);
+
+                    });
 
                     parentElement.innerHTML += `
                     
                         <tr align="middle">
                             <td id="translateID">${arrayChild[0].textContent}</td>
-                            <td><input id="languageSelected" class="form-control" value='${arrayChild[1].textContent}'></td>
-                            <td><input id="constantTitle" class="form-control" value='${arrayChild[2].textContent}'></td>
+                            <td><select id="languageSel" class="form-control" value='0'>
+                                    ${languageFromList}
+                                </select>
+                            </td>
+                            <td><select id="constantTitle" class="form-control" value='${arrayChild[2].textContent}'>
+                                    ${constantsFromList}
+                                </select>
+                            </td>
                             <td><input id="translation" class="form-control" value='${arrayChild[3].textContent}'></td>
                             <td><div style="cursor: pointer" class="btn btn-primary Save-Change" data-const-translateID=${+arrayChild[0].textContent}>Cохранить</div></td>
-                            <td><div style="cursor: pointer" class="btn btn-danger Anullment" data-const-translation=${arrayChild[3].textContent} data-const-languageSelected=${arrayChild[1].textContent}  data-const-constantTitle=${arrayChild[2].textContent} data-const-translateID=${arrayChild[0].textContent} >Отмена</div></td>
+                            <td><div style="cursor: pointer" class="btn btn-danger Anullment" data-const-translation=${arrayChild[3].textContent} data-const-languageSel=${arrayChild[1].textContent}  data-const-constantTitle=${arrayChild[2].textContent} data-const-translateID=${arrayChild[0].textContent} >Отмена</div></td>
                         </tr>
                     
                     `;
 
+                    addEventToSaveChange(parentElement);
+
                 })
 
-            })
+            });
+
 
     };
 
