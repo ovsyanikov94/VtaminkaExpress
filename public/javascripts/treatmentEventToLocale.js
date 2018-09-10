@@ -1,23 +1,25 @@
 "use strict";
 let addEventToSaveChange = async function (elem) {
 
+
     if(elem){
         let buttonSaveChange = elem.querySelector('.save-change');
-        console.log('elem11111',elem);
+
+
 
             let parentDiv = buttonSaveChange.parentElement.parentElement;
             buttonSaveChange.addEventListener('click',async()=>{
 
-            console.log('element',elem);
+
             let idChange = +elem.querySelector('#constId').innerText;
 
-                console.log('id',idChange);
+
 
                 let descriptionChange =elem.querySelector('#description').value;
-                console.log('description',descriptionChange);
+
 
                 let titleChange = elem.querySelector('#title').value;
-                console.log('title',titleChange);
+
 
                 let data = new FormData();
                 data.append('id', +idChange);
@@ -33,7 +35,27 @@ let addEventToSaveChange = async function (elem) {
 
                     let response = await request.json();
 
-                    console.log(response);
+                   if(response.code ===200){
+
+
+                       parentDiv.innerHTML = null;
+                       parentDiv.innerHTML +=`
+                            <tr align="middle">
+                                <td class="td" id="constId">${response.data.constantID}</td>
+                                <td  class="td">${response.data.description}</td>
+                                <td  class="td">${response.data.constantTitle}</td>
+                                <td><div class="alert alert-primary" style="cursor: pointer" >изменить</div></td>
+                                <td><div class="alert alert-danger"(
+                                    style="cursor: pointer"
+                                    data-const-title=${response.data.description}
+                                    data-const-id=${response.data.constantID})
+                                 >Удалить</div></td>
+                            </tr>
+                            `;
+
+                       addEventToChange();
+                       addEventInButton(parentDiv);
+                   }
 
                 }//try
                 catch(ex){
@@ -47,6 +69,8 @@ let addEventToSaveChange = async function (elem) {
 }//сохранение изменения в БД
 
 let addEventToChange = function () {
+
+
     let buttonChange = document.querySelectorAll('.alert-primary');
         [].forEach.call(buttonChange,(btn)=>{
             let parentElement = btn.parentElement.parentElement;
@@ -54,7 +78,6 @@ let addEventToChange = function () {
 
                 let arreyChaild = parentElement.querySelectorAll('.td');
 
-                console.log(arreyChaild[1].textContent);
                 parentElement.innerHTML ='';
 
                 parentElement.innerHTML +=`
