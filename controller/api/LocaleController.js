@@ -81,25 +81,47 @@ module.exports.AddNewTranslate = async(req,res)=>{
 
 module.exports.GetLanguageListJSON = async ( req , res )=>{
 
-    let langs = await Langs.findAll();
+    try{
 
-    res.send(JSON.stringify(langs));
+        let langs = await Langs.findAll();
+        res.send(langs);
+
+    } // Try
+    catch(ex){
+
+        respone.code = 500;
+        respone.message = "Ошибка сервера";
+        console.log( ex );
+
+    } // Catch
+
 
 };
 
 module.exports.GetTranslateToCurrentLanguage = async (req,res)=>{
 
-    let langID = +req.params.id;
+    try {
+
+        let langID = +req.params.id;
 
 
-    let translate = await Translations.findAll(
-        {
-            where: {
-                languageID: langID
+        let translate = await Translations.findAll(
+            {
+                where: {
+                    languageID: langID
+                }
             }
-        }
-    );
+        );
 
-    res.send(JSON.stringify(translate));
+        res.send(translate);
+    } // Try
+
+    catch (ex) {
+
+        respone.code = 500;
+        respone.message = "Ошибка сервера";
+        console.log( ex );
+
+    } // Catch
 
 };
