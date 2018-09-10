@@ -543,7 +543,7 @@ module.exports.ExportLanguage = async ( req , res )=>{
 
     try{
 
-        let lang = await Langs.findById(req.params.id);
+        let lang = await Langs.findById(req.body.langID);
 
         let translations = await connection.query(`
             SELECT wc.constantTitle, t.translation
@@ -568,7 +568,21 @@ module.exports.ExportLanguage = async ( req , res )=>{
 
         });
 
-        res.send( jsonData );
+        let path = `public/i18n/${lang.dataValues.languageTitle}.json`;
+
+        if(fs.existsSync(path)){
+
+            fs.unlinkSync(path);
+
+        }//if
+
+        fs.appendFileSync(path, JSON.stringify(jsonData));
+
+        let response = new Response();
+        response.code = 200;
+        response.message = 'Экспорт успешен';
+        res.status( response.code );
+        res.send( response );
 
     }//try
     catch(ex){
