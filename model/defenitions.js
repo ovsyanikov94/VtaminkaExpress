@@ -160,10 +160,6 @@ const PromoCodes = connection.define('promoCodes',{
       allowNull: false,
       type: Sequelize.DataTypes.TINYINT
     },
-    delivery:{
-      allowNull: false,
-      type: Sequelize.DataTypes.INTEGER
-    },
     promoCount:{
       allowNull: false,
       type: Sequelize.DataTypes.INTEGER
@@ -178,8 +174,8 @@ const PromoCodes = connection.define('promoCodes',{
     }
 
 },{
-    createdAt: true,
-    updatedAt: true
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 });
 
 

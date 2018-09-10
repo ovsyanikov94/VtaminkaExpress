@@ -17,7 +17,6 @@
                 //получаем данные из полей формы
                 let promoCode = document.querySelector('#promoCodeInput').value;
                 let percentageValue = document.querySelector('#percentageInput').value;
-                let deliveryValue = document.querySelector('#deliveryInput').value;
                 let promoCountValue = document.querySelector('#promoCountInput').value;
                 let startDateValue = document.querySelector('#startDateInput').value;
                 let expireDateValue = document.querySelector('#expireDateInput').value;
@@ -31,7 +30,6 @@
                     body: JSON.stringify({
                         promoCode: promoCode,
                         percentageValue: percentageValue,
-                        deliveryValue: deliveryValue,
                         promoCountValue: promoCountValue,
                         startDateValue: startDateValue,
                         expireDateValue: expireDateValue,
@@ -55,8 +53,7 @@
                         <tr align="middle">
                             <td>${promoCode.promoCodeID}</td>
                             <td>${promoCode.discountCode}</td>
-                            <td>${promoCode.discount}</td>
-                            <td>${promoCode.delivery}</td>
+                            <td>${promoCode.discount}</td>                            
                             <td>${promoCode.promoCount}</td>
                             <td>${promoCode.startAtDate}</td>
                             <td>${promoCode.expireAtDate}</td>
@@ -117,7 +114,6 @@
                 //получаем новые значения промо-кодов
                 let newPromoCodeValue = document.querySelector('#newPromoCodeInput').value;
                 let newPercentageValue = document.querySelector('#newPercentageInput').value;
-                let newDeliveryValue = document.querySelector('#newDeliveryInput').value;
                 let newPromoCountValue = document.querySelector('#newPromoCountInput').value;
                 let newStartDateValue = document.querySelector('#newStartDateInput').value;
                 let newExpireDateValue = document.querySelector('#newExpireDateInput').value;
@@ -128,7 +124,6 @@
                 //добавляем полученные данные
                 data.append('newPromoCodeValue', newPromoCodeValue);
                 data.append('newPercentageValue', newPercentageValue);
-                data.append('newDeliveryValue', newDeliveryValue);
                 data.append('newPromoCountValue', newPromoCountValue);
                 data.append('newStartDateValue', newStartDateValue);
                 data.append('newExpireDateValue', newExpireDateValue);

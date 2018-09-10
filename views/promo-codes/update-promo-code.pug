@@ -11,9 +11,6 @@ block content
             label(for='newPercentageInput') Процент скидки
             input#newPercentageInput.form-control(placeholder='Введите процент скидки' value=promoCode.discount)
         .form-group
-            label(for='newDeliveryInput') Доставка
-            input#newDeliveryInput.form-control(placeholder='Введите доставку' value=promoCode.delivery)
-        .form-group
             label(for='newPromoCountInput') Количество
             input#newPromoCountInput.form-control(placeholder='Введите кол-во промо-кодов' value=promoCode.promoCount)
         .form-group
@@ -25,3 +22,5 @@ block content
         .form-group
             #message.alert.alert-danger(style="display: none")
             #updatePromoCodeButton.btn.btn-primary Обновить промо-код
+        .form-group
+            a#goBack.btn.btn-primary(href="/panel/promo-codes/promo-codes-list") Назад

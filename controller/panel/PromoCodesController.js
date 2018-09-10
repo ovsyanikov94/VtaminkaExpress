@@ -32,7 +32,6 @@ module.exports.AddNewPromoCode = async (req, res) => {
         //извлекаем данные из полей страницы
         let promoCode = req.body.promoCode;    //значение промо-кода
         let percentage = req.body.percentageValue;  //процент снижения цены
-        let delivery = req.body.deliveryValue;      //цена за доставку
         let count = req.body.promoCountValue;       //кол-во промо-кодов
         let startDate = req.body.startDateValue;    //начальная дата промо-кода
         let expireDate = req.body.expireDateValue;  //конечная дата промо-кода
@@ -41,7 +40,6 @@ module.exports.AddNewPromoCode = async (req, res) => {
         let newPromoCode = await PromoCodes.create({
            'discountCode': promoCode,
            'discount': percentage,
-           'delivery': delivery,
            'promoCount': count,
            'startAtDate': startDate,
            'expireAtDate': expireDate,
@@ -110,7 +108,6 @@ module.exports.UpdatePromoCode = async (req, res)=>{
 
         let newPromoCode = req.body.newPromoCodeValue;
         let newPercentage = req.body.newPercentageValue;
-        let newDelivery = req.body.newDeliveryValue;
         let newPromoCount = req.body.newPromoCountValue;
         let newStartDate = req.body.newStartDateValue;
         let newExpireDate = req.body.newExpireDateValue;
@@ -118,7 +115,6 @@ module.exports.UpdatePromoCode = async (req, res)=>{
         await promoCodeToUpdate.update({
             'discountCode': newPromoCode,
             'discount': newPercentage,
-            'delivery': newDelivery,
             'promoCount': newPromoCount,
             'startAtDate': newStartDate,
             'expireAtDate': newExpireDate,
