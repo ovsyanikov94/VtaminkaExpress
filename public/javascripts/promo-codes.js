@@ -222,7 +222,6 @@
                         body: data
                     });
 
-
                     let response = await request.json();
                     console.log(response);
 
@@ -241,8 +240,6 @@
                 }//catch
 
             });
-
-
 
         }//if
 
