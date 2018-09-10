@@ -168,7 +168,7 @@
         confirmRemoveButton.addEventListener('click' , async function (){
 
             let data = new FormData();
-            data.append('id', categoryID);
+            data.append('categoryID', categoryID);
 
             try{
 
@@ -179,13 +179,18 @@
 
 
                 let response = await request.json();
+                console.log(response);
+
                 if(response.code === 200){
 
+                    let table = document.querySelector(`#categoriesTable`);
+                    let row = document.querySelector(`#categoriesTable tr[data-category-id='${categoryID}']`);
 
+                    table.removeChild( row );
 
-                }
+                }//if
 
-            }
+            }//try
             catch (ex) {
                 console.log(ex);
             }//catch

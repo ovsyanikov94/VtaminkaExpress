@@ -18,9 +18,9 @@ block content
                     th(scope='col') Изменить
                     th(scope='col') Удалить
 
-            tbody
+            tbody#categoriesTable
                 each category in categories
-                    tr(align="middle")
+                    tr(align="middle" data-category-id=category.categoryID)
                         td= category.categoryID
                         td= category.categoryTitle
                         td
