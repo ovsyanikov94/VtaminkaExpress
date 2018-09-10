@@ -20,5 +20,7 @@ router.put('/locale/lang/:id' , LocaleController.UpdateLanguage );
 router.delete('/locale/remove' , LocaleController.RemoveConst );
 router.put('/locale/update' , LocaleController.UpdateConst );
 
+router.post('/locale/lang/export/' , LocaleController.ExportLanguage );
+router.post('/locale/lang/import/' , LocaleController.ImportLanguage );
 
 module.exports = router;
