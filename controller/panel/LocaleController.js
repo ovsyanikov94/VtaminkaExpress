@@ -610,7 +610,8 @@ module.exports.GelTransletionList=async(req , res)=>{
 
        include: [
            {
-               model: WordsConstans
+               model: WordsConstans,
+               as: 'constant'
            },
            {
                model: Langs
@@ -636,7 +637,8 @@ module.exports.UpdataTranslationAction=async(req, res)=>{
             },
             include: [
                 {
-                    model: WordsConstans
+                    model: WordsConstans,
+                    as: 'constant'
                 },
                 {
                     model: Langs

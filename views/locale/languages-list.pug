@@ -36,15 +36,11 @@ block content
                             data-lang-id=lang.languageID
                         ) Удалить
                     td
-                        .alert.alert-success(style="display: inline-block;")
-                            input(type="file" id="sendFile")
-                            button.alert.alert-primary#importButton(
-                            style="cursor: pointer"
-                            data-lang-title=lang.languageTitle
-                            data-lang-id=lang.languageID
-                            ) Импортитовать
+                        .custom-file
+                            label.custom-file-label(for='newsImage' ) Выбрать файл
+                            input#newsImage.custom-file-input(type='file')
                     td
-                        button.alert.alert-success#exportButton(data-lang-id=lang.languageID style="cursor: pointer") Экспортировать
+                        button.btn.btn-success.btn-export(data-lang-id=lang.languageID style="cursor: pointer") Экспортировать
 
 
     #confirmRemoveLanguageModal.modal(tabindex='-1', role='dialog')

@@ -9,34 +9,40 @@
     let importButton = document.querySelector('#importButton');
     let file = document.querySelector('#sendFile');
 
-    let exportButton = document.querySelector('#exportButton');
+    let exportButtons = document.querySelectorAll('.btn-export');
 
-    if(exportButton){
+    if(exportButtons){
 
-        exportButton.addEventListener('click', async function () {
-            try{
+        exportButtons.forEach( exportButton => {
 
-                let data = new FormData();
+            exportButton.addEventListener('click', async function () {
+                try{
 
-                data.append('langID', exportButton.dataset.langId);
+                    let data = new FormData();
 
-                let request = await fetch(`${window.ServerAddress}panel/locale/lang/export/` , {
-                    method: 'POST',
-                    body: data
-                });
+                    data.append('langID', exportButton.dataset.langId);
 
-                let response = await request.json();
+                    let request = await fetch(`${window.ServerAddress}panel/locale/lang/export/` , {
+                        method: 'POST',
+                        body: data
+                    });
 
-                console.log(response);
+                    let response = await request.json();
 
-            }//try
-            catch(ex){
+                    console.log(response);
 
-                console.log('ex' , ex);
+                }//try
+                catch(ex){
 
-            }//catch
+                    console.log('ex' , ex);
 
-        });
+                }//catch
+
+            });
+
+        } );
+
+
 
     }//if
 
