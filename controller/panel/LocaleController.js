@@ -235,6 +235,8 @@ module.exports.AddNewLanguage = async ( req , res )=>{
 
 module.exports.UpdateLanguageAction  = async(req, res)=>{
 
+
+
     try{
         let langID = +req.params.id;
         let lang = await Langs.findById( langID );
@@ -244,7 +246,6 @@ module.exports.UpdateLanguageAction  = async(req, res)=>{
     catch (ex){
         res.render('error',{ error: ex});
     }//catch
-
 };
 
 module.exports.UpdateLanguage = async ( req , res )=>{
@@ -307,6 +308,7 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
 
             }//else
+
 
             // fs.existsSync()
             langImage.mv( `${path}/${langImage.name}` ,async function(err) {
@@ -544,40 +546,54 @@ module.exports.ExportLanguage = async ( req , res )=>{
 
     try{
 
-        let lang = await Langs.findById(req.params.id);
+        let lang = await Langs.findById(req.body.langID);
 
-        let translations = await connection.query(`
-            SELECT wc.constantTitle, t.translation
-            FROM \`translations\` as t
-            JOIN \`wordsconstants\` as wc ON wc.constantID = t.constantID
-            WHERE t.languageID = '${lang.languageID}'
-        `);
+        if( !lang ){
+            throw new Error('Язык не найден');
+        }//if
 
-        let constants = await WordsConstans.findAll();
+        let translations = await Translations.findAll({
+            where: {
+                languageID: lang.languageID
+            },
+            include:[
+                {
+                    model: WordsConstans,
+                    attributes: [ 'constantTitle' ],
+                    as: 'constant'
+                }
+            ]
+        });
 
         let jsonData = {};
 
-        constants.forEach(item => {
+        translations.forEach(item => {
 
-            jsonData[`${item.constantTitle}`] = "";
-
-        });
-
-        translations[0].forEach(item => {
-
-            jsonData[`${item.constantTitle}`] = item.translation;
+            jsonData[`${item.constant.constantTitle}`] = item.translation;
 
         });
 
-        res.send( jsonData );
+
+        let path = `public/i18n/${lang.languageTitle}.json`;
+
+        if(fs.existsSync(path)){
+
+            fs.unlinkSync(path);
+
+        }//if
+
+        fs.appendFileSync(path, JSON.stringify(jsonData));
+
+        response.code = 200;
+        response.message = 'Экспорт успешен';
 
     }//try
     catch(ex){
 
+        console.log('EX: ' , ex);
 
         response.code = 500;
-        response.message = 'Внутренняя ошибка сервера!';
-        console.log('EX: ' , ex);
+        response.message = ex.message;
 
     }//catch
 
