@@ -153,6 +153,7 @@ module.exports.AddOrder = async ( req , res )=>{
         let totalPriceWithDiscount=0;
 
         for(let i=0; i<products.length; i++){
+
             let product = products[i];
 
             let pFind = await Product.findById(product.productID);
@@ -160,6 +161,7 @@ module.exports.AddOrder = async ( req , res )=>{
             let pPrice = pFind.productPrice;
 
             totalPrice += pPrice*+product.amount;
+
         }//for
 
         let promoID=-1;
