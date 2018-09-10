@@ -546,10 +546,10 @@ module.exports.ExportLanguage = async ( req , res )=>{
         let lang = await Langs.findById(req.params.id);
 
         let translations = await connection.query(`
-        SELECT wc.constantTitle, t.translation
-        FROM \`translations\` as t
-        JOIN \`wordsconstants\` as wc ON wc.constantID = t.constantID
-        WHERE t.langID = '${lang.languageID}'
+            SELECT wc.constantTitle, t.translation
+            FROM \`translations\` as t
+            JOIN \`wordsconstants\` as wc ON wc.constantID = t.constantID
+            WHERE t.langID = '${lang.languageID}'
         `);
 
         let constants = await WordsConstans.findAll();
