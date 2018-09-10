@@ -225,7 +225,7 @@ Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'langu
 //
 //
 // Product.sync({force: true});
-//
+// //
 // Category.sync({force: true});
 // ProductAndCategories.sync({force: true});
 // ProductAttributes.sync({force: true});

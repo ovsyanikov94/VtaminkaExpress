@@ -172,10 +172,12 @@
 
             try{
 
-                let request=await fetch( `${window.ServerAddress}panel/category/delete` , {
+                let request=await fetch( `${window.ServerAddress}panel/categories/delete` , {
                     method: 'DELETE',
                     body: data
                 });
+
+                console.log(data);
 
                 let response = await request.json();
                 if(response.code === 200){

@@ -138,7 +138,7 @@ module.exports.GetProductsByCategories = async(req,res)=>{
             where: {
                 categoryID: categoryID
             },
-            attributes: [ 'productID' ]
+            attributes: [ 'productID'  ]
         });
 
         let ids = [].map.call( products , p => p.productID );
@@ -166,6 +166,13 @@ module.exports.GetProductsByCategories = async(req,res)=>{
                     productID: product.productID
                 }
             });
+            product.categoryTitle = await Category.findOne({
+                attributes:['categoryTitle'],
+                where:{
+                    categoryID : categoryID
+                }
+            });
+            console.log(product);
 
         }//for i
 

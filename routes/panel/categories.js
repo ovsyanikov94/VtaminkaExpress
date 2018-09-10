@@ -12,6 +12,6 @@ router.get('/category/new' , CategoryController.AddCategoryAction);
 router.get('/category/:id' , CategoryController.GetCategoryAction );
 router.post('/category/new' , CategoryController.AddCategory);
 router.put('/category/:id' , CategoryController.UpdateCategory );
-router.delete('/category/delete' , CategoryController.RemoveCategory );
+router.delete('/categories/delete' , CategoryController.RemoveCategory );
 
 module.exports = router;

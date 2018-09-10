@@ -12,6 +12,7 @@ block content
                 tr(align="middle")
                     th(scope='col') #
                     th(scope='col') Название
+                    th(scope='col') Категория
                     th(scope='col') Цена
                     th(scope='col') Изменить
                     th(scope='col') Удалить
@@ -21,6 +22,7 @@ block content
                     tr(align="middle")
                         td= product.productID
                         td= product.productTitle
+                        td= product.categoryTitle.categoryTitle
                         td= product.productPrice
                         td
                             a.alert.alert-primary(href="/panel/products/" + product.productID style="display: inline-block;") Изменить
