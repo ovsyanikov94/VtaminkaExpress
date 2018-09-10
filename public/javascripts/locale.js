@@ -122,25 +122,6 @@
 
             if( responseJSON.code === 200 ){
 
-                let lang = responseJSON.data;
-
-                langsTable.innerHTML += `
-                    <tr align="middle">
-                        <td>${lang.languageID}</td>
-                        <td>${lang.languageTitle}</td>
-                        <td>${lang.languageImage || ''}</td>
-                        <td >
-                            <a style="display: inline-block;" class="alert alert-primary" href="/panel/locale/lang/${lang.languageID}" >Изменить</a>
-                        </td>
-                        <td>
-                            <button 
-                                class="alert alert-danger" 
-                                data-lang-title=${lang.languageTitle}
-                                data-lang-id=${lang.languageID} >Удалить</button>    
-                        </td>
-                    </tr>
-                `;
-
                 if( messageBlock.classList.contains('alert-danger') ){
                     messageBlock.classList.remove('alert-danger');
                 }//if
