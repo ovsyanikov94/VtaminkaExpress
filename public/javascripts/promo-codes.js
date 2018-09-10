@@ -158,7 +158,7 @@
                         //выводим сообщение на форме
                         messageBlock.style.display = 'block';
 
-                        setTimeout( () => { window.location.href = "/promo-codes/promo-codes-list";} , 1500);
+                        //setTimeout( () => { window.location.href = "/promo-codes/promo-codes-list";} , 1500);
 
                     }//if
                     else{
@@ -180,6 +180,67 @@
                 }//catch
             });
         }//if updateButton
+
+        //ищем кнопки удаления промо-кодов на страничке
+        let removeButtons = document.querySelectorAll('.alert-danger');
+        let modalBody = document.querySelector('#confirmRemovePromoCodeModal');
+
+        [].forEach.call( removeButtons , ( button )=>{
+
+            button.addEventListener('click' , async function (){
+
+                let promoCodeId = +button.dataset.promoCodeId;
+                let promoCode = button.dataset.promoCode;
+
+                modalBody.textContent = promoCode;
+                $('#confirmRemoveProductModal').modal();
+
+            });
+
+        } );
+
+        let confirmRemoveButton = document.querySelector('#confirmRemovePromoCodeButton');
+
+        if(confirmRemoveButton){
+
+            confirmRemoveButton.addEventListener('click' , async function (){
+
+                let data = new FormData();
+                data.append('promoCodeId', promoCodeId);
+                data.append('promoCode', promoCode);
+
+                console.log(data);
+
+                try{
+
+                    let request = await fetch( `${window.ServerAddress}promo-codes/delete` , {
+                        method: 'DELETE',
+                        body: data
+                    });
+
+
+                    let response = await request.json();
+                    console.log(response);
+
+                    if(response.code === 200){
+
+                        let table = document.querySelector(`#promoCodesList`);
+                        let row = document.querySelector(`#promoCodesList tr[data-promo-code-id='${promoCodeId}']`);
+
+                        table.removeChild( row );
+
+                    }//if
+
+                }//try
+                catch (ex) {
+                    console.log(ex);
+                }//catch
+
+            });
+
+
+
+        }//if
 
 })();
 

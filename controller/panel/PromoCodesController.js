@@ -141,6 +141,40 @@ module.exports.DeletePromoCode = async (req, res)=>{
 
     let response = new Response();
 
-    
+    let promoCodeId = +req.body.promoCodeId;
+
+    console.log(promoCodeId);
+
+    try {
+
+        let promoCodeToDelete = await PromoCode.findById(promoCodeId);
+
+        if(!promoCodeToDelete){
+
+            response.code = 404;
+            response.message = "Промо-код не найден!";
+            response.data = promoCodeId;
+
+            return res.send(response);
+
+        }//if
+
+        await promoCodeToDelete.destroy();
+
+        response.code = 200;
+        response.message = "Промо-код успешно удалён";
+        response.data = promoCodeToDelete;
+
+    }//try
+    catch(ex){
+
+        response.code=500;
+        response.message="Ошибка сервера";
+        return res.send(response)
+
+    }//catch
+
+    res.status(response.code);
+    res.send(response);
 
 };

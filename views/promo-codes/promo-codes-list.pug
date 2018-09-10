@@ -39,7 +39,7 @@ block content
                 th(scope='col') Удалить
         tbody#promoCodesList
             each promoCode in promoCodes
-                tr(align="middle")
+                tr(align="middle" data-promo-code-id=promoCode.promoCodeID)
                     td= promoCode.promoCodeID
                     td= promoCode.discountCode
                     td= promoCode.discount
@@ -52,6 +52,7 @@ block content
                         button.alert.alert-danger(
                             style="cursor: pointer"
                             data-promo-code-id=promoCode.promoCodeID
+                            data-promo-code=promoCode.discountCode
                         ) Удалить
 
 
