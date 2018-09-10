@@ -601,3 +601,157 @@ module.exports.ExportLanguage = async ( req , res )=>{
     res.send( response );
 
 };
+
+module.exports.GelTransletionList=async(req , res)=>{
+
+
+
+    let translations = await Translations.findAll({
+
+       include: [
+           {
+               model: WordsConstans
+           },
+           {
+               model: Langs
+           }
+       ]
+
+    });
+
+
+    let languages = await Langs.findAll();
+    let constants = await WordsConstans.findAll();
+
+    res.render('locale/transleton/trasletion-list',{constants : constants, languages: languages ,  translations: translations});
+};
+module.exports.UpdataTranslationAction=async(req, res)=>{
+
+
+    let id = req.params.id;
+    console.log(id);
+    let translations = await Translations.findOne({
+            where:{
+                ID:id
+            },
+            include: [
+                {
+                    model: WordsConstans
+                },
+                {
+                    model: Langs
+                }
+        ]
+
+    });
+
+    res.render('locale/transleton/updataTranslation',{'translations':translations})
+};
+
+module.exports.UpdataTranslation=async(req,res)=>{
+
+
+    let respone = new Response();
+    let id = req.body.id;
+    let text =req.body.text
+
+    console.log(id);
+    console.log(text);
+
+    try{
+        let updateTran = await Translations.findOne({
+
+            where:{
+                ID:id
+            },
+
+        });
+
+        updateTran.update({translation:text})
+        respone.code = 200;
+        respone.message = "перевод обнавлен";
+        respone.data = updateTran;
+    }catch (ex){
+        respone.code = 500;
+        respone.message = "ощибка сервера";
+
+    }
+    res.status(respone.code);
+    res.send(respone);
+}
+
+module.exports.RemoveTransletion=async(req , res)=>{
+
+
+    let respone = new Response();
+    let id = req.body.id;
+
+    try{
+        let removeTrans = Translations.destroy({
+            where:{
+                ID:id
+            }
+        });
+
+        respone.code=200;
+        respone.message="перевод удален";
+
+    }//try
+    catch (ex){
+        respone.code=500;
+        respone.message="ощибка сервера";
+
+    }//catch
+
+    res.status(respone.code);
+    res.send(respone);
+};
+
+module.exports.AddTransletion=async(req , res)=>{
+
+    let respone = new Response();
+
+    let constId = req.body.idConst;
+    let lengId = req.body.idleng;
+    let translation = req.body.translation
+
+    let constant = await WordsConstans.findOne({
+        where:{
+            constantID:constId
+        }
+    });
+
+
+    let leng =  await Langs.findOne({
+        where:{
+            languageID:lengId
+        }
+    });
+
+    if(constant&&leng&&translation){
+
+        let trans = await Translations.create({
+            constantID:constId,
+            languageID:lengId,
+            translation:translation
+        });
+
+        respone.code=200;
+        respone.message="перевод добавлен";
+        respone.data = {
+            'ConstantTitle': constant.constantTitle,
+            'LanguageTitle': leng.languageTitle,
+            'Translation': translation,
+            'TranslationID': trans.ID,
+        };
+
+    }//if
+    else {
+        respone.code=404;
+        respone.message="значение не найдено";
+    }//else
+
+    res.status(respone.code);
+    res.send(respone);
+
+};//AddTransletion
