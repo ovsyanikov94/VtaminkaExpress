@@ -181,19 +181,23 @@
             });
         }//if updateButton
 
+
+
         //ищем кнопки удаления промо-кодов на страничке
         let removeButtons = document.querySelectorAll('.alert-danger');
         let modalBody = document.querySelector('#confirmRemovePromoCodeModal');
+        let promoCode = -1;
+        let promoCodeId = -1;
 
         [].forEach.call( removeButtons , ( button )=>{
 
             button.addEventListener('click' , async function (){
 
-                let promoCodeId = +button.dataset.promoCodeId;
-                let promoCode = button.dataset.promoCode;
+                promoCodeId = +button.dataset.promoCodeId;
+                promoCode = button.dataset.promoCode;
 
-                modalBody.textContent = promoCode;
-                $('#confirmRemoveProductModal').modal();
+                //modalBody.textContent = promoCode;
+                $('#confirmRemovePromoCodeModal').modal();
 
             });
 
