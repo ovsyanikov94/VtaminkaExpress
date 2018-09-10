@@ -269,7 +269,7 @@ Translations.belongsTo( WordsConstans , { foreignKey: 'constantID', as: 'constan
 //Product.sync({force: true});
 // Category.sync({force: true});
 // Translations.sync({force: true});
-//Langs.sync({force: true})
+// Langs.sync({force: true})
 // ProductAndCategories.sync({force: true});
 // ProductAttributes.sync({force: true});
 // ProductAndAttributes.sync({force: true});

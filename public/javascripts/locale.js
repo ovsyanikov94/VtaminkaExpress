@@ -6,10 +6,45 @@
     let messageBlock = document.querySelector('#message');
     let langsTable = document.querySelector('#langsList');
     let updateLang = document.querySelector('#updateLang');
-    let importButton = document.querySelector('#importButton');
-    let file = document.querySelector('#sendFile');
+    let files = document.querySelectorAll('.file-import');
 
     let exportButtons = document.querySelectorAll('.btn-export');
+
+    if(files){
+
+        files.forEach( file => {
+
+            file.addEventListener('change', async function () {
+
+                let data = new FormData();
+
+                data.append('file', file.files[0]);
+
+                data.append('langID', file.dataset.langId);
+
+                try{
+
+                    let request = await fetch(`${window.ServerAddress}panel/locale/lang/import/` , {
+                        method: 'POST',
+                        body: data
+                    });
+
+                    let response = await request.json();
+
+                    console.log(response);
+
+                }//try
+                catch(ex){
+
+                    console.log('ex' , ex);
+
+                }//catch
+
+            });
+
+        } );
+
+    }//if
 
     if(exportButtons){
 
@@ -43,38 +78,6 @@
         } );
 
 
-
-    }//if
-
-    if(importButton){
-
-        importButton.addEventListener('click', async function () {
-
-            let data = new FormData();
-
-            data.append('file', file.files[0]);
-
-            data.append('langID', importButton.dataset.langId);
-
-            try{
-
-                let request = await fetch(`${window.ServerAddress}panel/locale/lang/import/` , {
-                    method: 'POST',
-                    body: data
-                });
-
-                let response = await request.json();
-
-                console.log(response);
-
-            }//try
-            catch(ex){
-
-                console.log('ex' , ex);
-
-            }//catch
-
-        });
 
     }//if
 

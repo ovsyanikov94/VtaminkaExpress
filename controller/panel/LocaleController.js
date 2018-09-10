@@ -462,7 +462,20 @@ module.exports.ImportLanguage = async ( req , res )=>{
                     SELECT *
                     FROM \`translations\` AS t
                     JOIN \`wordsconstants\` AS wc ON wc.constantID = t.constantID
-                    WHERE t.langID = '${LangID}' AND wc.constantTitle = '${fileData[i][0]}'`);
+                    WHERE t.languageID = '${LangID}' AND wc.constantTitle = '${fileData[i][0]}'`);
+
+                // checkTranstate = await Translations.findAll({
+                //     where: {
+                //         languageID: lang.languageID,
+                //         constantTitle: `${fileData[i][0]}`
+                //     },
+                //     include:[
+                //         {
+                //             model: WordsConstans,
+                //             as: 'constant'
+                //         }
+                //     ]
+                // });
 
 
                 if(checkTranstate[0].length > 0){
@@ -503,7 +516,7 @@ module.exports.ImportLanguage = async ( req , res )=>{
                     Translations.create({
                         translation: fileData[i][1],
                         constantID: constant.constantID,
-                        langID: LangID
+                        languageID: LangID
                     });
 
                 }//else
