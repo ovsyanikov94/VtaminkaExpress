@@ -177,7 +177,6 @@
                     body: data
                 });
 
-                console.log(data);
 
                 let response = await request.json();
                 if(response.code === 200){
