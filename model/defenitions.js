@@ -21,8 +21,7 @@ const Category = connection.define('productcategories',{
             is: RegularExpressions.CategoryTitleExpression
         }
 
-    },
-    productsAmount: Sequelize.DataTypes.VIRTUAL
+    }
 
 },{
     createdAt: false,
@@ -158,16 +157,16 @@ const PromoCodes = connection.define('promoCodes',{
         type: Sequelize.DataTypes.STRING
     },
     discount:{
-        allowNull: false,
-        type: Sequelize.DataTypes.TINYINT
+      allowNull: false,
+      type: Sequelize.DataTypes.TINYINT
     },
     delivery:{
-        allowNull: false,
-        type: Sequelize.DataTypes.INTEGER
+      allowNull: false,
+      type: Sequelize.DataTypes.INTEGER
     },
     promoCount:{
-        allowNull: false,
-        type: Sequelize.DataTypes.INTEGER
+      allowNull: false,
+      type: Sequelize.DataTypes.INTEGER
     },
     startAtDate:{
         allowNull: true,
@@ -263,16 +262,127 @@ Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'const
 Translations.belongsTo( Langs , { foreignKey: 'languageID' } );
 Translations.belongsTo( WordsConstans , { foreignKey: 'constantID', as: 'constant' } );
 
+
+const Users = connection.define('users',{
+    userEmail:{
+        primaryKey: true,
+        allowNull:false,
+        unique: true,
+        type:Sequelize.DataTypes.STRING(50)
+    },
+    userName:{
+        allowNull:false,
+        type:Sequelize.DataTypes.STRING(50)
+    }
+},{
+    createdAt: false,
+    updatedAt: false
+});
+
+const Phones = connection.define('phones',{
+    phoneID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    phoneNumber:{
+        unique: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    },
+},{
+    createdAt: false,
+    updatedAt: false
+});
+
+const Cards = connection.define('cards',{
+    cardID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    cardNumber:{
+        unique: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    yearEnd:{
+        allowNull: false,
+        type: Sequelize.DataTypes.DATE
+    },
+    cvv:{
+        allowNull: false,
+        type: Sequelize.DataTypes.TINYINT
+    },
+    userCardName:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    }
+},{
+    createdAt:false,
+    updatedAt:false
+});
+
+const Orders = connection.define('orders',{
+    orderID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+    orderAdress:{
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING
+    },
+    orderDate:{
+        allowNull: false,
+        type: Sequelize.DataTypes.DATE
+    },
+
+},{
+    createdAt:false,
+    updatedAt:false
+});
+
+const OrdersAndProduct = connection.define('OrdersProduct',{
+    ID:{
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER
+    },
+},{
+    createdAt:false,
+    updatedAt:false
+});
+
+Cards.belongsTo(Users,{ foreignKey: 'userEmail' });
+Phones.belongsTo(Users,{ foreignKey: 'userEmail' });
+Orders.belongsTo(Users,{ foreignKey: 'userEmail' });
+Orders.belongsTo(PromoCodes,{ foreignKey: 'promoID' });
+
+Orders.belongsToMany(Product,{through:OrdersAndProduct, foreignKey: 'orderID'});
+Product.belongsToMany(Orders,{through:OrdersAndProduct, foreignKey: 'productID'});
+
+//Users.sync({force: true});
+// Phones.sync({force:true});
+// Cards.sync({force:true});
+// Orders.sync({force:true});
+//OrdersAndProduct.sync({force:true});
+
 //PromoCodes.sync({force: true});
 
 // WordsConstans.sync({force: true});
-//Product.sync({force: true});
-// Category.sync({force: true});
 // Translations.sync({force: true});
-//Langs.sync({force: true})
+//Langs.sync({force: true});
+
+//Product.sync({force: true});
+//Category.sync({force: true});
 // ProductAndCategories.sync({force: true});
 // ProductAttributes.sync({force: true});
-// ProductAndAttributes.sync({force: true});
+//ProductAndAttributes.sync({force: true});
 // ProductImages.sync({force: true});
 
 const News  = connection.define('news',{
