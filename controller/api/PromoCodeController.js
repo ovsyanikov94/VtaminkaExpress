@@ -3,7 +3,7 @@
 const Response = require('../../model/Response');
 const PromoCode = require('../../model/defenitions').PromoCodes;
 
-const Op = Sequelize.Op
+const Op = require('sequelize').Op;
 
 module.exports.GetPromoCodes = async(req, res) => {
 
@@ -36,9 +36,20 @@ module.exports.UsePromoCode = async (req, res) => {
 
     try{
 
+        let currentDate = new Date();
+
         let promo = await PromoCode.findOne({
             where:{
-                discountCode: promoCode
+                discountCode: promoCode,
+                startAtDate:{
+                    [Op.lte]: currentDate
+                },
+                expireAtDate:{
+                    [Op.gte]: currentDate
+                },
+                promoCount:{
+                    [Op.gt]: 0
+                }
             }
         });
 
@@ -51,23 +62,12 @@ module.exports.UsePromoCode = async (req, res) => {
 
         }//if
 
-        let promoPercentage = +promo.discount;
-        let promoCount = +promo.promoCount;
-        let promostartAtDate = promo.startAtDate;
-        let promoexpireAtDate = promo.expireAtDate;
-
-        let decreasedPromoCount = promoCount--;
-
-        if(promoCount !== 0){
-
-            await promo.update({
-                'promoCount': decreasedPromoCount
-            });
-
-        }//if
+        await promo.update({
+            'promoCount': promo.promoCount - 1
+        });
 
         response.code = 200;
-        response.data = promoPercentage;
+        response.data = promo.discount;
 
     }//try
     catch(ex){

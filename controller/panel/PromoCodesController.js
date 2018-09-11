@@ -147,7 +147,7 @@ module.exports.DeletePromoCode = async (req, res)=>{
 
     try {
 
-        let promoCodeToDelete = await PromoCode.findById(promoCodeId);
+        let promoCodeToDelete = await PromoCodes.findById(promoCodeId);
 
         if(!promoCodeToDelete){
 

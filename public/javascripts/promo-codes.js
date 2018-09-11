@@ -2,6 +2,31 @@
 
 (function () {
 
+        let promoCode = -1;
+        let promoCodeId = -1;
+
+        function AddRemoveEventhandlers(){
+
+            //ищем кнопки удаления промо-кодов на страничке
+            let removeButtons = document.querySelectorAll('.alert-danger');
+            let modalBody = document.querySelector('#confirmRemovePromoCodeModal');
+
+
+            [].forEach.call( removeButtons , ( button )=>{
+
+                button.addEventListener('click' , async function (){
+
+                    promoCodeId = +button.dataset.promoCodeId;
+                    promoCode = button.dataset.promoCode;
+
+                    //modalBody.textContent = promoCode;
+                    $('#confirmRemovePromoCodeModal').modal();
+
+                });
+
+            } );
+
+        }
 
         let messageBlock = document.querySelector('#message');
         let promoCodesTable = document.querySelector('#promoCodesList');
@@ -68,6 +93,8 @@
                             </td>
                         </tr>
                     `;
+
+                    AddRemoveEventhandlers();
 
                     //убираем сообщение об ошибке на форме
                     if( messageBlock.classList.contains('alert-danger') ){
@@ -182,26 +209,8 @@
         }//if updateButton
 
 
+        AddRemoveEventhandlers();
 
-        //ищем кнопки удаления промо-кодов на страничке
-        let removeButtons = document.querySelectorAll('.alert-danger');
-        let modalBody = document.querySelector('#confirmRemovePromoCodeModal');
-        let promoCode = -1;
-        let promoCodeId = -1;
-
-        [].forEach.call( removeButtons , ( button )=>{
-
-            button.addEventListener('click' , async function (){
-
-                promoCodeId = +button.dataset.promoCodeId;
-                promoCode = button.dataset.promoCode;
-
-                //modalBody.textContent = promoCode;
-                $('#confirmRemovePromoCodeModal').modal();
-
-            });
-
-        } );
 
         let confirmRemoveButton = document.querySelector('#confirmRemovePromoCodeButton');
 
@@ -217,7 +226,7 @@
 
                 try{
 
-                    let request = await fetch( `${window.ServerAddress}promo-codes/delete` , {
+                    let request = await fetch( `${window.ServerAddress}panel/promo-codes/delete` , {
                         method: 'DELETE',
                         body: data
                     });

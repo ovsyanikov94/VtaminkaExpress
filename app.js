@@ -18,6 +18,7 @@ const promoRoutes = require('./routes/panel/promo-codes');
 
 
 const productsApiRoutes = require('./routes/api/products');
+const promocodesApiRoutes = require('./routes/api/promo-codes');
 
 const fileUpload = require('express-fileupload');
 
@@ -43,6 +44,7 @@ app.use('/panel' , promoRoutes);
 
 //API ROUTES
 app.use('/api' , productsApiRoutes);
+app.use('/api' , promocodesApiRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
