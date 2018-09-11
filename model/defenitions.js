@@ -13,6 +13,7 @@ const Category = connection.define('productcategories',{
         allowNull: false,
         autoIncrement: true,
         type: Sequelize.DataTypes.INTEGER
+
     },
     categoryTitle: {
         type: Sequelize.DataTypes.STRING,
