@@ -51,10 +51,10 @@ let addEventToChange = function () {
         [].forEach.call(buttonChange,(btn)=>{
             let parentElement = btn.parentElement.parentElement;
             btn.addEventListener('click',()=>{
-                console.log('elem5555555',parentElement);
+
                 let arreyChaild = parentElement.querySelectorAll('.td');
 
-                console.log(arreyChaild[1].textContent);
+
                 parentElement.innerHTML ='';
 
                 parentElement.innerHTML +=`
