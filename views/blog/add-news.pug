@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+    script( defer src="/javascripts/news.js" )
+    form
+        .form-group
+            label(for='Title') Заголовок
+            input#Title.form-control(type='text', placeholder='введите заголовок новости')
+        .custom-file
+            label.custom-file-label(for='newsImage' ) Добавить изображение
+            input#newsImage.custom-file-input(type='file')
+        .form-group
+            label Файл:
+        .form-group
+            label(for='TextNews') Текст новости
+            textarea#TextNews.form-control(rows='3')
+        .form-group
+            #addNewsButton.form-group.btn.btn-primary.col-12 Добавить
