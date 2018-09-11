@@ -11,7 +11,7 @@ const ProductAndCategories = require('../../model/defenitions').ProductAndCatego
 const ProductImages = require('../../model/defenitions').ProductImages;
 const fs = require('fs');
 
-
+const rimraf = require('rimraf');
 const RegularExpressions = require('../../model/RegularExpressions');
 
 module.exports.GetProductsListAction = async ( req , res )=>{
@@ -438,7 +438,7 @@ module.exports.RemoveProduct = async ( req , res )=>{
         if(productImage){
 
             let path = `public/images/${productID}`;
-            fs.unlinkSync(path);
+            rimraf.sync(path);
             await productImage.destroy();
 
         }//if
