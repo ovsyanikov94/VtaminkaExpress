@@ -97,7 +97,7 @@ function AddRemoveAttributeListeners( attributes ){
 
             attributes.forEach( ( attr )=>{
 
-                pr.innerHTML += `
+                attributesTable.innerHTML += `
                 <tr align="middle">
                     <td>${attr.attributeID}</td>
                     <td>${attr.attributeTitle}</td>

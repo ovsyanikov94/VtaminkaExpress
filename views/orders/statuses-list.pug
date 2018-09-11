@@ -1,0 +1,52 @@
+extends ../layout
+
+block content
+    script( defer src="/javascripts/status.js" )
+
+    a.form-group.btn.btn-primary.col-12(href="/panel/orders/status/new") Добавить статус
+
+    .form-group
+        #message.alert.alert-danger(style="display: none")
+
+    if statuses.length === 0
+        .alert.alert-info.col-12
+            | Статусы не найдены
+    else
+        table.table
+            thead
+                tr(align="middle")
+                    th(scope='col') #
+                    th(scope='col') Название
+                    th(scope='col') Заказов
+                    th(scope='col') Изменить
+                    th(scope='col') Удалить
+
+            tbody
+                each status in statuses
+                    tr(align="middle" data-status-id = status.statusID)
+                        td= status.statusID
+                        td= status.statusTitle
+                        td= status.orderAmount
+                        td
+                            a.alert.alert-primary(href="/panel/orders/status/"+status.statusID style="display: inline-block;") Изменить
+                        td
+                            button#RemoveStatus.alert.alert-danger(
+                            style="cursor: pointer"
+                            data-status-title=status.statusTitle
+                            data-status-id=status.statusID
+                            ) Удалить
+
+            #confirmRemoveStatusModal.modal(tabindex='-1', role='dialog')
+                .modal-dialog(role='document')
+                    .modal-content
+                        .modal-header
+                            h5.modal-title Удаление статуса
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                span(aria-hidden='true') ×
+                        .modal-body
+                            div
+                                | Вы действительно хотите удалить статус
+                                b#statusName
+                        .modal-footer
+                            button.btn.btn-secondary(type='button', data-dismiss='modal') Нет
+                            button#confirmRemoveButtonStatus.btn.btn-primary(type='button' data-dismiss='modal') Удалить

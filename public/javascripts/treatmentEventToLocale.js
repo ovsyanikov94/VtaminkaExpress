@@ -51,10 +51,10 @@ let addEventToChange = function () {
         [].forEach.call(buttonChange,(btn)=>{
             let parentElement = btn.parentElement.parentElement;
             btn.addEventListener('click',()=>{
-                console.log('elem5555555',parentElement);
+
                 let arreyChaild = parentElement.querySelectorAll('.td');
 
-                console.log(arreyChaild[1].textContent);
+
                 parentElement.innerHTML ='';
 
                 parentElement.innerHTML +=`
@@ -152,7 +152,7 @@ let addSaveChangeAnnulment = function () {
                         <td class="td">${con.constantID}</td>
                         <td class="td">${con.constantTitle}</td>
                         <td class="td">${con.description}</td>
-                        <td><div style="display: inline-block;"class="alert alert-primary" data-attribute-id=${con.constantID} >Nзменить</div></td>
+                        <td><div class="alert alert-primary" data-attribute-id=${con.constantID} >Nзменить</div></td>
                         <td><div style="cursor: pointer" class="alert alert-danger"   data-const-title=${con.description} data-const-id=${con.constantID}  >Удалить</div></td>
                     </tr>
                     `;
