@@ -18,6 +18,7 @@ const localeRoutes = require('./routes/panel/locale');
 const newsRoutes = require('./routes/panel/news');
 const promoRoutes = require('./routes/panel/promo-codes');
 const feedBackRoutes = require('./routes/panel/feedback');
+const aboutRoutes = require('./routes/panel/about');
 
 const productsApiRoutes = require('./routes/api/products');
 const promocodesApiRoutes = require('./routes/api/promo-codes');
@@ -49,6 +50,7 @@ app.use('/panel' , promoRoutes);
 
 app.use('/panel' , feedBackRoutes);
 app.use('/panel' , ordersRoutes);
+app.use('/panel' , aboutRoutes);
 
 //API ROUTES
 app.use('/api' , productsApiRoutes);
