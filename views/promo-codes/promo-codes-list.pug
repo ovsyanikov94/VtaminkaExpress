@@ -11,17 +11,14 @@ block content
             label(for='percentageInput') Процент скидки
             input#percentageInput.form-control(placeholder='Введите процент скидки')
         .form-group
-            label(for='deliveryInput') Доставка
-            input#deliveryInput.form-control(placeholder='Введите доставку')
-        .form-group
             label(for='promoCountInput') Количество
             input#promoCountInput.form-control(placeholder='Введите кол-во промо-кодов')
         .form-group
             label(for='startDateInput') Начальная дата активности промо-кода
-            input#startDateInput.form-control(type="date")
+            input#startDateInput.form-control(type="date" class="col-2")
         .form-group
             label(for='expireDateInput') Конечная дата активности промо-кода
-            input#expireDateInput.form-control(type="date")
+            input#expireDateInput.form-control(type="date" class="col-2")
         .form-group
             #message.alert.alert-danger(style="display: none")
             #addPromoCodeButton.btn.btn-primary Добавить новый промо-код
@@ -35,7 +32,6 @@ block content
                 th(scope='col') #
                 th(scope='col') Промо-код
                 th(scope='col') % скидки
-                th(scope='col') Доставка
                 th(scope='col') Кол-во кодов
                 th(scope='col') Старт
                 th(scope='col') Окончание
@@ -43,20 +39,20 @@ block content
                 th(scope='col') Удалить
         tbody#promoCodesList
             each promoCode in promoCodes
-                tr(align="middle")
+                tr(align="middle" data-promo-code-id=promoCode.promoCodeID)
                     td= promoCode.promoCodeID
                     td= promoCode.discountCode
                     td= promoCode.discount
-                    td= promoCode.delivery
                     td= promoCode.promoCount
                     td= promoCode.startAtDate
                     td= promoCode.expireAtDate
                     td
-                        a.alert.alert-primary(href="#" + promoCode.promoCodeID style="display: inline-block;") Изменить
+                        a.alert.alert-primary(href="/panel/promo-codes/single/" + promoCode.promoCodeID style="display: inline-block;") Изменить
                     td
                         button.alert.alert-danger(
                             style="cursor: pointer"
-                            data-lang-id=promoCode.promoCodeID
+                            data-promo-code-id=promoCode.promoCodeID
+                            data-promo-code=promoCode.discountCode
                         ) Удалить
 
 
