@@ -53,6 +53,7 @@ let addEventToSaveChange = async function (elem) {
                             </tr>
                             `;
 
+
                        addEventToChange();
                        addEventInButton(parentDiv);
                    }
