@@ -235,6 +235,8 @@ module.exports.AddNewLanguage = async ( req , res )=>{
 
 module.exports.UpdateLanguageAction  = async(req, res)=>{
 
+
+
     try{
         let langID = +req.params.id;
         let lang = await Langs.findById( langID );
@@ -244,7 +246,6 @@ module.exports.UpdateLanguageAction  = async(req, res)=>{
     catch (ex){
         res.render('error',{ error: ex});
     }//catch
-
 };
 
 module.exports.UpdateLanguage = async ( req , res )=>{
@@ -307,6 +308,7 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
 
             }//else
+
 
             // fs.existsSync()
             langImage.mv( `${path}/${langImage.name}` ,async function(err) {
@@ -544,40 +546,54 @@ module.exports.ExportLanguage = async ( req , res )=>{
 
     try{
 
-        let lang = await Langs.findById(req.params.id);
+        let lang = await Langs.findById(req.body.langID);
 
-        let translations = await connection.query(`
-            SELECT wc.constantTitle, t.translation
-            FROM \`translations\` as t
-            JOIN \`wordsconstants\` as wc ON wc.constantID = t.constantID
-            WHERE t.languageID = '${lang.languageID}'
-        `);
+        if( !lang ){
+            throw new Error('Язык не найден');
+        }//if
 
-        let constants = await WordsConstans.findAll();
+        let translations = await Translations.findAll({
+            where: {
+                languageID: lang.languageID
+            },
+            include:[
+                {
+                    model: WordsConstans,
+                    attributes: [ 'constantTitle' ],
+                    as: 'constant'
+                }
+            ]
+        });
 
         let jsonData = {};
 
-        constants.forEach(item => {
+        translations.forEach(item => {
 
-            jsonData[`${item.constantTitle}`] = "";
-
-        });
-
-        translations[0].forEach(item => {
-
-            jsonData[`${item.constantTitle}`] = item.translation;
+            jsonData[`${item.constant.constantTitle}`] = item.translation;
 
         });
 
-        res.send( jsonData );
+
+        let path = `public/i18n/${lang.languageTitle}.json`;
+
+        if(fs.existsSync(path)){
+
+            fs.unlinkSync(path);
+
+        }//if
+
+        fs.appendFileSync(path, JSON.stringify(jsonData));
+
+        response.code = 200;
+        response.message = 'Экспорт успешен';
 
     }//try
     catch(ex){
 
+        console.log('EX: ' , ex);
 
         response.code = 500;
-        response.message = 'Внутренняя ошибка сервера!';
-        console.log('EX: ' , ex);
+        response.message = ex.message;
 
     }//catch
 
@@ -585,3 +601,159 @@ module.exports.ExportLanguage = async ( req , res )=>{
     res.send( response );
 
 };
+
+module.exports.GelTransletionList=async(req , res)=>{
+
+
+
+    let translations = await Translations.findAll({
+
+       include: [
+           {
+               model: WordsConstans,
+               as: 'constant'
+           },
+           {
+               model: Langs
+           }
+       ]
+
+    });
+
+
+    let languages = await Langs.findAll();
+    let constants = await WordsConstans.findAll();
+
+    res.render('locale/transleton/trasletion-list',{constants : constants, languages: languages ,  translations: translations});
+};
+module.exports.UpdataTranslationAction=async(req, res)=>{
+
+
+    let id = req.params.id;
+    console.log(id);
+    let translations = await Translations.findOne({
+            where:{
+                ID:id
+            },
+            include: [
+                {
+                    model: WordsConstans,
+                    as: 'constant'
+                },
+                {
+                    model: Langs
+                }
+        ]
+
+    });
+
+    res.render('locale/transleton/updataTranslation',{'translations':translations})
+};
+
+module.exports.UpdataTranslation=async(req,res)=>{
+
+
+    let respone = new Response();
+    let id = req.body.id;
+    let text =req.body.text
+
+    console.log(id);
+    console.log(text);
+
+    try{
+        let updateTran = await Translations.findOne({
+
+            where:{
+                ID:id
+            },
+
+        });
+
+        updateTran.update({translation:text})
+        respone.code = 200;
+        respone.message = "перевод обнавлен";
+        respone.data = updateTran;
+    }catch (ex){
+        respone.code = 500;
+        respone.message = "ощибка сервера";
+
+    }
+    res.status(respone.code);
+    res.send(respone);
+}
+
+module.exports.RemoveTransletion=async(req , res)=>{
+
+
+    let respone = new Response();
+    let id = req.body.id;
+
+    try{
+        let removeTrans = Translations.destroy({
+            where:{
+                ID:id
+            }
+        });
+
+        respone.code=200;
+        respone.message="перевод удален";
+
+    }//try
+    catch (ex){
+        respone.code=500;
+        respone.message="ощибка сервера";
+
+    }//catch
+
+    res.status(respone.code);
+    res.send(respone);
+};
+
+module.exports.AddTransletion=async(req , res)=>{
+
+    let respone = new Response();
+
+    let constId = req.body.idConst;
+    let lengId = req.body.idleng;
+    let translation = req.body.translation
+
+    let constant = await WordsConstans.findOne({
+        where:{
+            constantID:constId
+        }
+    });
+
+
+    let leng =  await Langs.findOne({
+        where:{
+            languageID:lengId
+        }
+    });
+
+    if(constant&&leng&&translation){
+
+        let trans = await Translations.create({
+            constantID:constId,
+            languageID:lengId,
+            translation:translation
+        });
+
+        respone.code=200;
+        respone.message="перевод добавлен";
+        respone.data = {
+            'ConstantTitle': constant.constantTitle,
+            'LanguageTitle': leng.languageTitle,
+            'Translation': translation,
+            'TranslationID': trans.ID,
+        };
+
+    }//if
+    else {
+        respone.code=404;
+        respone.message="значение не найдено";
+    }//else
+
+    res.status(respone.code);
+    res.send(respone);
+
+};//AddTransletion

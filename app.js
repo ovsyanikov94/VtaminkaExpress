@@ -13,6 +13,7 @@ const indexRouter = require('./routes/index');
 
 const productsRoutes = require('./routes/panel/products');
 const categoriesRoutes = require('./routes/panel/categories');
+const ordersRoutes = require('./routes/panel/orders');
 const localeRoutes = require('./routes/panel/locale');
 const newsRoutes = require('./routes/panel/news');
 const promoRoutes = require('./routes/panel/promo-codes');
@@ -21,8 +22,7 @@ const feedBackRoutes = require('./routes/panel/feedback');
 const productsApiRoutes = require('./routes/api/products');
 const categoriesApiRoutes = require('./routes/api/categories');
 const feedBackApiRoutes = require('./routes/api/feedback');
-
-
+const ordersApiRoutes = require('./routes/api/orders');
 const fileUpload = require('express-fileupload');
 
 const app = express();
@@ -45,12 +45,15 @@ app.use('/panel' , categoriesRoutes);
 app.use('/panel' , localeRoutes);
 app.use('/panel' , newsRoutes);
 app.use('/panel' , promoRoutes);
+
 app.use('/panel' , feedBackRoutes);
+app.use('/panel' , ordersRoutes);
 
 //API ROUTES
 app.use('/api' , productsApiRoutes);
 app.use('/api' , categoriesApiRoutes);
 app.use('/api' , feedBackApiRoutes);
+app.use('/api' , ordersApiRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

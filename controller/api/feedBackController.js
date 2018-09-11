@@ -20,8 +20,8 @@ module.exports.AddFeedBack = async ( req , res )=>{
 
 
         if(!userName.match(RegularExpressions.UserNameExpression)){
-
-                response.code = 400;
+          
+            response.code = 400;
             response.message = 'Имя имеет неверный формат!';
             response.data = userName;
 
