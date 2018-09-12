@@ -22,6 +22,8 @@ const coordRoutes = require('./routes/panel/coord');
 const productsApiRoutes = require('./routes/api/products');
 const categoriesApiRoutes = require('./routes/api/categories');
 const ordersApiRoutes = require('./routes/api/orders');
+const mapApiRoutes = require('./routes/api/coord');
+
 const fileUpload = require('express-fileupload');
 
 const app = express();
@@ -51,6 +53,7 @@ app.use('/panel' , coordRoutes);
 app.use('/api' , productsApiRoutes);
 app.use('/api' , categoriesApiRoutes);
 app.use('/api' , ordersApiRoutes);
+app.use('/api' , mapApiRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
