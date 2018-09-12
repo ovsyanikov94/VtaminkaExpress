@@ -271,6 +271,8 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
         let langTitle = req.body.langTitle;
 
+
+        
         //Начало работы с загруженным файлом
         if( req.files ){
 
@@ -279,8 +281,9 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
 
             if(!lang.languageImage){
-
+                
                 try{
+                    
                     if(!fs.existsSync('public/images')){
                         fs.mkdirSync('public/images');
                     }
@@ -288,7 +291,6 @@ module.exports.UpdateLanguage = async ( req , res )=>{
                     if(!fs.existsSync('public/images/langs')){
                         fs.mkdirSync('public/images/langs');
                     }
-
 
                     fs.mkdirSync(path);
                 }//try
@@ -300,6 +302,17 @@ module.exports.UpdateLanguage = async ( req , res )=>{
             }//if
             else{
                 try{
+
+                    if(!fs.existsSync('public/images')){
+                        fs.mkdirSync('public/images');
+                    }
+
+                    if(!fs.existsSync('public/images/langs')){
+                        fs.mkdirSync('public/images/langs');
+                    }
+
+                    fs.mkdirSync(path);
+
                     fs.unlinkSync(`public/${lang.languageImage}`);
                 }
                 catch(ex){
@@ -308,11 +321,12 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
 
             }//else
-
-
+            
             // fs.existsSync()
             langImage.mv( `${path}/${langImage.name}` ,async function(err) {
 
+                console.log(langImage.name);
+                
                 if (err){
                     console.log('FILE UPLOAD ERROR:' , err);
                     return;
