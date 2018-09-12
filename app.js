@@ -17,7 +17,7 @@ const ordersRoutes = require('./routes/panel/orders');
 const localeRoutes = require('./routes/panel/locale');
 const newsRoutes = require('./routes/panel/news');
 const promoRoutes = require('./routes/panel/promo-codes');
-
+const coordRoutes = require('./routes/panel/coord');
 
 const productsApiRoutes = require('./routes/api/products');
 const categoriesApiRoutes = require('./routes/api/categories');
@@ -45,6 +45,7 @@ app.use('/panel' , localeRoutes);
 app.use('/panel' , newsRoutes);
 app.use('/panel' , promoRoutes);
 app.use('/panel' , ordersRoutes);
+app.use('/panel' , coordRoutes);
 
 //API ROUTES
 app.use('/api' , productsApiRoutes);
