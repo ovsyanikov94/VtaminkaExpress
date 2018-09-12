@@ -8,5 +8,7 @@ block content
             label(for='aboutText') О нас
         .form-group
             textarea#aboutText.form-control(placeholder='Введите текст' rows=20) #{about.description}
-
-        #saveTextAbout.btn.btn-primary Сохранить
+        .form-group
+            #message.alert.alert-danger(style="display: none")
+        .form-group
+            #saveTextAbout.btn.btn-primary Сохранить

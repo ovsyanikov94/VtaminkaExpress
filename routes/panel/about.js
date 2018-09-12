@@ -7,7 +7,8 @@ const router = express.Router();
 
 /* Localization */
 
-router.get('/about/' , AboutController.GetTextAbout );
+router.get('/about/' , AboutController.GetTextAboutAction );
+router.put('/about/update' , AboutController.UpdateTextAbout );
 
 
 module.exports = router;
