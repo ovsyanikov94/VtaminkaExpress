@@ -18,9 +18,11 @@ const localeRoutes = require('./routes/panel/locale');
 const newsRoutes = require('./routes/panel/news');
 const promoRoutes = require('./routes/panel/promo-codes');
 const coordRoutes = require('./routes/panel/coord');
+const feedBackRoutes = require('./routes/panel/feedback');
 
 const productsApiRoutes = require('./routes/api/products');
 const categoriesApiRoutes = require('./routes/api/categories');
+const feedBackApiRoutes = require('./routes/api/feedback');
 const ordersApiRoutes = require('./routes/api/orders');
 const mapApiRoutes = require('./routes/api/coord');
 
@@ -46,12 +48,15 @@ app.use('/panel' , categoriesRoutes);
 app.use('/panel' , localeRoutes);
 app.use('/panel' , newsRoutes);
 app.use('/panel' , promoRoutes);
+
+app.use('/panel' , feedBackRoutes);
 app.use('/panel' , ordersRoutes);
 app.use('/panel' , coordRoutes);
 
 //API ROUTES
 app.use('/api' , productsApiRoutes);
 app.use('/api' , categoriesApiRoutes);
+app.use('/api' , feedBackApiRoutes);
 app.use('/api' , ordersApiRoutes);
 app.use('/api' , mapApiRoutes);
 
@@ -71,7 +76,6 @@ app.use(function(err, req, res, next) {
 
 
   // render the error page
-  res.status(err.status || 500);
   res.render('error');
 
 });

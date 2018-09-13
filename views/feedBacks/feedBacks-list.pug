@@ -1,0 +1,51 @@
+extends ../layout
+
+block content
+    script( defer src="/javascripts/feedback.js" )
+
+    if fBacks.length === 0
+        .alert.alert-info.col-12
+            | сообщений нет
+    else
+        h2.card-title(align="middle")
+            |Сообщения клиентов
+        table.table
+            thead
+                tr(align="middle")
+                    th(scope='col') #
+                    th(scope='col') Автор
+                    th(scope='col') Дата отправки
+                    th(scope='col') Состояние
+                    th(scope='col') Просмотреть
+                    th(scope='col') Удалить
+
+            tbody
+                each fBack in fBacks
+                    tr(align="middle")
+                        td= fBack.feedBackID
+                        td= fBack.fUserName
+                        td= fBack.created
+                        td= fBack.fProcessed? "Обработано":"Не обработано"
+                        td
+                            a.alert.alert-primary(href="/panel/singl-feedback/" + fBack.feedBackID style="display: inline-block;") Просмотреть
+                        td
+                            button#removeFBButton.alert.alert-danger(
+                            style="cursor: pointer"
+                            data-feedback-title=fBack.fMessage
+                            data-feedback-id=fBack.feedBackID
+                            ) Удалить
+
+            #confirmRemoveMessageModal.modal(tabindex='-1', role='dialog')
+                .modal-dialog(role='document')
+                    .modal-content
+                        .modal-header
+                            h5.modal-title Удаление сообщения
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                span(aria-hidden='true') ×
+                        .modal-body
+                            div
+                                | Вы действительно хотите удалить сообщение?
+                            b#categoryName
+                        .modal-footer
+                            button.btn.btn-secondary(type='button', data-dismiss='modal') Нет
+                            button#confirmRemoveButton.btn.btn-primary(type='button' data-dismiss='modal') Удалить
