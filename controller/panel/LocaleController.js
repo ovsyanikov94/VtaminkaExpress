@@ -325,8 +325,6 @@ module.exports.UpdateLanguage = async ( req , res )=>{
             // fs.existsSync()
             langImage.mv( `${path}/${langImage.name}` ,async function(err) {
 
-                console.log(langImage.name);
-                
                 if (err){
                     console.log('FILE UPLOAD ERROR:' , err);
                     return;
@@ -364,12 +362,18 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
 module.exports.RemoveLang= async ( req , res )=>{
 
+    console.log('ol');
+
     let response = new Response();
+
+    console.log('ol');
 
     try{
 
-        let langID = +req.body.languageTitle;
+        let langID = +req.body.langID;
 
+        console.log(langID);
+        
         if( isNaN(langID) ){
 
             response.code = 400;
@@ -393,11 +397,29 @@ module.exports.RemoveLang= async ( req , res )=>{
 
         }//if
 
+
+        let path = `public/images/langs/${langID}`;
+
+        if(lang.languageImage){
+
+            try{
+
+                fs.unlinkSync(`public/${lang.languageImage}`);
+                fs.rmdirSync(path);
+
+
+            }//try
+            catch(ex){
+                console.log(ex);
+            }//catch
+
+        }//if
+
+
         await lang.destroy();
 
         response.code = 200;
-        response.message = 'Язык успешно обновлен';
-
+        response.message = 'Язык успешно удален';
 
 
     }//try
@@ -644,6 +666,7 @@ module.exports.GelTransletionList=async(req , res)=>{
 
     res.render('locale/transleton/trasletion-list',{constants : constants, languages: languages ,  translations: translations});
 };
+
 module.exports.UpdataTranslationAction=async(req, res)=>{
 
 

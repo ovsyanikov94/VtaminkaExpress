@@ -199,6 +199,81 @@
 
     }//if
 
+
+    let removeLengButon = document.querySelectorAll('.alert-danger');
+    let modalBodyLang = document.querySelector('#langTitle');
+
+    let langID = -1;
+
+
+    [].forEach.call( removeLengButon , ( button )=>{
+
+        button.addEventListener('click' , async function (){
+
+            let title = button.dataset.langTitle;
+            langID = +button.dataset.langId;
+
+            modalBodyLang.textContent = ` ${title}`;
+            $('#confirmRemoveLanguageModal').modal();
+
+        });
+
+    } );
+
+    let confirmRemoveLanguageButton = document.querySelector('#confirmRemoveLanguageButton');
+
+    if(confirmRemoveLanguageButton){
+
+        confirmRemoveLanguageButton.addEventListener('click' , async function (){
+
+            let request = await fetch( `${window.ServerAddress}panel/locale/lang/delete` , {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    'langID': langID,
+                })
+            });
+
+
+
+            let responseJSON = await request.json();
+
+            messageBlock.textContent = responseJSON.message;
+
+
+
+            if( responseJSON.code === 200 ){
+
+
+                if( messageBlock.classList.contains('alert-danger') ){
+                    messageBlock.classList.remove('alert-danger');
+                }//if
+
+                messageBlock.classList.add('alert-success');
+
+                messageBlock.style.display = 'block';
+                let tr = langsTable.querySelector(`tr[data-lang-id="${langID}"]`);
+
+                langsTable.removeChild(tr);
+            }//if
+            else{
+
+                if( messageBlock.classList.contains('alert-success') ){
+                    messageBlock.classList.remove('alert-success');
+                }//if
+
+                messageBlock.classList.add('alert-danger');
+
+                //messageBlock.style.display = 'block';
+
+            }//else
+        });
+
+    }//if
+
+
     //Проверка языка на сущ.
 
     let languageTitleInput = document.querySelector('#languageTitle');
