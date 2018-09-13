@@ -151,6 +151,8 @@
 
         updateLang.addEventListener('click' , async ()=> {
 
+            console.log('update');
+            
             let langID = +document.querySelector('form').dataset.langId;
 
             let langTitle = document.querySelector('#languageTitle').value;
@@ -176,11 +178,13 @@
                 let response = await request.json();
 
                 if(response.code===200){
-                    let imageLang = document.querySelector('#imageLang');
-                    imageLang.src= `/images/langs/${langID}/${langImage.files[0].name}`;
+                    if(langImage.files.length !== 0) {
+                        let imageLang = document.querySelector('#imageLang');
+                        imageLang.src = `/admin/images/langs/${langID}/${langImage.files[0].name}`;
 
-                    let label = document.querySelector('#lableImagePath');
-                    label.textContent= `/images/langs/${langID}/${langImage.files[0].name}`;
+                        let label = document.querySelector('#lableImagePath');
+                        label.textContent = `/admin/images/langs/${langID}/${langImage.files[0].name}`;
+                    }
                 }
                 console.log(response);
 
@@ -199,32 +203,32 @@
 
     let languageTitleInput = document.querySelector('#languageTitle');
 
-    if(languageTitleInput) {
-
-        languageTitleInput.addEventListener('blur' , async () => {
-
-
-            let request = await fetch( `${window.ServerAddress}panel/locale/lang/exist?languageTitle=${languageTitleInput.value}` , {
-                method: 'GET',
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-
-            let responseJSON = await request.json();
-
-            if( responseJSON.code !== 200 ){
-
-                document.querySelector('.invalid-feedback').style.display = 'block';
-
-            }//if
-            else{
-                document.querySelector('.invalid-feedback').style.display = 'none';
-            }//else
-
-
-        });
-
-    }//if
+    // if(languageTitleInput) {
+    //
+    //     languageTitleInput.addEventListener('blur' , async () => {
+    //
+    //
+    //         let request = await fetch( `${window.ServerAddress}panel/locale/lang/exist?languageTitle=${languageTitleInput.value}` , {
+    //             method: 'GET',
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             }
+    //         });
+    //
+    //         let responseJSON = await request.json();
+    //
+    //         if( responseJSON.code !== 200 ){
+    //
+    //             document.querySelector('.invalid-feedback').style.display = 'block';
+    //
+    //         }//if
+    //         else{
+    //             document.querySelector('.invalid-feedback').style.display = 'none';
+    //         }//else
+    //
+    //
+    //     });
+    //
+    // }//if
 
 })();

@@ -2,8 +2,8 @@
 ;(function (){
 
     let host = 'localhost';
-    let port = '3000';
+    let port = '5012';
 
-    window.ServerAddress = `http://${host}:${port}/`;
+    window.ServerAddress = `http://${host}:${port}/admin/`;
 
 })();

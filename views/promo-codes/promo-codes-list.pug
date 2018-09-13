@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-    script( defer src="/javascripts/promo-codes.js" )
+    script( defer src="javascripts/promo-codes.js" )
 
     form.col-md-12
         .form-group
@@ -47,7 +47,7 @@ block content
                     td= promoCode.startAtDate
                     td= promoCode.expireAtDate
                     td
-                        a.alert.alert-primary(href="/panel/promo-codes/single/" + promoCode.promoCodeID style="display: inline-block;") Изменить
+                        a.alert.alert-primary(href="/admin/panel/promo-codes/single/" + promoCode.promoCodeID style="display: inline-block;") Изменить
                     td
                         button.alert.alert-danger(
                             style="cursor: pointer"

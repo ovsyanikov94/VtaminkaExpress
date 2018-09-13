@@ -1,8 +1,8 @@
 extends ../layout
 
 block content
-    script( defer src="/javascripts/news.js" )
-    a.form-group.btn.btn-primary.col-12(href="/panel/news/add-new") Добавить новость
+    script( defer src="javascripts/news.js" )
+    a.form-group.btn.btn-primary.col-12(href="/admin/panel/news/add-new") Добавить новость
 
     if news.length === 0
         .alert.alert-info.col-12
@@ -15,11 +15,11 @@ block content
                         | новостей нет
                 .card.mb-3
                     if OneNews.image
-                        img.card-img-top(src='/' + OneNews.image.imagePath, alt='Card image cap' style="width: 400px; height: 250px;")
+                        img.card-img-top(src='/admin/' + OneNews.image.imagePath, alt='Card image cap' style="width: 400px; height: 250px;")
                     .card-body
                         h5.card-title= OneNews.newsTitle
                         p.card-text= OneNews.newsText
                         p.card-text
                             small.text-muted= OneNews.createdAt
-                        a#updateButtona.btn.btn-primary(href="/panel/news/" + OneNews.newsID style="display: inline-block;") Изменить
+                        a#updateButtona.btn.btn-primary(href="/admin/panel/news/" + OneNews.newsID style="display: inline-block;") Изменить
                         #revomeButton.btn.btn-danger(data-news-id=OneNews.newsID style="cursor: pointer" ) Удалить

@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-    script( defer src="/javascripts/feedback.js" )
+    script( defer src="javascripts/feedback.js" )
 
     if fBacks.length === 0
         .alert.alert-info.col-12
@@ -27,7 +27,7 @@ block content
                         td= fBack.created
                         td= fBack.fProcessed? "Обработано":"Не обработано"
                         td
-                            a.alert.alert-primary(href="/panel/singl-feedback/" + fBack.feedBackID style="display: inline-block;") Просмотреть
+                            a.alert.alert-primary(href="/admin/panel/singl-feedback/" + fBack.feedBackID style="display: inline-block;") Просмотреть
                         td
                             button#removeFBButton.alert.alert-danger(
                             style="cursor: pointer"

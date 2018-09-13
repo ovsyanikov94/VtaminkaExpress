@@ -1,9 +1,9 @@
 extends ../layout
 
 block content
-    a.form-group.btn.btn-primary.col-12(href="/panel/products/new") Добавить товар
-    a.form-group.btn.btn-primary.col-12(href="/panel/products/attributes") Список имеющихся атрибутов
-    a.form-group.btn.btn-primary.col-12(href="/panel/products/attributes/new") Добавить атрибут товара
+    a.form-group.btn.btn-primary.col-12(href="/admin/panel/products/new") Добавить товар
+    a.form-group.btn.btn-primary.col-12(href="/admin/panel/products/attributes") Список имеющихся атрибутов
+    a.form-group.btn.btn-primary.col-12(href="/admin/panel/products/attributes/new") Добавить атрибут товара
 
     if products.length === 0
         .alert.alert-info.col-12
@@ -25,7 +25,7 @@ block content
                         td= product.productTitle
                         td= product.productPrice
                         td
-                            a.alert.alert-primary(href="/panel/products/" + product.productID style="display: inline-block;") Изменить
+                            a.alert.alert-primary(href="/admin/panel/products/" + product.productID style="display: inline-block;") Изменить
                         td
                             button.alert.alert-danger(
                                 style="cursor: pointer"

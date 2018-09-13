@@ -341,6 +341,10 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
         }//if
 
+        await lang.update({
+            languageTitle: langTitle,
+        });
+
         response.code = 200;
         response.message = 'Язык успешно обновлен!';
 
