@@ -1,11 +1,11 @@
 extends ../layout
 
 block content
-    script( defer src="/javascripts/news.js" )
+    script( defer src="javascripts/news.js" )
     form
         .form-group
             if news.image
-                img#newsImg.card-img-top(src='/' + news.image.imagePath, alt='Card image cap' style="width: 400px; height: 250px;")
+                img#newsImg.card-img-top(src='/admin/' + news.image.imagePath, alt='Card image cap' style="width: 400px; height: 250px;")
         .form-group
             .custom-file(style="display: inline-block;")
                  label.custom-file-label(for='newsImage' ) Добавить новое изображение

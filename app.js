@@ -40,13 +40,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //ADMIN PANEL ROUTES
-app.use('/', indexRouter);
+app.use('/',  indexRouter);
 app.use('/panel' , productsRoutes);
 app.use('/panel' , categoriesRoutes);
 app.use('/panel' , localeRoutes);
 app.use('/panel' , newsRoutes);
 app.use('/panel' , promoRoutes);
-
 app.use('/panel' , feedBackRoutes);
 app.use('/panel' , ordersRoutes);
 

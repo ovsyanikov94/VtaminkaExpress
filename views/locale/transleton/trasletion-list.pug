@@ -1,7 +1,7 @@
 extends ../../layout
 
 block content
-    script( defer src="/javascripts/transletion.js" )
+    script( defer src="javascripts/transletion.js" )
     form
         .row
             strong.label.text-uppercase добавить новое значение
@@ -60,7 +60,7 @@ block content
                             td= translation.lang.languageTitle
                             td= translation.translation
                             td
-                                 a.alert.alert-primary(href="/panel/locale/updata-translation/"+translation.ID style="cursor: pointer; display: inline-block" ) Изменить
+                                 a.alert.alert-primary(href="/admin/panel/locale/updata-translation/"+translation.ID style="cursor: pointer; display: inline-block" ) Изменить
                             td
                                 #removeTranslationButton.alert.alert-danger(
                                 style="cursor: pointer"

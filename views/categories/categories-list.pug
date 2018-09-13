@@ -1,9 +1,9 @@
 extends ../layout
 
 block content
-    script( defer src="/javascripts/category.js" )
+    script( defer src="javascripts/category.js" )
 
-    a.btn.btn-primary.col-12(href="/panel/category/new") Добавить категорию
+    a.btn.btn-primary.col-12(href="/admin/panel/category/new") Добавить категорию
 
     if categories.length === 0
         .alert.alert-info.col-12
@@ -25,7 +25,7 @@ block content
                         td= category.categoryTitle
                         td= category.productsAmount
                         td
-                            a.alert.alert-primary(href="/panel/category/"+category.categoryID style="display: inline-block;") Изменить
+                            a.alert.alert-primary(href="/admin/panel/category/"+category.categoryID style="display: inline-block;") Изменить
                         td
                             button.alert.alert-danger(
                                 style="cursor: pointer"

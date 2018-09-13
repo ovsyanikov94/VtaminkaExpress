@@ -1,10 +1,10 @@
 extends ../layout
 
 block content
-    script( defer src="/javascripts/locale.js" )
-    a.form-group.btn.btn-primary.col-12(href="/panel/locale/const-list") Добавить константу
-    a.form-group.btn.btn-primary.col-12(href="/panel/locale/new-lang") Добавить язык
-    a.form-group.btn.btn-primary.col-12(href="/panel/locale/transletion") Добавить перевод
+    script( defer src="javascripts/locale.js" )
+    a.form-group.btn.btn-primary.col-12(href="/admin/panel/locale/const-list") Добавить константу
+    a.form-group.btn.btn-primary.col-12(href="/admin/panel/locale/new-lang") Добавить язык
+    a.form-group.btn.btn-primary.col-12(href="/admin/panel/locale/transletion") Добавить перевод
     if langs.length === 0
         .alert.alert-info.col-12
             | Языки не найдены
@@ -28,7 +28,7 @@ block content
                             img.card-img-top(src='/' + lang.languageImage, alt='Card image cap')
 
                     td
-                        a.alert.alert-primary(href="/panel/locale/lang/" + lang.languageID style="display: inline-block;") Изменить
+                        a.alert.alert-primary(href="/admin/panel/locale/lang/" + lang.languageID style="display: inline-block;") Изменить
                     td
                         button.alert.alert-danger(
                             style="cursor: pointer"
