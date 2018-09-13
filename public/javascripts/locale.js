@@ -260,6 +260,7 @@
             }//if
             else{
 
+
                 if( messageBlock.classList.contains('alert-success') ){
                     messageBlock.classList.remove('alert-success');
                 }//if

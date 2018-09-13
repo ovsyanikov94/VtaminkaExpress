@@ -362,11 +362,7 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
 module.exports.RemoveLang= async ( req , res )=>{
 
-    console.log('ol');
-
     let response = new Response();
-
-    console.log('ol');
 
     try{
 
@@ -403,6 +399,14 @@ module.exports.RemoveLang= async ( req , res )=>{
         if(lang.languageImage){
 
             try{
+
+                if(!fs.existsSync(path)){
+                    return;
+                }//if
+
+                if(!fs.existsSync(`public/${lang.languageImage}`)){
+                   return;
+                }//if
 
                 fs.unlinkSync(`public/${lang.languageImage}`);
                 fs.rmdirSync(path);
