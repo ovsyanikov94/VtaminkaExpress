@@ -21,6 +21,7 @@ const coordRoutes = require('./routes/panel/coord');
 const feedBackRoutes = require('./routes/panel/feedback');
 
 const productsApiRoutes = require('./routes/api/products');
+const promocodesApiRoutes = require('./routes/api/promo-codes');
 const categoriesApiRoutes = require('./routes/api/categories');
 const feedBackApiRoutes = require('./routes/api/feedback');
 const ordersApiRoutes = require('./routes/api/orders');
@@ -42,19 +43,19 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //ADMIN PANEL ROUTES
-app.use('/', indexRouter);
+app.use('/',  indexRouter);
 app.use('/panel' , productsRoutes);
 app.use('/panel' , categoriesRoutes);
 app.use('/panel' , localeRoutes);
 app.use('/panel' , newsRoutes);
 app.use('/panel' , promoRoutes);
-
 app.use('/panel' , feedBackRoutes);
 app.use('/panel' , ordersRoutes);
 app.use('/panel' , coordRoutes);
 
 //API ROUTES
 app.use('/api' , productsApiRoutes);
+app.use('/api' , promocodesApiRoutes);
 app.use('/api' , categoriesApiRoutes);
 app.use('/api' , feedBackApiRoutes);
 app.use('/api' , ordersApiRoutes);

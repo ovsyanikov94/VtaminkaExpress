@@ -161,10 +161,6 @@ const PromoCodes = connection.define('promoCodes',{
         allowNull: false,
         type: Sequelize.DataTypes.TINYINT
     },
-    delivery:{
-        allowNull: false,
-        type: Sequelize.DataTypes.INTEGER
-    },
     promoCount:{
         allowNull: false,
         type: Sequelize.DataTypes.INTEGER
@@ -179,8 +175,8 @@ const PromoCodes = connection.define('promoCodes',{
     }
 
 },{
-    createdAt: true,
-    updatedAt: true
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 });
 
 
@@ -263,9 +259,7 @@ Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'const
 Translations.belongsTo( Langs , { foreignKey: 'languageID' } );
 Translations.belongsTo( WordsConstans , { foreignKey: 'constantID', as: 'constant' } );
 
-//PromoCodes.sync({force: true});
-
-// WordsConstans.sync({force: true});
+//PromoCodes.sync({force: true})
 //Product.sync({force: true});
 // Category.sync({force: true});
 // Translations.sync({force: true});

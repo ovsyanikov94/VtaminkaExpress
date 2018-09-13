@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-    script( defer src="/javascripts/order.js" )
+    script( defer src="javascripts/order.js" )
 
     form().col-md-12
         .form-group
@@ -70,4 +70,4 @@ block content
         .form-group
             //label Общая сумма заказа с учетом скидки
             //p.font-weight-bold(style="font-size:20px")=order.totalPriceWithPromo + order.totalPrice*promo.discount/100 + ' руб.'
-        a.form-group.btn.btn-primary.col-12(href="/panel/orders") Вернуться к заказам
+        a.form-group.btn.btn-primary.col-12(href="/admin/panel/orders") Вернуться к заказам
