@@ -12,7 +12,6 @@
 
     let statusID = -1;
 
-    console.log(RemoveStatus);
 
     [].forEach.call( RemoveStatus , ( button )=>{
 

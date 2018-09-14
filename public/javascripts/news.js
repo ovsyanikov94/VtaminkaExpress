@@ -116,6 +116,31 @@
 
                 })
 
+                let response = await request.json();
+                let message = document.querySelector('#message');
+                message.textContent = response.message;
+                if(response.code ===200){
+
+                    if( message.classList.contains('alert-danger') ){
+                        message.classList.remove('alert-danger');
+                    }//if
+
+                    message.classList.add('alert-success');
+
+                    message.style.display = 'block';
+
+                }//if
+                else{
+
+                    if( message.classList.contains('alert-success') ){
+                        message.classList.remove('alert-success');
+                    }//if
+
+                    message.classList.add('alert-danger');
+
+                    message.style.display = 'block';
+
+                }//else
 
 
             }catch (es){

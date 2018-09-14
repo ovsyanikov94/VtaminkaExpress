@@ -6,10 +6,45 @@
     let messageBlock = document.querySelector('#message');
     let langsTable = document.querySelector('#langsList');
     let updateLang = document.querySelector('#updateLang');
-    let importButton = document.querySelector('#importButton');
-    let file = document.querySelector('#sendFile');
+    let files = document.querySelectorAll('.file-import');
 
     let exportButtons = document.querySelectorAll('.btn-export');
+
+    if(files){
+
+        files.forEach( file => {
+
+            file.addEventListener('change', async function () {
+
+                let data = new FormData();
+
+                data.append('file', file.files[0]);
+
+                data.append('langID', file.dataset.langId);
+
+                try{
+
+                    let request = await fetch(`${window.ServerAddress}panel/locale/lang/import/` , {
+                        method: 'POST',
+                        body: data
+                    });
+
+                    let response = await request.json();
+
+                    console.log(response);
+
+                }//try
+                catch(ex){
+
+                    console.log('ex' , ex);
+
+                }//catch
+
+            });
+
+        } );
+
+    }//if
 
     if(exportButtons){
 
@@ -43,38 +78,6 @@
         } );
 
 
-
-    }//if
-
-    if(importButton){
-
-        importButton.addEventListener('click', async function () {
-
-            let data = new FormData();
-
-            data.append('file', file.files[0]);
-
-            data.append('langID', importButton.dataset.langId);
-
-            try{
-
-                let request = await fetch(`${window.ServerAddress}panel/locale/lang/import/` , {
-                    method: 'POST',
-                    body: data
-                });
-
-                let response = await request.json();
-
-                console.log(response);
-
-            }//try
-            catch(ex){
-
-                console.log('ex' , ex);
-
-            }//catch
-
-        });
 
     }//if
 
@@ -198,6 +201,82 @@
         });
 
     }//if
+
+
+    let removeLengButon = document.querySelectorAll('.alert-danger');
+    let modalBodyLang = document.querySelector('#langTitle');
+
+    let langID = -1;
+
+
+    [].forEach.call( removeLengButon , ( button )=>{
+
+        button.addEventListener('click' , async function (){
+
+            let title = button.dataset.langTitle;
+            langID = +button.dataset.langId;
+
+            modalBodyLang.textContent = ` ${title}`;
+            $('#confirmRemoveLanguageModal').modal();
+
+        });
+
+    } );
+
+    let confirmRemoveLanguageButton = document.querySelector('#confirmRemoveLanguageButton');
+
+    if(confirmRemoveLanguageButton){
+
+        confirmRemoveLanguageButton.addEventListener('click' , async function (){
+
+            let request = await fetch( `${window.ServerAddress}panel/locale/lang/delete` , {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    'langID': langID,
+                })
+            });
+
+
+
+            let responseJSON = await request.json();
+
+            messageBlock.textContent = responseJSON.message;
+
+
+
+            if( responseJSON.code === 200 ){
+
+
+                if( messageBlock.classList.contains('alert-danger') ){
+                    messageBlock.classList.remove('alert-danger');
+                }//if
+
+                messageBlock.classList.add('alert-success');
+
+                messageBlock.style.display = 'block';
+                let tr = langsTable.querySelector(`tr[data-lang-id="${langID}"]`);
+
+                langsTable.removeChild(tr);
+            }//if
+            else{
+
+
+                if( messageBlock.classList.contains('alert-success') ){
+                    messageBlock.classList.remove('alert-success');
+                }//if
+
+                messageBlock.classList.add('alert-danger');
+
+                //messageBlock.style.display = 'block';
+
+            }//else
+        });
+
+    }//if
+
 
     //Проверка языка на сущ.
 

@@ -1,12 +1,7 @@
 extends ../layout
 
 block content
-
     script( defer src="/javascripts/product.js" )
-
-    a.form-group.btn.btn-primary.col-12(href="/panel/products/new") Добавить товар
-    a.form-group.btn.btn-primary.col-12(href="/panel/products/attributes") Список имеющихся атрибутов
-    a.form-group.btn.btn-primary.col-12(href="/panel/products/attributes/new") Добавить атрибут товара
 
     if products.length === 0
         .alert.alert-info.col-12
@@ -17,6 +12,7 @@ block content
                 tr(align="middle")
                     th(scope='col') #
                     th(scope='col') Название
+                    th(scope='col') Категория
                     th(scope='col') Цена
                     th(scope='col') Изменить
                     th(scope='col') Удалить
@@ -26,9 +22,10 @@ block content
                     tr(align="middle" data-product-id=product.productID)
                         td= product.productID
                         td= product.productTitle
+                        td= product.categoryTitle.categoryTitle
                         td= product.productPrice
                         td
-                            a.alert.alert-primary(href="/admin/panel/products/" + product.productID style="display: inline-block;") Изменить
+                            a.alert.alert-primary(href="/panel/products/" + product.productID style="display: inline-block;") Изменить
                         td
                             button.alert.alert-danger(
                             style="cursor: pointer"
@@ -50,4 +47,3 @@ block content
                         .modal-footer
                             button.btn.btn-secondary(type='button', data-dismiss='modal') Нет
                             button#confirmRemoveButton.btn.btn-primary(type='button' data-dismiss='modal') Удалить
-
