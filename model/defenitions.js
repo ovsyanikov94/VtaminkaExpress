@@ -13,6 +13,7 @@ const Category = connection.define('productcategories',{
         allowNull: false,
         autoIncrement: true,
         type: Sequelize.DataTypes.INTEGER
+
     },
     categoryTitle: {
         type: Sequelize.DataTypes.STRING,
@@ -21,8 +22,7 @@ const Category = connection.define('productcategories',{
             is: RegularExpressions.CategoryTitleExpression
         }
 
-    },
-    productsAmount: Sequelize.DataTypes.VIRTUAL
+    }
 
 },{
     createdAt: false,
@@ -59,8 +59,8 @@ const Product = connection.define('products',{
     image: Sequelize.DataTypes.VIRTUAL
 
 },{
-    createdAt: 'created',
-    updatedAt: 'updated'
+    createdAt: false,
+    updatedAt: false
 });
 
 const ProductAndCategories = connection.define('pCategories',{
@@ -140,8 +140,8 @@ const ProductImages = connection.define('pImages', {
         }
     }
 },{
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    createdAt: false,
+    updatedAt: false
 });
 
 const PromoCodes = connection.define('promoCodes',{
@@ -158,16 +158,12 @@ const PromoCodes = connection.define('promoCodes',{
         type: Sequelize.DataTypes.STRING
     },
     discount:{
-        allowNull: false,
-        type: Sequelize.DataTypes.TINYINT
-    },
-    delivery:{
-        allowNull: false,
-        type: Sequelize.DataTypes.INTEGER
+      allowNull: false,
+      type: Sequelize.DataTypes.TINYINT
     },
     promoCount:{
-        allowNull: false,
-        type: Sequelize.DataTypes.INTEGER
+      allowNull: false,
+      type: Sequelize.DataTypes.INTEGER
     },
     startAtDate:{
         allowNull: true,
@@ -179,8 +175,8 @@ const PromoCodes = connection.define('promoCodes',{
     }
 
 },{
-    createdAt: true,
-    updatedAt: true
+    createdAt: false,
+    updatedAt: false
 });
 
 
@@ -257,22 +253,32 @@ const Translations = connection.define( 'translations' , {
     updatedAt: false
 });
 
-WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'languageID'} );
-Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'constantID' } );
+WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
+Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
+// //
+// Langs.sync({force: true});
+// WordsConstans.sync({force: true});
+
+
+// Product.sync({force: true});
+// //
+// Category.sync({force: true});
+// ProductAndCategories.sync({force: true});
+// ProductAttributes.sync({force: true});
+// ProductAndAttributes.sync({force: true});
 
 Translations.belongsTo( Langs , { foreignKey: 'languageID' } );
 Translations.belongsTo( WordsConstans , { foreignKey: 'constantID', as: 'constant' } );
 
-//PromoCodes.sync({force: true});
-
 // WordsConstans.sync({force: true});
-//Product.sync({force: true});
-// Category.sync({force: true});
 // Translations.sync({force: true});
-// Langs.sync({force: true})
+//Langs.sync({force: true});
+
+//Product.sync({force: true});
+//Category.sync({force: true});
 // ProductAndCategories.sync({force: true});
 // ProductAttributes.sync({force: true});
-// ProductAndAttributes.sync({force: true});
+//ProductAndAttributes.sync({force: true});
 // ProductImages.sync({force: true});
 
 const News  = connection.define('news',{
@@ -293,8 +299,8 @@ const News  = connection.define('news',{
     },
     image: Sequelize.DataTypes.VIRTUAL
 },{
-        createdAt: 'createdAt',
-        updatedAt: 'updatedAt'
+        createdAt: false,
+        updatedAt: false
   }
 );
 
@@ -320,13 +326,13 @@ const newsImage=connection.define('newsImage',{
     },
     {
 
-        createdAt: 'createdAt',
-        updatedAt: 'updatedAt'
+        createdAt: false,
+        updatedAt: false
     });
 
 newsImage.belongsTo(News , { foreignKey: 'newsID' });
 // News.sync({force: true});
-//newsImage.sync({force: true});
+// newsImage.sync({force: true});
 
 const FeedBack = connection.define('feedBack',{
 
@@ -373,8 +379,8 @@ const FeedBack = connection.define('feedBack',{
 
 
 },{
-    createdAt: 'created',
-    updatedAt: 'updated'
+    createdAt: false,
+    updatedAt: false
 });
 
 //FeedBack.sync({force: true});
@@ -475,8 +481,8 @@ const Orders = connection.define('orders',{
     }
 
 },{
-    createdAt:'',
-    updatedAt:''
+    createdAt:false,
+    updatedAt:false
 });
 
 const OrdersAndProduct = connection.define('OrderDetails',{
@@ -495,8 +501,8 @@ const OrdersAndProduct = connection.define('OrderDetails',{
         type: Sequelize.DataTypes.INTEGER
     }
 },{
-    createdAt:'',
-    updatedAt:''
+    createdAt:false,
+    updatedAt:false
 });
 
 const UserAndCart = connection.define('UserAndCard',{

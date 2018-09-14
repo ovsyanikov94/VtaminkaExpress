@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-    script( defer src="/javascripts/product.js" )
+    script( defer src="javascripts/product.js" )
 
     form(data-product-id=product.productID).col-md-12
         .form-group
@@ -15,7 +15,7 @@ block content
             label.custom-file-label(for='productImage') Добавить изображение
         .form-group
             .card(style="width: 16em")
-                img.card-img-top(src='/' + product.image.imagePath, alt='Card image cap')
+                img.card-img-top(src='/admin/' + product.image.imagePath, alt='Card image cap')
                 .card-body
                     p.card-text #{product.image.imagePath}
         .form-group

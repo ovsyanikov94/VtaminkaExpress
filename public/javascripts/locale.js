@@ -154,6 +154,8 @@
 
         updateLang.addEventListener('click' , async ()=> {
 
+            console.log('update');
+            
             let langID = +document.querySelector('form').dataset.langId;
 
             let langTitle = document.querySelector('#languageTitle').value;
@@ -179,11 +181,13 @@
                 let response = await request.json();
 
                 if(response.code===200){
-                    let imageLang = document.querySelector('#imageLang');
-                    imageLang.src= `/images/langs/${langID}/${langImage.files[0].name}`;
+                    if(langImage.files.length !== 0) {
+                        let imageLang = document.querySelector('#imageLang');
+                        imageLang.src = `/admin/images/langs/${langID}/${langImage.files[0].name}`;
 
-                    let label = document.querySelector('#lableImagePath');
-                    label.textContent= `/images/langs/${langID}/${langImage.files[0].name}`;
+                        let label = document.querySelector('#lableImagePath');
+                        label.textContent = `/admin/images/langs/${langID}/${langImage.files[0].name}`;
+                    }
                 }
                 console.log(response);
 
@@ -198,36 +202,112 @@
 
     }//if
 
+
+    let removeLengButon = document.querySelectorAll('.alert-danger');
+    let modalBodyLang = document.querySelector('#langTitle');
+
+    let langID = -1;
+
+
+    [].forEach.call( removeLengButon , ( button )=>{
+
+        button.addEventListener('click' , async function (){
+
+            let title = button.dataset.langTitle;
+            langID = +button.dataset.langId;
+
+            modalBodyLang.textContent = ` ${title}`;
+            $('#confirmRemoveLanguageModal').modal();
+
+        });
+
+    } );
+
+    let confirmRemoveLanguageButton = document.querySelector('#confirmRemoveLanguageButton');
+
+    if(confirmRemoveLanguageButton){
+
+        confirmRemoveLanguageButton.addEventListener('click' , async function (){
+
+            let request = await fetch( `${window.ServerAddress}panel/locale/lang/delete` , {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    'langID': langID,
+                })
+            });
+
+
+
+            let responseJSON = await request.json();
+
+            messageBlock.textContent = responseJSON.message;
+
+
+
+            if( responseJSON.code === 200 ){
+
+
+                if( messageBlock.classList.contains('alert-danger') ){
+                    messageBlock.classList.remove('alert-danger');
+                }//if
+
+                messageBlock.classList.add('alert-success');
+
+                messageBlock.style.display = 'block';
+                let tr = langsTable.querySelector(`tr[data-lang-id="${langID}"]`);
+
+                langsTable.removeChild(tr);
+            }//if
+            else{
+
+
+                if( messageBlock.classList.contains('alert-success') ){
+                    messageBlock.classList.remove('alert-success');
+                }//if
+
+                messageBlock.classList.add('alert-danger');
+
+                //messageBlock.style.display = 'block';
+
+            }//else
+        });
+
+    }//if
+
+
     //Проверка языка на сущ.
 
     let languageTitleInput = document.querySelector('#languageTitle');
 
-    if(languageTitleInput) {
-
-        languageTitleInput.addEventListener('blur' , async () => {
-
-
-            let request = await fetch( `${window.ServerAddress}panel/locale/lang/exist?languageTitle=${languageTitleInput.value}` , {
-                method: 'GET',
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-
-            let responseJSON = await request.json();
-
-            if( responseJSON.code !== 200 ){
-
-                document.querySelector('.invalid-feedback').style.display = 'block';
-
-            }//if
-            else{
-                document.querySelector('.invalid-feedback').style.display = 'none';
-            }//else
-
-
-        });
-
-    }//if
+    // if(languageTitleInput) {
+    //
+    //     languageTitleInput.addEventListener('blur' , async () => {
+    //
+    //
+    //         let request = await fetch( `${window.ServerAddress}panel/locale/lang/exist?languageTitle=${languageTitleInput.value}` , {
+    //             method: 'GET',
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             }
+    //         });
+    //
+    //         let responseJSON = await request.json();
+    //
+    //         if( responseJSON.code !== 200 ){
+    //
+    //             document.querySelector('.invalid-feedback').style.display = 'block';
+    //
+    //         }//if
+    //         else{
+    //             document.querySelector('.invalid-feedback').style.display = 'none';
+    //         }//else
+    //
+    //
+    //     });
+    //
+    // }//if
 
 })();

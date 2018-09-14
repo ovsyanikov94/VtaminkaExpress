@@ -1,10 +1,11 @@
 extends ../layout
 
 block content
-    script( defer src="/javascripts/locale.js" )
-    a.form-group.btn.btn-primary.col-12(href="/panel/locale/const-list") Добавить константу
-    a.form-group.btn.btn-primary.col-12(href="/panel/locale/new-lang") Добавить язык
-    a.form-group.btn.btn-primary.col-12(href="/panel/locale/transletion") Добавить перевод
+    script( defer src="javascripts/locale.js" )
+    a.form-group.btn.btn-primary.col-12(href="/admin/panel/locale/const-list") Добавить константу
+    a.form-group.btn.btn-primary.col-12(href="/admin/panel/locale/new-lang") Добавить язык
+    a.form-group.btn.btn-primary.col-12(href="/admin/panel/locale/transletion") Добавить перевод
+
     if langs.length === 0
         .alert.alert-info.col-12
             | Языки не найдены
@@ -20,15 +21,15 @@ block content
                 th(scope='col') Экспорт
         tbody#langsList
             each lang in langs
-                tr(align="middle")
+                tr(align="middle" data-lang-id=lang.languageID)
                     td= lang.languageID
                     td= lang.languageTitle
                     td
                         .card(style="width: 5em")
-                            img.card-img-top(src='/' + lang.languageImage, alt='Card image cap')
+                            img.card-img-top(src='/admin/' + lang.languageImage, alt='Card image cap')
 
                     td
-                        a.alert.alert-primary(href="/panel/locale/lang/" + lang.languageID style="display: inline-block;") Изменить
+                        a.alert.alert-primary(href="/admin/panel/locale/lang/" + lang.languageID style="display: inline-block;") Изменить
                     td
                         button.alert.alert-danger(
                             style="cursor: pointer"
@@ -41,6 +42,8 @@ block content
                             input#newsImage.custom-file-input.file-import(type='file' data-lang-id=lang.languageID)
                     td
                         button.btn.btn-success.btn-export(data-lang-id=lang.languageID style="cursor: pointer") Экспортировать
+    .form-group
+        #message.alert.alert-danger(style="display: none")
 
 
     #confirmRemoveLanguageModal.modal(tabindex='-1', role='dialog')

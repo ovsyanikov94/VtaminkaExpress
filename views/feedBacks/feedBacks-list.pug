@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-    script( defer src="/javascripts/feedback.js" )
+    script( defer src="javascripts/feedback.js" )
 
     if fBacks.length === 0
         .alert.alert-info.col-12
@@ -9,36 +9,43 @@ block content
     else
         h2.card-title(align="middle")
             |Сообщения клиентов
-        each fBack in fBacks
-            .card.mb-3(align="middle")
-                .card-body
-                    h5.card-title= fBack.created
-                    if fBack.fProcessed
-                        p(style="color: green;").card-text
-                            |Обработано
-                    else
-                        p(style="color: red;").card-text
-                            | Не бработано
-                ul.list-group.list-group-flush
+        table.table
+            thead
+                tr(align="middle")
+                    th(scope='col') #
+                    th(scope='col') Автор
+                    th(scope='col') Дата отправки
+                    th(scope='col') Состояние
+                    th(scope='col') Просмотреть
+                    th(scope='col') Удалить
 
+            tbody
+                each fBack in fBacks
+                    tr(align="middle")
+                        td= fBack.feedBackID
+                        td= fBack.fUserName
+                        td= fBack.created
+                        td= fBack.fProcessed? "Обработано":"Не обработано"
+                        td
+                            a.alert.alert-primary(href="/admin/panel/singl-feedback/" + fBack.feedBackID style="display: inline-block;") Просмотреть
+                        td
+                            button#removeFBButton.alert.alert-danger(
+                            style="cursor: pointer"
+                            data-feedback-title=fBack.fMessage
+                            data-feedback-id=fBack.feedBackID
+                            ) Удалить
 
-                    li.list-group-item
-                        |UserName:
-                        h4.card-title= fBack.fUserName
-
-                    li.list-group-item
-                        | Message:
-                        p(style="font-size: 24px;").card-text= fBack.fMessage
-
-                    li.list-group-item
-                        |UserEmail:
-                        p.card-text= fBack.fUserEmail
-
-                    li.list-group-item
-                        |UserPhone:
-                        p.card-text= fBack.fUserPhone
-
-                .card-body
-
-                    #responseButton.btn.btn-primary( style="margin-right: 10px; display: inline-block;") Ответить
-                    #processedButton.btn.btn-primary(style="margin-left: 10px; display: inline-block;" data-fbacks-id= fBack.feedBackID) Обработано
+            #confirmRemoveMessageModal.modal(tabindex='-1', role='dialog')
+                .modal-dialog(role='document')
+                    .modal-content
+                        .modal-header
+                            h5.modal-title Удаление сообщения
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                span(aria-hidden='true') ×
+                        .modal-body
+                            div
+                                | Вы действительно хотите удалить сообщение?
+                            b#categoryName
+                        .modal-footer
+                            button.btn.btn-secondary(type='button', data-dismiss='modal') Нет
+                            button#confirmRemoveButton.btn.btn-primary(type='button' data-dismiss='modal') Удалить

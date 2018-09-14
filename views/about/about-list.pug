@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+    script( defer src="/javascripts/about.js" )
+
+    form.col-md-12
+        .form-group
+            label(for='aboutText') О нас
+        .form-group
+            textarea#aboutText.form-control(placeholder='Введите текст' rows=20) #{about.description}
+        .form-group
+            #message.alert.alert-danger(style="display: none")
+        .form-group
+            #saveTextAbout.btn.btn-primary Сохранить

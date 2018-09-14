@@ -1,9 +1,9 @@
 extends ../../layout
 
 block content
-    script( defer src="/javascripts/attributes.js" )
+    script( defer src="javascripts/attributes.js" )
 
-    a.btn.btn-primary.col-12(href="/panel/products/attributes/new") Добавить атрибут
+    a.btn.btn-primary.col-12(href="/admin/panel/products/attributes/new") Добавить атрибут
 
     if attributes.length === 0
         .alert.alert-info.col-12
@@ -24,7 +24,7 @@ block content
                         td= attribute.attributeTitle
                         td 0
                         td
-                            a.alert.alert-primary(href="/panel/products/attribute/"+attribute.attributeID style="display: inline-block;") Изменить
+                            a.alert.alert-primary(href="/admin/panel/products/attribute/"+attribute.attributeID style="display: inline-block;") Изменить
                         td
                             button.alert.alert-danger(
                                 style="cursor: pointer"

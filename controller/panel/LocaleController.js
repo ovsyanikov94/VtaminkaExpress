@@ -271,6 +271,8 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
         let langTitle = req.body.langTitle;
 
+
+        
         //Начало работы с загруженным файлом
         if( req.files ){
 
@@ -279,8 +281,9 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
 
             if(!lang.languageImage){
-
+                
                 try{
+                    
                     if(!fs.existsSync('public/images')){
                         fs.mkdirSync('public/images');
                     }
@@ -288,7 +291,6 @@ module.exports.UpdateLanguage = async ( req , res )=>{
                     if(!fs.existsSync('public/images/langs')){
                         fs.mkdirSync('public/images/langs');
                     }
-
 
                     fs.mkdirSync(path);
                 }//try
@@ -300,6 +302,17 @@ module.exports.UpdateLanguage = async ( req , res )=>{
             }//if
             else{
                 try{
+
+                    if(!fs.existsSync('public/images')){
+                        fs.mkdirSync('public/images');
+                    }
+
+                    if(!fs.existsSync('public/images/langs')){
+                        fs.mkdirSync('public/images/langs');
+                    }
+
+                    fs.mkdirSync(path);
+
                     fs.unlinkSync(`public/${lang.languageImage}`);
                 }
                 catch(ex){
@@ -308,8 +321,7 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
 
             }//else
-
-
+            
             // fs.existsSync()
             langImage.mv( `${path}/${langImage.name}` ,async function(err) {
 
@@ -326,6 +338,10 @@ module.exports.UpdateLanguage = async ( req , res )=>{
             });
 
         }//if
+
+        await lang.update({
+            languageTitle: langTitle,
+        });
 
         response.code = 200;
         response.message = 'Язык успешно обновлен!';
@@ -350,8 +366,10 @@ module.exports.RemoveLang= async ( req , res )=>{
 
     try{
 
-        let langID = +req.body.languageTitle;
+        let langID = +req.body.langID;
 
+        console.log(langID);
+        
         if( isNaN(langID) ){
 
             response.code = 400;
@@ -375,11 +393,37 @@ module.exports.RemoveLang= async ( req , res )=>{
 
         }//if
 
+
+        let path = `public/images/langs/${langID}`;
+
+        if(lang.languageImage){
+
+            try{
+
+                if(!fs.existsSync(path)){
+                    return;
+                }//if
+
+                if(!fs.existsSync(`public/${lang.languageImage}`)){
+                   return;
+                }//if
+
+                fs.unlinkSync(`public/${lang.languageImage}`);
+                fs.rmdirSync(path);
+
+
+            }//try
+            catch(ex){
+                console.log(ex);
+            }//catch
+
+        }//if
+
+
         await lang.destroy();
 
         response.code = 200;
-        response.message = 'Язык успешно обновлен';
-
+        response.message = 'Язык успешно удален';
 
 
     }//try
@@ -639,6 +683,7 @@ module.exports.GelTransletionList=async(req , res)=>{
 
     res.render('locale/transleton/trasletion-list',{constants : constants, languages: languages ,  translations: translations});
 };
+
 module.exports.UpdataTranslationAction=async(req, res)=>{
 
 
