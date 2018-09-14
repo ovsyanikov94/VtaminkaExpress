@@ -1,17 +1,16 @@
 extends ../../layout
 
 block content
-    script( defer src="/javascripts/treatmentEventToLocale.js" )
+    script( defer src="javascripts/treatmentEventToLocale.js" )
     form
         .row
             .col-6
                 strong.label.text-uppercase добавить новое значение
-
         .row
             .col-4
-                input#constDescription.form-control(type='text', placeholder='описание')
+                input#constDescription.form-control(placeholder='описание')
             .col-4
-                input#constTitle.form-control(type='text', placeholder='имя константы')
+                input#constTitle.form-control(placeholder='имя константы')
             .col-4
 
                 #message.alert.alert-danger(style="display: none")
@@ -20,30 +19,29 @@ block content
         if constants.length === 0
             .alert.alert-info.col-12
                 | значений не найдено
-        else
-            table.table
-                thead
-                    tr(align="middle")
-                        th(scope='col') #
-                        th(scope='col') название константы
-                        th(scope='col') описание
-                        th(scope='col') изменить
-                        th(scope='col') Удалить
+        table.table
+            thead
+                tr(align="middle")
+                    th(scope='col') #
+                    th(scope='col') название константы
+                    th(scope='col') описание
+                    th(scope='col') изменить
+                    th(scope='col') Удалить
 
-                tbody#tableConst
-                    each constant in constants
-                        tr(align="middle")
-                            td.td= constant.constantID
-                            td.td= constant.constantTitle
-                            td.td= constant.description || "значение не задано"
-                            td
-                                .alert.alert-primary(style="cursor: pointer") Изменить
-                            td
-                                .alert.alert-danger(
-                                    style="cursor: pointer"
-                                    data-const-title=constant.description
-                                    data-const-id=constant.constantID
-                                ) Удалить
+            tbody#tableConst
+                each constant in constants
+                    tr(align="middle")
+                        td.td= constant.constantID
+                        td.td= constant.constantTitle
+                        td.td= constant.description || "значение не задано"
+                        td
+                            .alert.alert-primary(style="cursor: pointer") Изменить
+                        td
+                            .alert.alert-danger(
+                                style="cursor: pointer"
+                                data-const-title=constant.description
+                                data-const-id=constant.constantID
+                            ) Удалить
 
                 #confirmRemoveProductModal.modal(tabindex='-1', role='dialog')
                     .modal-dialog(role='document')

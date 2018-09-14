@@ -143,7 +143,7 @@
     //Удаление категории
 
     let categoryID = -1;
-
+    let title = -1;
     let removeButtons = document.querySelectorAll('.alert-danger');
     let modalBody = document.querySelector('#categoryName');
 
@@ -151,7 +151,7 @@
 
         button.addEventListener('click' , async function (){
 
-            let title = button.dataset.categoryTitle;
+            title = button.dataset.categoryTitle;
             categoryID = +button.dataset.categoryId;
 
             modalBody.textContent = title;
@@ -166,7 +166,6 @@
     if(confirmRemoveButton){
 
         confirmRemoveButton.addEventListener('click' , async function (){
-
             let data = new FormData();
             data.append('categoryID', categoryID);
 
@@ -194,7 +193,8 @@
             catch (ex) {
                 console.log(ex);
             }//catch
-
+            console.log(categoryID + title);
+          
         });
 
     }//if

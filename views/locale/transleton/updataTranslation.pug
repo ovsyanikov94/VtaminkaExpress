@@ -1,0 +1,13 @@
+extends ../../layout
+
+block content
+    script( defer src="javascripts/transletion.js" )
+    form.col-md-12
+        .form-group
+            -var text ='введите перевод константы ' +translations.wordsConstant.constantTitle+ ' на язык '+translations.lang.languageTitle
+            strong(for='translationText')= text
+            input#translationText.form-control(placeholder = translations.translation)
+        .form-group
+        #message.alert.alert-danger(style="display: none")
+
+        #updataTranslationButton.btn.btn-primary(data-id = translations.ID) изменить перевод

@@ -1,0 +1,43 @@
+extends ../layout
+
+block content
+    script( defer src="javascripts/feedback.js" )
+
+
+    .card(align="middle")
+        .card-body
+            h5.card-title= fBack.created
+            if fBack.fProcessed
+                p(style="color: green;").card-text
+                    |Обработано
+            else
+                p(style="color: red;").card-text
+                    | Не бработано
+        ul.list-group.list-group-flush
+
+
+            li.list-group-item
+                |UserName:
+                h4.card-title= fBack.fUserName
+
+            li.list-group-item
+                | Message:
+                p(style="font-size: 24px;").card-text= fBack.fMessage
+
+            li.list-group-item
+                |UserEmail:
+                p.card-text= fBack.fUserEmail
+
+            li.list-group-item
+                |UserPhone:
+                p.card-text= fBack.fUserPhone
+
+        .card-body
+
+            label(for='ResponseText') Название
+            textarea#ResponseText.form-control(placeholder='Введите ответ на сообщение')
+
+        .card-body
+
+            #responseButton.btn.btn-primary( style="margin-right: 10px; display: inline-block;" data-fbacks-id= fBack.feedBackID) Ответить
+            #processedButton.btn.btn-primary(style="margin-left: 10px; display: inline-block;" data-fbacks-id= fBack.feedBackID) Обработано
