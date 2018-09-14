@@ -161,10 +161,6 @@ const PromoCodes = connection.define('promoCodes',{
       allowNull: false,
       type: Sequelize.DataTypes.TINYINT
     },
-    delivery:{
-      allowNull: false,
-      type: Sequelize.DataTypes.INTEGER
-    },
     promoCount:{
       allowNull: false,
       type: Sequelize.DataTypes.INTEGER
@@ -259,6 +255,17 @@ const Translations = connection.define( 'translations' , {
 
 WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
 Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
+// //
+// Langs.sync({force: true});
+// WordsConstans.sync({force: true});
+
+
+// Product.sync({force: true});
+// //
+// Category.sync({force: true});
+// ProductAndCategories.sync({force: true});
+// ProductAttributes.sync({force: true});
+// ProductAndAttributes.sync({force: true});
 
 Translations.belongsTo( Langs , { foreignKey: 'languageID' } );
 Translations.belongsTo( WordsConstans , { foreignKey: 'constantID', as: 'constant' } );
@@ -325,7 +332,7 @@ const newsImage=connection.define('newsImage',{
 
 newsImage.belongsTo(News , { foreignKey: 'newsID' });
 // News.sync({force: true});
-//newsImage.sync({force: true});
+// newsImage.sync({force: true});
 
 const FeedBack = connection.define('feedBack',{
 

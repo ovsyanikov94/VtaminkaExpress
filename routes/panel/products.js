@@ -19,4 +19,6 @@ router.put('/products/:id' ,ProductController.UpdateProduct );
 router.get('/products/attributes/new' ,ProductController.AddNewAttributeAction );
 router.post('/products/attributes/new' ,ProductController.AddNewAttribute );
 
+router.delete('/products/delete' , ProductController.RemoveProduct );
+
 module.exports = router;

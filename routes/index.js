@@ -10,5 +10,4 @@ router.get('/', HomeController.HomeAction );
 router.get('/panel', HomeController.HomeAction );
 
 
-
 module.exports = router;
