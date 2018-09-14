@@ -13,6 +13,7 @@ const Category = connection.define('productcategories',{
         allowNull: false,
         autoIncrement: true,
         type: Sequelize.DataTypes.INTEGER
+
     },
     categoryTitle: {
         type: Sequelize.DataTypes.STRING,
@@ -21,8 +22,7 @@ const Category = connection.define('productcategories',{
             is: RegularExpressions.CategoryTitleExpression
         }
 
-    },
-    productsAmount: Sequelize.DataTypes.VIRTUAL
+    }
 
 },{
     createdAt: false,
@@ -158,12 +158,16 @@ const PromoCodes = connection.define('promoCodes',{
         type: Sequelize.DataTypes.STRING
     },
     discount:{
-        allowNull: false,
-        type: Sequelize.DataTypes.TINYINT
+      allowNull: false,
+      type: Sequelize.DataTypes.TINYINT
+    },
+    delivery:{
+      allowNull: false,
+      type: Sequelize.DataTypes.INTEGER
     },
     promoCount:{
-        allowNull: false,
-        type: Sequelize.DataTypes.INTEGER
+      allowNull: false,
+      type: Sequelize.DataTypes.INTEGER
     },
     startAtDate:{
         allowNull: true,
@@ -253,20 +257,21 @@ const Translations = connection.define( 'translations' , {
     updatedAt: false
 });
 
-WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'languageID'} );
-Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'constantID' } );
+WordsConstans.belongsToMany( Langs, { through: Translations , foreignKey: 'constantID'} );
+Langs.belongsToMany( WordsConstans, { through: Translations , foreignKey: 'languageID' } );
 
 Translations.belongsTo( Langs , { foreignKey: 'languageID' } );
 Translations.belongsTo( WordsConstans , { foreignKey: 'constantID', as: 'constant' } );
 
-//PromoCodes.sync({force: true})
-//Product.sync({force: true});
-// Category.sync({force: true});
+// WordsConstans.sync({force: true});
 // Translations.sync({force: true});
-//Langs.sync({force: true})
+//Langs.sync({force: true});
+
+//Product.sync({force: true});
+//Category.sync({force: true});
 // ProductAndCategories.sync({force: true});
 // ProductAttributes.sync({force: true});
-// ProductAndAttributes.sync({force: true});
+//ProductAndAttributes.sync({force: true});
 // ProductImages.sync({force: true});
 
 const News  = connection.define('news',{
