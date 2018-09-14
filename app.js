@@ -18,12 +18,15 @@ const localeRoutes = require('./routes/panel/locale');
 const newsRoutes = require('./routes/panel/news');
 const promoRoutes = require('./routes/panel/promo-codes');
 const feedBackRoutes = require('./routes/panel/feedback');
+const aboutRoutes = require('./routes/panel/about');
 
 const productsApiRoutes = require('./routes/api/products');
 const promocodesApiRoutes = require('./routes/api/promo-codes');
 const categoriesApiRoutes = require('./routes/api/categories');
 const feedBackApiRoutes = require('./routes/api/feedback');
 const ordersApiRoutes = require('./routes/api/orders');
+const aboutApiRoutes = require('./routes/api/about');
+
 const fileUpload = require('express-fileupload');
 
 const app = express();
@@ -48,6 +51,7 @@ app.use('/panel' , newsRoutes);
 app.use('/panel' , promoRoutes);
 app.use('/panel' , feedBackRoutes);
 app.use('/panel' , ordersRoutes);
+app.use('/panel' , aboutRoutes);
 
 //API ROUTES
 app.use('/api' , productsApiRoutes);
@@ -55,6 +59,7 @@ app.use('/api' , promocodesApiRoutes);
 app.use('/api' , categoriesApiRoutes);
 app.use('/api' , feedBackApiRoutes);
 app.use('/api' , ordersApiRoutes);
+app.use('/api' , aboutApiRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

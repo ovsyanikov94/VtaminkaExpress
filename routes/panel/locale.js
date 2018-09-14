@@ -16,6 +16,7 @@ router.get('/locale/new-lang' , LocaleController.AddNewLanguageAction );
 router.get( '/locale/lang/exist' , LocaleController.LanguageExist );
 router.get('/locale/lang/:id' , LocaleController.UpdateLanguageAction );
 router.put('/locale/lang/:id' , LocaleController.UpdateLanguage );
+router.delete('/locale/lang/delete' , LocaleController.RemoveLang );
 
 router.delete('/locale/remove' , LocaleController.RemoveConst );
 router.put('/locale/update' , LocaleController.UpdateConst );
