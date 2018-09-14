@@ -327,6 +327,10 @@ module.exports.UpdateLanguage = async ( req , res )=>{
 
         }//if
 
+        await lang.update({
+            languageTitle: langTitle,
+        });
+
         response.code = 200;
         response.message = 'Язык успешно обновлен!';
 
@@ -610,7 +614,8 @@ module.exports.GelTransletionList=async(req , res)=>{
 
        include: [
            {
-               model: WordsConstans
+               model: WordsConstans,
+               as: 'constant'
            },
            {
                model: Langs
@@ -636,7 +641,8 @@ module.exports.UpdataTranslationAction=async(req, res)=>{
             },
             include: [
                 {
-                    model: WordsConstans
+                    model: WordsConstans,
+                    as: 'constant'
                 },
                 {
                     model: Langs

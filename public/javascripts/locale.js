@@ -9,34 +9,40 @@
     let importButton = document.querySelector('#importButton');
     let file = document.querySelector('#sendFile');
 
-    let exportButton = document.querySelector('#exportButton');
+    let exportButtons = document.querySelectorAll('.btn-export');
 
-    if(exportButton){
+    if(exportButtons){
 
-        exportButton.addEventListener('click', async function () {
-            try{
+        exportButtons.forEach( exportButton => {
 
-                let data = new FormData();
+            exportButton.addEventListener('click', async function () {
+                try{
 
-                data.append('langID', exportButton.dataset.langId);
+                    let data = new FormData();
 
-                let request = await fetch(`${window.ServerAddress}panel/locale/lang/export/` , {
-                    method: 'POST',
-                    body: data
-                });
+                    data.append('langID', exportButton.dataset.langId);
 
-                let response = await request.json();
+                    let request = await fetch(`${window.ServerAddress}panel/locale/lang/export/` , {
+                        method: 'POST',
+                        body: data
+                    });
 
-                console.log(response);
+                    let response = await request.json();
 
-            }//try
-            catch(ex){
+                    console.log(response);
 
-                console.log('ex' , ex);
+                }//try
+                catch(ex){
 
-            }//catch
+                    console.log('ex' , ex);
 
-        });
+                }//catch
+
+            });
+
+        } );
+
+
 
     }//if
 
@@ -116,25 +122,6 @@
 
             if( responseJSON.code === 200 ){
 
-                let lang = responseJSON.data;
-
-                langsTable.innerHTML += `
-                    <tr align="middle">
-                        <td>${lang.languageID}</td>
-                        <td>${lang.languageTitle}</td>
-                        <td>${lang.languageImage || ''}</td>
-                        <td >
-                            <a style="display: inline-block;" class="alert alert-primary" href="/panel/locale/lang/${lang.languageID}" >Изменить</a>
-                        </td>
-                        <td>
-                            <button 
-                                class="alert alert-danger" 
-                                data-lang-title=${lang.languageTitle}
-                                data-lang-id=${lang.languageID} >Удалить</button>    
-                        </td>
-                    </tr>
-                `;
-
                 if( messageBlock.classList.contains('alert-danger') ){
                     messageBlock.classList.remove('alert-danger');
                 }//if
@@ -164,6 +151,8 @@
 
         updateLang.addEventListener('click' , async ()=> {
 
+            console.log('update');
+            
             let langID = +document.querySelector('form').dataset.langId;
 
             let langTitle = document.querySelector('#languageTitle').value;
@@ -189,11 +178,13 @@
                 let response = await request.json();
 
                 if(response.code===200){
-                    let imageLang = document.querySelector('#imageLang');
-                    imageLang.src= `/images/langs/${langID}/${langImage.files[0].name}`;
+                    if(langImage.files.length !== 0) {
+                        let imageLang = document.querySelector('#imageLang');
+                        imageLang.src = `/admin/images/langs/${langID}/${langImage.files[0].name}`;
 
-                    let label = document.querySelector('#lableImagePath');
-                    label.textContent= `/images/langs/${langID}/${langImage.files[0].name}`;
+                        let label = document.querySelector('#lableImagePath');
+                        label.textContent = `/admin/images/langs/${langID}/${langImage.files[0].name}`;
+                    }
                 }
                 console.log(response);
 
@@ -212,32 +203,32 @@
 
     let languageTitleInput = document.querySelector('#languageTitle');
 
-    if(languageTitleInput) {
-
-        languageTitleInput.addEventListener('blur' , async () => {
-
-
-            let request = await fetch( `${window.ServerAddress}panel/locale/lang/exist?languageTitle=${languageTitleInput.value}` , {
-                method: 'GET',
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-
-            let responseJSON = await request.json();
-
-            if( responseJSON.code !== 200 ){
-
-                document.querySelector('.invalid-feedback').style.display = 'block';
-
-            }//if
-            else{
-                document.querySelector('.invalid-feedback').style.display = 'none';
-            }//else
-
-
-        });
-
-    }//if
+    // if(languageTitleInput) {
+    //
+    //     languageTitleInput.addEventListener('blur' , async () => {
+    //
+    //
+    //         let request = await fetch( `${window.ServerAddress}panel/locale/lang/exist?languageTitle=${languageTitleInput.value}` , {
+    //             method: 'GET',
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             }
+    //         });
+    //
+    //         let responseJSON = await request.json();
+    //
+    //         if( responseJSON.code !== 200 ){
+    //
+    //             document.querySelector('.invalid-feedback').style.display = 'block';
+    //
+    //         }//if
+    //         else{
+    //             document.querySelector('.invalid-feedback').style.display = 'none';
+    //         }//else
+    //
+    //
+    //     });
+    //
+    // }//if
 
 })();

@@ -1,0 +1,73 @@
+extends ../layout
+
+block content
+    script( defer src="javascripts/order.js" )
+
+    form().col-md-12
+        .form-group
+            label Номер заказа
+            p.font-weight-bold(style="font-size:20px")=order.orderID
+        hr.hr-primary
+        .form-group
+            label Заказчик
+            p.font-weight-bold(style="font-size:20px")=user.userName
+            p.font-weight-bold(style="font-size:20px")=user.userEmail
+        .form-group
+            label Номер карты
+            p.font-weight-bold(style="font-size:20px")=order.numberCard
+        hr.hr-primary
+        .form-group
+            label Сообщение заказчика
+            p.font-weight-bold(style="font-size:20px")=order.orderMessage
+        hr.hr-primary
+        .form-group
+            label Статус заказа
+            p.font-weight-bold(style="font-size:20px")=status.statusTitle
+        hr.hr-primary
+        .form-group
+            label Дата заказа
+            p.font-weight-bold(style="font-size:20px")=order.orderDate.toLocaleString()
+        hr.hr-primary
+        .form-group
+            label Адрес доставки
+            p.font-weight-bold(style="font-size:20px")=order.orderAdress
+        hr.hr-primary
+        .form-group
+            label(for='productsInOrder') Товары заказа
+            table.table
+                thead
+                    tr(align="middle")
+                        th(scope='col') Изображение
+                        th(scope='col') Название
+                        th(scope='col') Колличество
+                        th(scope='col') Цена за единицу
+                tbody#productsInOrder
+                    each product in products
+                        tr(
+                        align="middle"
+                        )
+                            td
+                                .card(style="width: 5em")
+                                    img.card-img-top(src='/' + product.imagePath, alt='Card image cap')
+                            td #{product.productTitle}
+                            td #{product.amount}
+                            td #{product.fixedPrice}
+        .form-group
+            label Общая сумма заказа
+            p.font-weight-bold(style="font-size:20px")= order.totalPrice + ' руб.'
+        .form-group
+            if promo
+                label Скидка
+                p.font-weight-bold(style="font-size:20px")= promo.discount*order.totalPrice/100  + ' руб.'
+            else
+                label Скидки нет
+        .form-group
+            if promo
+                label Стоимость доставки
+                p.font-weight-bold(style="font-size:20px")= order.totalPrice*promo.discount/100 + ' руб.'
+            else
+                label Без доставки
+        .form-group
+            //label Общая сумма заказа с учетом скидки
+            //p.font-weight-bold(style="font-size:20px")=order.totalPriceWithPromo + order.totalPrice*promo.discount/100 + ' руб.'
+        a.form-group.btn.btn-primary.col-12(href="/admin/panel/orders") Вернуться к заказам
