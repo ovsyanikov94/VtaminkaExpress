@@ -26,6 +26,7 @@ const promocodesApiRoutes = require('./routes/api/promo-codes');
 const categoriesApiRoutes = require('./routes/api/categories');
 const feedBackApiRoutes = require('./routes/api/feedback');
 const ordersApiRoutes = require('./routes/api/orders');
+const localeApiRoutes = require('./routes/api/locale');
 
 const mapApiRoutes = require('./routes/api/coord');
 const aboutApiRoutes = require('./routes/api/about');
@@ -66,6 +67,7 @@ app.use('/api' , feedBackApiRoutes);
 app.use('/api' , ordersApiRoutes);
 app.use('/api' , mapApiRoutes);
 app.use('/api' , aboutApiRoutes);
+app.use('/api' , localeApiRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

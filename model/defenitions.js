@@ -140,8 +140,8 @@ const ProductImages = connection.define('pImages', {
         }
     }
 },{
-    createdAt: false,
-    updatedAt: false
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 });
 
 const PromoCodes = connection.define('promoCodes',{
