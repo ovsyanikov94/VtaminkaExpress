@@ -59,8 +59,8 @@ const Product = connection.define('products',{
     image: Sequelize.DataTypes.VIRTUAL
 
 },{
-    createdAt: 'created',
-    updatedAt: 'updated'
+    createdAt: false,
+    updatedAt: false
 });
 
 const ProductAndCategories = connection.define('pCategories',{
@@ -140,8 +140,8 @@ const ProductImages = connection.define('pImages', {
         }
     }
 },{
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    createdAt: false,
+    updatedAt: false
 });
 
 const PromoCodes = connection.define('promoCodes',{
@@ -179,8 +179,8 @@ const PromoCodes = connection.define('promoCodes',{
     }
 
 },{
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    createdAt: false,
+    updatedAt: false
 });
 
 
@@ -292,8 +292,8 @@ const News  = connection.define('news',{
     },
     image: Sequelize.DataTypes.VIRTUAL
 },{
-        createdAt: 'createdAt',
-        updatedAt: 'updatedAt'
+        createdAt: false,
+        updatedAt: false
   }
 );
 
@@ -319,8 +319,8 @@ const newsImage=connection.define('newsImage',{
     },
     {
 
-        createdAt: 'createdAt',
-        updatedAt: 'updatedAt'
+        createdAt: false,
+        updatedAt: false
     });
 
 newsImage.belongsTo(News , { foreignKey: 'newsID' });
@@ -372,8 +372,8 @@ const FeedBack = connection.define('feedBack',{
 
 
 },{
-    createdAt: 'created',
-    updatedAt: 'updated'
+    createdAt: false,
+    updatedAt: false
 });
 
 //FeedBack.sync({force: true});
@@ -474,8 +474,8 @@ const Orders = connection.define('orders',{
     }
 
 },{
-    createdAt:'',
-    updatedAt:''
+    createdAt:false,
+    updatedAt:false
 });
 
 const OrdersAndProduct = connection.define('OrderDetails',{
@@ -494,8 +494,8 @@ const OrdersAndProduct = connection.define('OrderDetails',{
         type: Sequelize.DataTypes.INTEGER
     }
 },{
-    createdAt:'',
-    updatedAt:''
+    createdAt:false,
+    updatedAt:false
 });
 
 const UserAndCart = connection.define('UserAndCard',{
