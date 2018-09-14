@@ -59,8 +59,8 @@ const Product = connection.define('products',{
     image: Sequelize.DataTypes.VIRTUAL
 
 },{
-    createdAt: false,
-    updatedAt: false
+    createdAt: 'created',
+    updatedAt: 'updated'
 });
 
 const ProductAndCategories = connection.define('pCategories',{

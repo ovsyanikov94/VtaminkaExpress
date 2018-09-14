@@ -1,7 +1,7 @@
 extends ../layout
 
 block content
-    script( defer src="/javascripts/product.js" )
+    script( defer src="javascripts/product.js" )
 
     if products.length === 0
         .alert.alert-info.col-12
@@ -25,7 +25,7 @@ block content
                         td= product.categoryTitle.categoryTitle
                         td= product.productPrice
                         td
-                            a.alert.alert-primary(href="/panel/products/" + product.productID style="display: inline-block;") Изменить
+                            a.alert.alert-primary(href="/admin/panel/products/" + product.productID style="display: inline-block;") Изменить
                         td
                             button.alert.alert-danger(
                             style="cursor: pointer"
