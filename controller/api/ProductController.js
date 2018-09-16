@@ -69,6 +69,7 @@ module.exports.GetProducts = async ( req , res )=>{
 
     }//catch
 
+    
     res.status(response.code);
     res.send( response );
 

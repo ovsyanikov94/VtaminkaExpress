@@ -27,6 +27,8 @@ const categoriesApiRoutes = require('./routes/api/categories');
 const feedBackApiRoutes = require('./routes/api/feedback');
 const ordersApiRoutes = require('./routes/api/orders');
 const localeApiRoutes = require('./routes/api/locale');
+const newsApiRoutes = require('./routes/api/news');
+
 
 const mapApiRoutes = require('./routes/api/coord');
 const aboutApiRoutes = require('./routes/api/about');

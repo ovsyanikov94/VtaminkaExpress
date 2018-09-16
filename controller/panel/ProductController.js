@@ -175,7 +175,7 @@ module.exports.AddNewProduct = async ( req , res )=>{
 
                 await ProductImages.create({
                     'productID': newProduct.productID,
-                    'imagePath': `images/${newProduct.productID}/${productImage.name}`
+                    'imagePath': `/admin/images/${newProduct.productID}/${productImage.name}`
                 });
 
             });
@@ -333,7 +333,7 @@ module.exports.UpdateProduct = async ( req , res )=>{
 
                 await ProductImages.create({
                     'productID': productID,
-                    'imagePath': `images/${productID}/${productImage.name}`
+                    'imagePath': `/admin/images/${productID}/${productImage.name}`
                 });
 
             });

@@ -6,10 +6,11 @@ const News = require('../../model/defenitions').News;
 const NewsImage = require('../../model/defenitions').newsImage;
 const fs = require('fs');
 const fe = require('fs-extra');
+
 module.exports.GetNewsList = async(req,res)=>{
     let response = new Response();
-    let limit = req.query.limit || 10;
-    let offset = req.query.offset || 0;
+    let limit = +req.query.limit || 10;
+    let offset = +req.query.offset || 0;
 
     try {
         let news = await News.findAll({
@@ -39,10 +40,12 @@ module.exports.GetNewsList = async(req,res)=>{
         response.status = 500;
         response.code=500;
         response.message ="ощибк сервера";
+        console.log('ex', ex);
+
     }
 
 
-    res.send({ 'news':response });
+    res.send(response);
 
 }//GetNewsList__Api
 
