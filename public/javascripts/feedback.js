@@ -77,7 +77,7 @@
                 });
 
                 let responseJSON = await request.json();
-
+                window.location = `${window.ServerAddress}panel/feedbacks-list`;
                 if(responseJSON.code === 200){
                     window.location = `${window.ServerAddress}panel/feedbacks-list`;
                 }//if

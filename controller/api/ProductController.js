@@ -20,8 +20,8 @@ module.exports.GetProducts = async ( req , res )=>{
 
     try{
 
-        let limit = +req.query.limit;
-        let offset = +req.query.offset;
+        let limit = +req.query.limit || 2;
+        let offset = +req.query.offset || 0;
 
 
         const products = await Product.findAll({

@@ -1,1 +1,10 @@
 http://madhukaudantha.blogspot.com/2012/08/apache-modproxy-for-windows.html
+
+ProxyPass        /vtaminka/modules  http://localhost:5012/VtaminkaProduction/node_modules retry=0
+ProxyPassReverse /vtaminka/modules  http://localhost:5012/VtaminkaProduction/node_modules
+
+ProxyPass        /vtaminka  http://localhost:5012/VtaminkaProduction/public retry=0
+ProxyPassReverse /vtaminka  http://localhost:5012/VtaminkaProduction/public
+
+ProxyPass        /admin  http://localhost:3000 retry=0
+ProxyPassReverse /admin  http://localhost:3000

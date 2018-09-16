@@ -106,8 +106,8 @@ module.exports.ProcessedFeedBack = async ( req , res )=>{
                 host: 'smtp.ethereal.email',
                 port: 587,
                 auth: {
-                    user: 'vnbqgi2yx6tbqw7v@ethereal.email',
-                    pass: 'futnncvaa2zAFjd9v4'
+                    user: 'dikiy_77@mail.ru',
+                    pass: 'dvn1122'
                 }
             });
 
@@ -183,39 +183,39 @@ module.exports.SendMessage = async ( req , res )=>{
             return res.send(response);
         }//if
 
-        nodemailer.createTestAccount((err, account) => {
-
-            let transporter = nodemailer.createTransport({
-                host: 'smtp.ethereal.email',
-                port: 587,
-                secure: false, // true for 465, false for other ports
-                auth: {
-                    user: 'rcvqptjzqtm2a2hq@ethereal.email',
-                    pass: 'AhZfk3zFEfjJDvdv2M'
-                }
-            });
-
-
-            let mailOptions = {
-                from: '"Support Vtaminka" <SupportVtaminka@example.com>', // sender address
-                to: `${fBack.fUserEmail}`, // list of receivers
-                subject: 'Vtaminka response ✔', // Subject line
-                text: `${responseText}`, // plain text body
-                html: '' // html body
-            };
-
-            // send mail with defined transport object
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    return console.log(error);
-                }
-                console.log('Message sent: %s', info.messageId);
-                // Preview only available when sending through an Ethereal account
-                console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
-
-            });
-        });
+        // nodemailer.createTestAccount((err, account) => {
+        //
+        //     let transporter = nodemailer.createTransport({
+        //         host: 'smtp.ethereal.email',
+        //         port: 587,
+        //         secure: false, // true for 465, false for other ports
+        //         auth: {
+        //             user: 'rcvqptjzqtm2a2hq@ethereal.email',
+        //             pass: 'AhZfk3zFEfjJDvdv2M'
+        //         }
+        //     });
+        //
+        //
+        //     let mailOptions = {
+        //         from: '"Support Vtaminka" <SupportVtaminka@example.com>', // sender address
+        //         to: `${fBack.fUserEmail}`, // list of receivers
+        //         subject: 'Vtaminka response ✔', // Subject line
+        //         text: `${responseText}`, // plain text body
+        //         html: '' // html body
+        //     };
+        //
+        //     // send mail with defined transport object
+        //     transporter.sendMail(mailOptions, (error, info) => {
+        //         if (error) {
+        //             return console.log(error);
+        //         }
+        //         console.log('Message sent: %s', info.messageId);
+        //         // Preview only available when sending through an Ethereal account
+        //         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+        //
+        //
+        //     });
+        // });
 
         let updateResult = await fBack.update({
 

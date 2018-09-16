@@ -41,7 +41,9 @@ class RegularExpressions{
     static get CardOrderExpression(){
         return /^([0-9]{4}-){3}[0-9]{4}$/i
     }
-
+    static get CoordExpression(){
+        return /^[0-9\.]{3,100}$/i
+    }
 }
 
 module.exports = RegularExpressions;

@@ -18,12 +18,13 @@ block content
                     th(scope='col') Изменить
                     th(scope='col') Удалить
 
-            tbody
+            tbody#categoriesTable
                 each category in categories
-                    tr(align="middle")
+                    tr(align="middle" data-category-id=category.categoryID)
                         td= category.categoryID
                         td= category.categoryTitle
-                        td= category.productsAmount
+                        td
+                            a(href="/panel/categories/" + category.categoryID ) #{category.productsAmount}
                         td
                             a.alert.alert-primary(href="/admin/panel/category/"+category.categoryID style="display: inline-block;") Изменить
                         td

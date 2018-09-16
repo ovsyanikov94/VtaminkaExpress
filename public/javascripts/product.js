@@ -276,6 +276,64 @@ function AddRemoveAttributeListeners( attributes ){
 
     }//if
 
+    //Удаление продукта
+    let productID = -1;
+
+    let removeButtons = document.querySelectorAll('.alert-danger');
+    let modalBody = document.querySelector('#productName');
+
+    [].forEach.call( removeButtons , ( button )=>{
+
+        button.addEventListener('click' , async function (){
+
+            let title = button.dataset.productTitle;
+            productID = +button.dataset.productId;
+
+            modalBody.textContent = title;
+            $('#confirmRemoveProductModal').modal();
+
+        });
+
+    } );
+
+    let confirmRemoveButton = document.querySelector('#confirmRemoveButton');
+
+    if(confirmRemoveButton){
+
+        confirmRemoveButton.addEventListener('click' , async function (){
+
+            let data = new FormData();
+            data.append('productID', productID);
+
+            try{
+
+                let request=await fetch( `${window.ServerAddress}panel/products/delete` , {
+                    method: 'DELETE',
+                    body: data
+                });
+
+
+                let response = await request.json();
+                console.log(response);
+
+                if(response.code === 200){
+
+                    let table = document.querySelector(`#productTable`);
+                    let row = document.querySelector(`#productTable tr[data-product-id='${productID}']`);
+
+                    table.removeChild( row );
+
+                }//if
+
+            }//try
+            catch (ex) {
+                console.log(ex);
+            }//catch
+
+        });
+
+    }//if
+
    // if(addProductJSONButton){
 
         //addProductJSONButton.addEventListener('click' , async ()=> {
