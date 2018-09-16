@@ -20,7 +20,7 @@ module.exports.GetLangs = async function (req , res) {
         response.message = "Внутренняя ошибка сервера!";
 
     }//catch
-
+    
     res.status(response.code);
     res.send( response );
 
