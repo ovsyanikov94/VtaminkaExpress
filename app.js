@@ -30,7 +30,7 @@ const localeApiRoutes = require('./routes/api/locale');
 
 const mapApiRoutes = require('./routes/api/coord');
 const aboutApiRoutes = require('./routes/api/about');
-
+const newsApiRoutes = require('./routes/api/news');
 const fileUpload = require('express-fileupload');
 
 const app = express();
@@ -68,7 +68,7 @@ app.use('/api' , ordersApiRoutes);
 app.use('/api' , mapApiRoutes);
 app.use('/api' , aboutApiRoutes);
 app.use('/api' , localeApiRoutes);
-
+app.use('/api' , newsApiRoutes);//добавлены новости
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
 
