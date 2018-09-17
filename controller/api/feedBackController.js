@@ -13,10 +13,12 @@ module.exports.AddFeedBack = async ( req , res )=>{
 
     try{
 
-        let userName = req.body.userName.trim();
-        let userEmail = req.body.userEmail.trim();
-        let userPhone = req.body.userPhone.trim();
-        let userMessage = req.body.userMessage.trim();
+        let message = req.body.body;
+
+        let userName = message.userName.trim();
+        let userEmail = message.userEmail.trim();
+        let userPhone = message.userPhone.trim();
+        let userMessage = message.userMessage.trim();
 
 
         if(!userName.match(RegularExpressions.UserNameExpression)){
@@ -80,6 +82,8 @@ module.exports.AddFeedBack = async ( req , res )=>{
 
     }//try
     catch(ex){
+
+        console.log(ex);
 
         response.code = 500;
         response.data = null;

@@ -88,6 +88,6 @@ module.exports.GetNews = async(req,res)=>{
 
         }
 
-    res.send({ 'news':response });
+    res.send(response);
 
 }//GetNews__Api

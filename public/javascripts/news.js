@@ -42,7 +42,7 @@
                     if( respone.data ){
 
                         let imageNew = document.querySelector('#newsImg');
-                        imageNew.src = "/" + respone.data;
+                        imageNew.src = respone.data;
 
                     }//if
 

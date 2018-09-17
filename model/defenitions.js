@@ -225,7 +225,6 @@ const WordsConstans = connection.define( 'wordsConstants' , {
         type: Sequelize.DataTypes.STRING
     },
     description:{
-        unique: true,
         allowNull: false,
         type: Sequelize.DataTypes.STRING(200)
     }
@@ -379,8 +378,8 @@ const FeedBack = connection.define('feedBack',{
 
 
 },{
-    createdAt: false,
-    updatedAt: false
+    createdAt: 'created',
+    updatedAt: 'updated'
 });
 
 //FeedBack.sync({force: true});

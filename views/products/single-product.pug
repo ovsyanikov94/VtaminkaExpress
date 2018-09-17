@@ -14,10 +14,11 @@ block content
             input#productImage.custom-file-input(type='file')
             label.custom-file-label(for='productImage') Добавить изображение
         .form-group
-            .card(style="width: 16em")
-                img.card-img-top(src='/admin/' + product.image.imagePath, alt='Card image cap')
-                .card-body
-                    p.card-text #{product.image.imagePath}
+            if product.image !== null
+                .card(style="width: 16em")
+                    img.card-img-top(src=product.image.imagePath, alt='Card image cap')
+                    .card-body
+                        p.card-text #{product.image.imagePath}
         .form-group
             select#productCategories( hidden )
                 each productCategory in product.categories

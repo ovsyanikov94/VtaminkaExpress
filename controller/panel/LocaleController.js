@@ -496,86 +496,60 @@ module.exports.ImportLanguage = async ( req , res )=>{
 
             let fileData = JSON.parse(file.data);
 
-            fileData = Object.entries(fileData);
+            for ( let key in fileData){
 
-            let checkTranstate;
+                let constant = await WordsConstans.findOne({
+                    where: {
+                        constantTitle: key
+                    }
+                });
 
-            for(let i = 0; i < fileData.length; i++){
+                if(constant){
 
-                checkTranstate = await connection.query(`
-                    SELECT *
-                    FROM \`translations\` AS t
-                    JOIN \`wordsconstants\` AS wc ON wc.constantID = t.constantID
-                    WHERE t.languageID = '${LangID}' AND wc.constantTitle = '${fileData[i][0]}'`);
+                    let translation = await Translations.findOne({
+                        where:{
+                            constantID: constant.constantID,
+                            languageID: lang.languageID
+                        }
+                    });
 
-                // checkTranstate = await Translations.findAll({
-                //     where: {
-                //         languageID: lang.languageID,
-                //         constantTitle: `${fileData[i][0]}`
-                //     },
-                //     include:[
-                //         {
-                //             model: WordsConstans,
-                //             as: 'constant'
-                //         }
-                //     ]
-                // });
+                    if(!translation){
 
-
-                if(checkTranstate[0].length > 0){
-
-                    if(fileData[i][1] === ""){
-
-                        Translations.destroy({
-                            where: {
-                                ID: checkTranstate[0][0].ID
-                            }
+                        await Translations.create({
+                            translation: fileData[key],
+                            constantID: constant.constantID,
+                            languageID: LangID
                         });
 
                     }//if
-                    else {
+                    else{
 
-                        let translate = await Translations.findById(checkTranstate[0][0].ID);
-
-                        translate.update({
-                            translation: fileData[i][1]
-                        })
+                        await translation.update({
+                            translation: fileData[key]
+                        });
 
                     }//else
 
+                    continue;
                 }//if
-                else {
 
-                    if(fileData[i][1] === "")
-                        continue;
+                let newConstant = await WordsConstans.create({
+                    constantTitle: key,
+                    description: ''
+                });
 
-                    let constant = await WordsConstans.findOne({
+                await Translations.create({
+                    translation: fileData[key],
+                    constantID: newConstant.constantID,
+                    languageID: LangID
+                });
 
-                        where: {
-                            constantTitle: fileData[i][0]
-                        }
+            }//for i
 
-                    });
 
-                    Translations.create({
-                        translation: fileData[i][1],
-                        constantID: constant.constantID,
-                        languageID: LangID
-                    });
+            let path = `public/i18n/${lang.languageTitle}.json`;
 
-                }//else
-
-            }//for
-
-            let path = `public/i18n/${lang.dataValues.languageTitle}.json`;
-
-            if(fs.existsSync(path)){
-
-                fs.unlinkSync(path);
-
-            }//if
-
-            fs.appendFileSync(path, file.data);
+            fs.writeFileSync(path, file.data);
 
         }//if
 
@@ -630,16 +604,11 @@ module.exports.ExportLanguage = async ( req , res )=>{
 
         });
 
+        console.log(jsonData);
 
         let path = `public/i18n/${lang.languageTitle}.json`;
 
-        if(fs.existsSync(path)){
-
-            fs.unlinkSync(path);
-
-        }//if
-
-        fs.appendFileSync(path, JSON.stringify(jsonData));
+        fs.writeFileSync(path, JSON.stringify(jsonData));
 
         response.code = 200;
         response.message = 'Экспорт успешен';
