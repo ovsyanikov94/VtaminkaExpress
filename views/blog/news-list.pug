@@ -15,7 +15,7 @@ block content
                         | новостей нет
                 .card.mb-3
                     if OneNews.image
-                        img.card-img-top(src='/admin/' + OneNews.image.imagePath, alt='Card image cap' style="width: 400px; height: 250px;")
+                        img.card-img-top(src=OneNews.image.imagePath, alt='Card image cap' style="width: 400px; height: 250px;")
                     .card-body
                         h5.card-title= OneNews.newsTitle
                         p.card-text= OneNews.newsText

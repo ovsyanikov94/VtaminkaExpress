@@ -72,7 +72,7 @@ module.exports.addNews=async(req,res)=>{
                     return;
                 }//if
 
-                let path = `images/news/${newNews.newsID}/${newsImage.name}`;
+                let path = `/admin/images/news/${newNews.newsID}/${newsImage.name}`;
 
                 let newImage = await NewsImage.create({
 
@@ -229,7 +229,7 @@ module.exports.UpdataNews=async(req,res)=>{
                 await newsImage.mv( `public/images/news/${id}/${newsImage.name}`);
 
 
-                let path = `images/news/${newNews.newsID}/${newsImage.name}`;
+                let path = `/admin/images/news/${newNews.newsID}/${newsImage.name}`;
 
                 let newImage = await image.update({
                     newsID:newNews.newsID,

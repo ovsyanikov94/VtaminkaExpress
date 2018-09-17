@@ -331,8 +331,8 @@ const newsImage=connection.define('newsImage',{
     });
 
 newsImage.belongsTo(News , { foreignKey: 'newsID' });
-// News.sync({force: true});
-// newsImage.sync({force: true});
+//News.sync({force: true});
+//newsImage.sync({force: true});
 
 const FeedBack = connection.define('feedBack',{
 
