@@ -51,8 +51,10 @@ module.exports.GetNewsList = async(req,res)=>{
 
 
 module.exports.GetNews = async(req,res)=>{
+
     let response = new Response();
-    let id = req.query.id;
+    
+    let id = req.params.id;
         try{
             if(!id){
                 response.status=404;

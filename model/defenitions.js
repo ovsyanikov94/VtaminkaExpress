@@ -22,7 +22,8 @@ const Category = connection.define('productcategories',{
             is: RegularExpressions.CategoryTitleExpression
         }
 
-    }
+    },
+    translation: Sequelize.DataTypes.VIRTUAL
 
 },{
     createdAt: false,

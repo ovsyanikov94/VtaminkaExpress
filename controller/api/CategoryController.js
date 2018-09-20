@@ -4,12 +4,32 @@ const Op = require('sequelize').Op;
 
 const Product = require('../../model/defenitions').Product;
 const Category = require('../../model/defenitions').Category;
+const Translations = require('../../model/defenitions').Translations;
+const WordsConstans = require('../../model/defenitions').WordsConstans;
+
 const Response = require('../../model/Response');
 const ProductAndCategories = require('../../model/defenitions').ProductAndCategories;
 const ProductImages = require('../../model/defenitions').ProductImages;
 
 
 const RegularExpressions = require('../../model/RegularExpressions');
+
+async function GetConstantTranslation( value  ) {
+
+    let translation = await Translations.findOne({
+        where:{
+            translation: value
+        }
+    });
+
+    return await WordsConstans.findOne({
+        where: {
+            constantID: translation.constantID
+        },
+        attributes: ['constantTitle']
+    });
+
+}
 
 module.exports.GetCategories = async ( req , res )=>{
 
@@ -18,8 +38,13 @@ module.exports.GetCategories = async ( req , res )=>{
 
     try{
 
-
         const categories = await Category.findAll();
+
+        for ( let i = 0 ; i < categories.length ; i++ ){
+
+            categories[i].translation =   await GetConstantTranslation(categories[i].categoryTitle);
+
+        }//for i
 
         response.code = 200;
         response.data = categories;
@@ -30,6 +55,7 @@ module.exports.GetCategories = async ( req , res )=>{
         response.code = 500;
         response.data = null;
         response.message = "Внутренняя ошибка сервера!";
+        console.log(ex);
 
     }//catch
 
@@ -116,8 +142,13 @@ module.exports.GetProductsWithCategory = async ( req , res )=>{
 
         }//for i
 
+
+
         response.code = 200;
-        response.data = products;
+        response.data = {
+            "category": await GetConstantTranslation(category.categoryTitle),
+            "products": products
+        };
 
     }//try
     catch(ex){
