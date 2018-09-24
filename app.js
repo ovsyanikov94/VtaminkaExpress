@@ -47,7 +47,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(require('express-session')({secret:'elkflwekflwekfl888ef', resave: true, saveUninitialized: true}));
+app.use(require('express-session')(
+    {
+        secret:'elkflwekflwekfl888ef',
+        saveUninitialized: true,
+        cookie: {
+            maxAge: (1000 * 60 ) * 60,
+            secure: false
+        },
+    }
+  ));
 app.use(passport.initialize());
 app.use(passport.session());
 

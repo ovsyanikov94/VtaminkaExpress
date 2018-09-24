@@ -15,8 +15,6 @@ let settings = {
 };
 
 router.get('/auth' , AdminController.AuthAdminAction);
-router.post('/auth' , passport.authenticate('local', settings ) , ( req , res )=>{
-    console.log('post.auth');
-});
+router.post('/auth' , passport.authenticate('local', settings ));
 
 module.exports =  router;

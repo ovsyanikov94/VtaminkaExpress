@@ -12,14 +12,13 @@ const passport = require('passport');
 let settings = {
 
     successRedirect: '/admin/panel',
-    failureRedirect: '/admin/secret/auth',
-    session: true
+    failureRedirect: '/admin/secret/auth'
 
 };
 
 /* GET home page. */
-router.get('/', passport.authenticate('local' , settings) , HomeController.HomeAction );
-router.get('/panel',passport.authenticate('local' , settings ), HomeController.HomeAction );
+router.get('/', passport.authenticate('local' , settings));
+router.get('/panel', AdminController.CheckAdminAccess , HomeController.HomeAction );
 
 
 module.exports = router;
