@@ -46,6 +46,7 @@ module.exports.AddOrder = async ( req , res )=>{
             response.message = 'Имя пользователя имеет неверный формат!';
             response.data = userName;
 
+            res.status(400);
             return res.send(response);
 
         }//if
@@ -56,6 +57,7 @@ module.exports.AddOrder = async ( req , res )=>{
             response.message = 'Email пользователя имеет неверный формат!';
             response.data = userEmail;
 
+            res.status(400);
             return res.send(response);
 
         }//if
@@ -66,6 +68,7 @@ module.exports.AddOrder = async ( req , res )=>{
         response.message = 'Телефон пользователя имеет неверный формат!';
         response.data = userPhone;
 
+        res.status(400);
         return res.send(response);
 
     }//if
@@ -76,6 +79,7 @@ module.exports.AddOrder = async ( req , res )=>{
             response.message = 'Номер карты пользователя имеет неверный формат!';
             response.data = numberCard;
 
+            res.status(400);
             return res.send(response);
 
         }//if
@@ -237,7 +241,9 @@ module.exports.AddOrder = async ( req , res )=>{
         });
 
         response.code = 200;
-        response.data = oD;
+        response.data = {
+            'orderID': newOrder.orderID
+        };
 
     }//try
     catch(ex){

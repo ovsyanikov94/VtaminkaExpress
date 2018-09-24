@@ -5,7 +5,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-
+const passport = require('passport');
 
 const Connection = require('./routes/connection');
 
@@ -47,6 +47,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(require('express-session')({secret:'elkflwekflwekfl888ef', resave: true, saveUninitialized: true}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use( require('connect-flash')() );
+
+const localStrategy = require('./passport/local-strategy');
+localStrategy(passport);
 
 //ADMIN PANEL ROUTES
 app.use('/',  indexRouter);
@@ -57,9 +65,10 @@ app.use('/panel' , newsRoutes);
 app.use('/panel' , promoRoutes);
 app.use('/panel' , feedBackRoutes);
 app.use('/panel' , ordersRoutes);
-
 app.use('/panel' , coordRoutes);
 app.use('/panel' , aboutRoutes);
+
+app.use('/secret' , require('./routes/secret-routes'));
 
 //API ROUTES
 app.use('/api' , productsApiRoutes);
