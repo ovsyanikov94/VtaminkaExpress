@@ -6,8 +6,10 @@ const AdminController = require("../../controller/panel/AdminController");
 
 const router = express.Router();
 
+router.use(AdminController.CheckAdminAccess);
+
 /* Categories */
-router.get('/coord-settings',  AdminController.CheckAdminAccess , CoordController.GetCoordAction );
-router.put('/coord-settings' ,  AdminController.CheckAdminAccess , CoordController.UpdateCoords );
+router.get('/coord-settings', CoordController.GetCoordAction );
+router.put('/coord-settings' , CoordController.UpdateCoords );
 
 module.exports = router;

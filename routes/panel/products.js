@@ -8,18 +8,20 @@ const router = express.Router();
 
 /* Products */
 
-router.get('/products', AdminController.CheckAdminAccess  ,ProductController.GetProductsListAction );
-router.get('/products/attributes', AdminController.CheckAdminAccess,ProductController.GetAttributesAction );
+router.use(AdminController.CheckAdminAccess);
 
-router.get('/products/new', AdminController.CheckAdminAccess  ,ProductController.AddNewProductAction );
-router.post('/products/new' , AdminController.CheckAdminAccess ,ProductController.AddNewProduct );
+router.get('/products', ProductController.GetProductsListAction );
+router.get('/products/attributes',ProductController.GetAttributesAction );
 
-router.get('/products/:id', AdminController.CheckAdminAccess,ProductController.GetProductAction );
-router.put('/products/:id', AdminController.CheckAdminAccess,ProductController.UpdateProduct );
+router.get('/products/new'  ,ProductController.AddNewProductAction );
+router.post('/products/new' , ProductController.AddNewProduct );
 
-router.get('/products/attributes/new', AdminController.CheckAdminAccess,ProductController.AddNewAttributeAction );
-router.post('/products/attributes/new', AdminController.CheckAdminAccess,ProductController.AddNewAttribute );
+router.get('/products/:id', ProductController.GetProductAction );
+router.put('/products/:id',ProductController.UpdateProduct );
 
-router.delete('/products/delete' , AdminController.CheckAdminAccess, ProductController.RemoveProduct );
+router.get('/products/attributes/new', ProductController.AddNewAttributeAction );
+router.post('/products/attributes/new', ProductController.AddNewAttribute );
+
+router.delete('/products/delete' , ProductController.RemoveProduct );
 
 module.exports = router;

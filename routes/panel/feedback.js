@@ -7,10 +7,10 @@ const AdminController = require("../../controller/panel/AdminController");
 const router = express.Router();
 
 
-router.get('/feedbacks-list', AdminController.CheckAdminAccess ,  FeedBackController.GetFeedBacksListAction );
-router.get('/singl-feedback/:id' ,AdminController.CheckAdminAccess , FeedBackController.GetSinglFeedBackAction);
-router.put('/feedback/:id', AdminController.CheckAdminAccess ,FeedBackController.ProcessedFeedBack );
-router.post('/feedback-response/', AdminController.CheckAdminAccess ,FeedBackController.SendMessage );
+router.get('/feedbacks-list', FeedBackController.GetFeedBacksListAction );
+router.get('/singl-feedback/:id' , FeedBackController.GetSinglFeedBackAction);
+router.put('/feedback/:id', FeedBackController.ProcessedFeedBack );
+router.post('/feedback-response/', FeedBackController.SendMessage );
 
 
 module.exports = router;
