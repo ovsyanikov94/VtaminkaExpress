@@ -8,6 +8,8 @@ const router = express.Router();
 
 router.use(AdminController.CheckAdminAccess);
 
+// [ cb1 , cb2 ,... ] =>
+// cb1(req , res , cb2)
 router.get('/news/news-list' ,NewsController.GetNewsList);
 router.get('/news/add-new', NewsController.addNewsAction);
 router.post('/news/add-new',NewsController.addNews);

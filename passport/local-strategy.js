@@ -1,27 +1,75 @@
 "use strict";
+const bcrypt = require("bcrypt");
+const Op = require("sequelize").Op;
 
 const LocalStrategy = require('passport-local').Strategy;
 const Admin = require('../model/defenitions').Admin;
+const AuthTokens = require('../model/defenitions').AuthTokens;
+
+const AdminPayload = {
+    'token': '',
+    'adminID': ''
+};
+
+async function GenerateTokenForAdmin( ){
+
+    let expires = new Date();
+    expires.setHours( expires.getHours() + 1 );
+
+
+    let salt = await bcrypt.genSalt(10);
+    let token = await bcrypt.hash( expires + new Date() , salt );
+
+    return {
+        'token': token,
+        'expires': expires
+    };
+
+}
 
 module.exports = async ( passport )=>{
 
     passport.serializeUser(function(admin, done) {
-        console.log('serialize')
-        done(null, admin.adminID);
+
+        AdminPayload.adminID = admin.adminID;
+        AdminPayload.token = admin.token;
+
+        done(null, AdminPayload);
     });
 
-    passport.deserializeUser(async function(adminID, done) {
+    //JWT
+    passport.deserializeUser(async function(payload, done) {
 
         let admin = await Admin.findOne({
             where:{
-                adminID: adminID
+                adminID: payload.adminID
             },
             attributes: [ 'adminID' , 'login']
         });
 
-        console.log( 'deserialize' , adminID );
+        if( !admin ){
+            return done(null , false);
+        }//if
 
-        done(null , admin);
+        let now = new Date();
+
+        let token = await AuthTokens.findOne({
+           where:{
+               [Op.and]:{
+                   adminID: admin.adminID,
+                   expiresOn: {
+                       [Op.gt]: now
+                   },
+                   token: payload.token
+               }
+           }
+        });
+
+        if(token){
+            return done(null , admin);
+        }//if
+
+        done(null , false);
 
     });
 
@@ -49,6 +97,16 @@ module.exports = async ( passport )=>{
                 if(!result){
                     return done(null , false);
                 }//if
+
+                let accessToken = await GenerateTokenForAdmin();
+
+                await AuthTokens.create({
+                    adminID: admin.adminID,
+                    token: accessToken.token,
+                    expiresOn: accessToken.expires
+                });
+
+                admin.token = accessToken.token;
 
                 return done( null , admin );
 

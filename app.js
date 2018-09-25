@@ -52,7 +52,7 @@ app.use(require('express-session')(
         secret:'elkflwekflwekfl888ef',
         saveUninitialized: true,
         cookie: {
-            maxAge: (1000 * 60 ) * 60,
+            maxAge: (1000 * 60 ) * 60, // ms
             secure: false
         },
     }

@@ -588,7 +588,7 @@ const Admin = connection.define('admins', {
         allowNull: false,
         unique: true
     },
-
+    token: Sequelize.DataTypes.VIRTUAL
 
 });
 

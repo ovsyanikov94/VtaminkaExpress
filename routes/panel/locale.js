@@ -7,6 +7,7 @@ const AdminController = require("../../controller/panel/AdminController");
 const router = express.Router();
 
 /* Localization */
+// Protect all routes
 router.use(AdminController.CheckAdminAccess);
 
 router.get('/locale/langs-list' ,LocaleController.GetLanguagesListAction );
