@@ -6,6 +6,8 @@ const RegularExpressions = require('./RegularExpressions');
 
 const connection = require('../routes/connection');
 
+const dateformat = require('dateformat');
+
 const Category = connection.define('productcategories',{
 
     categoryID:{
@@ -463,9 +465,13 @@ const Orders = connection.define('orders',{
         allowNull: true,
         type: Sequelize.DataTypes.STRING(1000)
     },
-    orderDate:{
+    orderDate: {
         allowNull: false,
-        type: Sequelize.DataTypes.DATE
+        type: Sequelize.DataTypes.DATE,
+        get() {
+
+            return dateformat( this.getDataValue('orderDate') , "dd.mm.yyyy hh:MM" )
+        }
     },
     totalPrice:{
         allowNull: false,
@@ -481,8 +487,8 @@ const Orders = connection.define('orders',{
     }
 
 },{
-    createdAt:false,
-    updatedAt:false
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 });
 
 const OrdersAndProduct = connection.define('OrderDetails',{
@@ -498,11 +504,14 @@ const OrdersAndProduct = connection.define('OrderDetails',{
     },
     productAmount:{
         allowNull: false,
-        type: Sequelize.DataTypes.INTEGER
+        type: Sequelize.DataTypes.INTEGER,
+        get(){
+            return `Кол-во: ${this.getDataValue('productAmount')}`;
+        }
     }
 },{
-    createdAt:false,
-    updatedAt:false
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 });
 
 const UserAndCart = connection.define('UserAndCard',{
@@ -555,8 +564,80 @@ Product.belongsToMany(Orders,{through:OrdersAndProduct, foreignKey: 'productID'}
 // StatusOrder.sync({force:true});
 
 
-module.exports.News=News;
-module.exports.newsImage=newsImage;
+const bcrypt = require('bcrypt');
+
+const Admin = connection.define('admins', {
+
+    adminID: {
+        type: Sequelize.DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    login:{
+        type: Sequelize.DataTypes.STRING(75),
+        allowNull: false,
+        unique: true
+    },
+    password: {
+        type: Sequelize.DataTypes.STRING(250),
+        allowNull: false,
+    },
+    email:{
+        type: Sequelize.DataTypes.STRING(75),
+        allowNull: false,
+        unique: true
+    },
+    token: Sequelize.DataTypes.VIRTUAL
+
+});
+
+Admin.prototype.validatePassword = async function ( password ){
+
+    let hash = this.getDataValue('password');
+
+    let compareResult = await bcrypt.compare( password , hash);
+
+    if(compareResult){
+        return true;
+    }//if
+    else{
+        return false;
+    }//else
+
+};
+
+const AuthTokens = connection.define('adminsTokens' , {
+
+    tokenID:{
+        type: Sequelize.DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
+    },
+    adminID: {
+        type: Sequelize.DataTypes.INTEGER,
+        allowNull: false,
+    },
+    expiresOn: {
+        type: Sequelize.DataTypes.DATE,
+        allowNull: false
+    },
+    token: {
+        type: Sequelize.DataTypes.STRING(250),
+        allowNull: false,
+    }
+});
+
+AuthTokens.belongsTo(Admin , { foreignKey: 'adminID' });
+//AuthTokens.sync({ force: true });
+
+//Admin.sync({force: true});
+
+module.exports.AuthTokens = AuthTokens;
+module.exports.News = News;
+module.exports.Admin = Admin;
+module.exports.newsImage = newsImage;
 module.exports.Category = Category;
 module.exports.Product = Product;
 module.exports.ProductAndCategories = ProductAndCategories;

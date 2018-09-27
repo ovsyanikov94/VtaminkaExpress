@@ -26,9 +26,7 @@ block content
                     tr(align="middle")(data-order-id=order.orderID)
                         td= order.orderID
                         td= order.totalPrice
-                        td= order.orderDate.toLocaleString()
-
-
+                        td= order.orderDate
                         td
                             #currentStutus.label.label-info(data-order-id=order.orderID)= order.currentStatusName
                             #massege.p=""
